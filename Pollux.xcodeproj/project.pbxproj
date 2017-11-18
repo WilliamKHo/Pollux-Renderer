@@ -1,0 +1,529 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */; };
+		D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CD1FBD056E00385DA6 /* Scene.swift */; };
+		D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */; };
+		D8388BD61FB3973600653E5D /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BD51FB3972E00653E5D /* Metal.framework */; };
+		D8388BD71FB3973600653E5D /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BD41FB3972E00653E5D /* MetalKit.framework */; };
+		D8388BDB1FB3A2F000653E5D /* PolluxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */; };
+		D8388BE91FB3A53800653E5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8388BE71FB3A53800653E5D /* Main.storyboard */; };
+		D8388BEB1FB3A53800653E5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8388BEA1FB3A53800653E5D /* Assets.xcassets */; };
+		D8388BEE1FB3A53800653E5D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8388BEC1FB3A53800653E5D /* LaunchScreen.storyboard */; };
+		D8388BF51FB3A55000653E5D /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BF31FB3A54900653E5D /* Metal.framework */; };
+		D8388BF61FB3A55000653E5D /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BF41FB3A54900653E5D /* MetalKit.framework */; };
+		D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
+		D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */; };
+		D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */; };
+		D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD31FB2BE7B00260B81 /* Assets.xcassets */; };
+		D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD51FB2BE7B00260B81 /* Main.storyboard */; };
+		D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8718BDF1FB2BED300260B81 /* draggo.jpg */; };
+		D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8718BE11FB2BFFF00260B81 /* pathtrace.metal */; };
+		D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D20F8A1FBA1AD800345C2F /* Structs.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D82563CD1FBD056E00385DA6 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedBuffer.swift; sourceTree = "<group>"; };
+		D8388BD41FB3972E00653E5D /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		D8388BD51FB3972E00653E5D /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolluxViewController.swift; sourceTree = "<group>"; };
+		D8388BE11FB3A53700653E5D /* Pollux-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8388BE81FB3A53800653E5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D8388BEA1FB3A53800653E5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8388BED1FB3A53800653E5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D8388BEF1FB3A53800653E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8388BF31FB3A54900653E5D /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
+		D8388BF41FB3A54900653E5D /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
+		D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolluxRenderer.swift; sourceTree = "<group>"; };
+		D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = renderBuffer.metal; sourceTree = "<group>"; };
+		D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolluxTypes.h; sourceTree = "<group>"; };
+		D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pollux-Bridging-Header.h"; sourceTree = "<group>"; };
+		D8718BCC1FB2BE7B00260B81 /* Pollux.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pollux.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D8718BD31FB2BE7B00260B81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8718BD61FB2BE7B00260B81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D8718BD81FB2BE7B00260B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8718BD91FB2BE7B00260B81 /* Pollux.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pollux.entitlements; sourceTree = "<group>"; };
+		D8718BDF1FB2BED300260B81 /* draggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = draggo.jpg; sourceTree = "<group>"; };
+		D8718BE11FB2BFFF00260B81 /* pathtrace.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = pathtrace.metal; sourceTree = "<group>"; };
+		D8D20F8A1FBA1AD800345C2F /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D8388BDE1FB3A53700653E5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8388BF51FB3A55000653E5D /* Metal.framework in Frameworks */,
+				D8388BF61FB3A55000653E5D /* MetalKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8718BC91FB2BE7B00260B81 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8388BD61FB3973600653E5D /* Metal.framework in Frameworks */,
+				D8388BD71FB3973600653E5D /* MetalKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D8388BD31FB3972E00653E5D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D8388BF31FB3A54900653E5D /* Metal.framework */,
+				D8388BF41FB3A54900653E5D /* MetalKit.framework */,
+				D8388BD51FB3972E00653E5D /* Metal.framework */,
+				D8388BD41FB3972E00653E5D /* MetalKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D8388BDC1FB3A51900653E5D /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				D8718BD81FB2BE7B00260B81 /* Info.plist */,
+				D8718BD31FB2BE7B00260B81 /* Assets.xcassets */,
+				D8718BD51FB2BE7B00260B81 /* Main.storyboard */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		D8388BE21FB3A53700653E5D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D8388BE71FB3A53800653E5D /* Main.storyboard */,
+				D8388BEA1FB3A53800653E5D /* Assets.xcassets */,
+				D8388BEC1FB3A53800653E5D /* LaunchScreen.storyboard */,
+				D8388BEF1FB3A53800653E5D /* Info.plist */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		D8718BC31FB2BE7B00260B81 = {
+			isa = PBXGroup;
+			children = (
+				D8718BCE1FB2BE7B00260B81 /* Pollux */,
+				D8718BCD1FB2BE7B00260B81 /* Products */,
+				D8388BD31FB3972E00653E5D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D8718BCD1FB2BE7B00260B81 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D8718BCC1FB2BE7B00260B81 /* Pollux.app */,
+				D8388BE11FB3A53700653E5D /* Pollux-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D8718BCE1FB2BE7B00260B81 /* Pollux */ = {
+			isa = PBXGroup;
+			children = (
+				D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */,
+				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
+				D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */,
+				D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */,
+				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
+				D8718BE11FB2BFFF00260B81 /* pathtrace.metal */,
+				D8B81AC91FBE56D500E2AE82 /* Dregs */,
+				D8388BE21FB3A53700653E5D /* iOS */,
+				D8388BDC1FB3A51900653E5D /* macOS */,
+				D8718BD91FB2BE7B00260B81 /* Pollux.entitlements */,
+				D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */,
+			);
+			path = Pollux;
+			sourceTree = "<group>";
+		};
+		D8B81AC91FBE56D500E2AE82 /* Dregs */ = {
+			isa = PBXGroup;
+			children = (
+				D8718BDF1FB2BED300260B81 /* draggo.jpg */,
+				D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */,
+				D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */,
+				D82563CD1FBD056E00385DA6 /* Scene.swift */,
+				D8D20F8A1FBA1AD800345C2F /* Structs.swift */,
+			);
+			path = Dregs;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D8388BE01FB3A53700653E5D /* Pollux-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8388BF01FB3A53800653E5D /* Build configuration list for PBXNativeTarget "Pollux-iOS" */;
+			buildPhases = (
+				D8388BDD1FB3A53700653E5D /* Sources */,
+				D8388BDE1FB3A53700653E5D /* Frameworks */,
+				D8388BDF1FB3A53700653E5D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pollux-iOS";
+			productName = "Pollux-iOS";
+			productReference = D8388BE11FB3A53700653E5D /* Pollux-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D8718BCB1FB2BE7B00260B81 /* Pollux */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux" */;
+			buildPhases = (
+				D8718BC81FB2BE7B00260B81 /* Sources */,
+				D8718BC91FB2BE7B00260B81 /* Frameworks */,
+				D8718BCA1FB2BE7B00260B81 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Pollux;
+			productName = Pollux;
+			productReference = D8718BCC1FB2BE7B00260B81 /* Pollux.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D8718BC41FB2BE7B00260B81 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Youssef Victor";
+				TargetAttributes = {
+					D8388BE01FB3A53700653E5D = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+					D8718BCB1FB2BE7B00260B81 = {
+						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D8718BC71FB2BE7B00260B81 /* Build configuration list for PBXProject "Pollux" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D8718BC31FB2BE7B00260B81;
+			productRefGroup = D8718BCD1FB2BE7B00260B81 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D8718BCB1FB2BE7B00260B81 /* Pollux */,
+				D8388BE01FB3A53700653E5D /* Pollux-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D8388BDF1FB3A53700653E5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8388BEE1FB3A53800653E5D /* LaunchScreen.storyboard in Resources */,
+				D8388BEB1FB3A53800653E5D /* Assets.xcassets in Resources */,
+				D8388BE91FB3A53800653E5D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8718BCA1FB2BE7B00260B81 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */,
+				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
+				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D8388BDD1FB3A53700653E5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8718BC81FB2BE7B00260B81 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */,
+				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
+				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
+				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
+				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
+				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
+				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
+				D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */,
+				D8388BDB1FB3A2F000653E5D /* PolluxViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D8388BE71FB3A53800653E5D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8388BE81FB3A53800653E5D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D8388BEC1FB3A53800653E5D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8388BED1FB3A53800653E5D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		D8718BD51FB2BE7B00260B81 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8718BD61FB2BE7B00260B81 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D8388BF11FB3A53800653E5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F866ZHAR49;
+				INFOPLIST_FILE = "$(SRCROOT)/Pollux/iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D8388BF21FB3A53800653E5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F866ZHAR49;
+				INFOPLIST_FILE = "$(SRCROOT)/Pollux/iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D8718BDA1FB2BE7B00260B81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D8718BDB1FB2BE7B00260B81 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+			};
+			name = Release;
+		};
+		D8718BDD1FB2BE7B00260B81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = F866ZHAR49;
+				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		D8718BDE1FB2BE7B00260B81 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = F866ZHAR49;
+				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D8388BF01FB3A53800653E5D /* Build configuration list for PBXNativeTarget "Pollux-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8388BF11FB3A53800653E5D /* Debug */,
+				D8388BF21FB3A53800653E5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8718BC71FB2BE7B00260B81 /* Build configuration list for PBXProject "Pollux" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8718BDA1FB2BE7B00260B81 /* Debug */,
+				D8718BDB1FB2BE7B00260B81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8718BDD1FB2BE7B00260B81 /* Debug */,
+				D8718BDE1FB2BE7B00260B81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D8718BC41FB2BE7B00260B81 /* Project object */;
+}
