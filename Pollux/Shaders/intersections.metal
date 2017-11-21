@@ -26,12 +26,9 @@ float computeSphereIntersection(device Geom   *sphere,
                                 thread bool   &outside) {
     float radius = .5f;
     
-    float3 ray_o = float3(sphere->inverseTransform * float4(r.origin, 1.0f));
-    float3 ray_d = normalize(float3(sphere->inverseTransform * float4(r.direction, 0.0f)));
-    
     thread Ray rt;
-    rt.origin = ray_o;
-    rt.direction = ray_d;
+    rt.origin = float3(sphere->inverseTransform * float4(r.origin, 1.0f));
+    rt.direction = normalize(float3(sphere->inverseTransform * float4(r.direction, 0.0f)));
     
     float vDotDirection = dot(rt.origin, rt.direction);
     float radicand = vDotDirection * vDotDirection - (dot(rt.origin, rt.origin) - pow(radius, 2));
@@ -64,4 +61,52 @@ float computeSphereIntersection(device Geom   *sphere,
     }
     
     return length(r.origin - intersectionPoint);
+}
+
+float computeCubeIntersection(device Geom   *box,
+                              thread Ray    &r,
+                              thread float3 &intersectionPoint,
+                              thread float3 &normal,
+                              thread bool   &outside) {
+    thread Ray rt;
+    rt.origin = float3(box->inverseTransform * float4(r.origin, 1.0f));
+    rt.direction = normalize(float3(box->inverseTransform * float4(r.direction, 0.0f)));
+    
+    float tmin = -1e38f;
+    float tmax = 1e38f;
+    float3 tmin_n;
+    float3 tmax_n;
+    for (int dim = 0; dim < 3; ++dim) {
+        float dir_dim = rt.direction[dim];
+        /*if (glm::abs(qddim) > 0.00001f)*/ {
+            float t1 = (-0.5f - rt.origin[dim]) / dir_dim;
+            float t2 = (+0.5f - rt.origin[dim]) / dir_dim;
+            float ta = min(t1, t2);
+            float tb = max(t1, t2);
+            float3 n;
+            n[dim] = t2 < t1 ? +1 : -1;
+            if (ta > 0 && ta > tmin) {
+                tmin = ta;
+                tmin_n = n;
+            }
+            if (tb < tmax) {
+                tmax = tb;
+                tmax_n = n;
+            }
+        }
+    }
+    
+    if (tmax >= tmin && tmax > 0) {
+        outside = true;
+        if (tmin <= 0) {
+            tmin = tmax;
+            tmin_n = tmax_n;
+            outside = false;
+        }
+        intersectionPoint =  float3(box->transform * float4(getPointOnRay(&rt, tmin), 1.0f));
+        normal = normalize(float3(box->transform * float4(tmin_n, 0.0f)));
+        
+        return length(r.origin - intersectionPoint);
+    }
+    return -1;
 }

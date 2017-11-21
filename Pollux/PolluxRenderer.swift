@@ -143,13 +143,13 @@ class PolluxRenderer: NSObject {
         self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
         
         var sphere = Geom();
-        sphere.type = SPHERE;
+        sphere.type = CUBE;
         sphere.materialid = 0
         sphere.translation = float3(0,0,0);
         sphere.rotation = float3(0,0,0);
         sphere.scale = float3(1,1,1);
         let s_tr = simd_translation(dt: float3(0,0,0))
-        let s_rt = simd_rotation(dr:    float3(0,0,0))
+        let s_rt = simd_rotation(dr:    float3(45,45,0))
         let s_sc = simd_scale(ds:       float3(1,1,1))
         sphere.transform = s_tr * s_rt * s_sc;
         sphere.inverseTransform = simd_inverse(sphere.transform)

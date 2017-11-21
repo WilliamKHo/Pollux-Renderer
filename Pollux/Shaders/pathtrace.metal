@@ -7,7 +7,7 @@
 //
 
 #include <metal_stdlib>
-#include "PolluxTypes.h"
+#include "../Data_Structures/PolluxTypes.h"
 #include "intersections_header.metal"
 
 using namespace metal;
@@ -85,7 +85,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
         
         if (geom.type == CUBE)
         {
-//            t = boxIntersectionTest(geom, pathSegment.ray, tmp_intersect, tmp_normal, outside);
+            t = computeCubeIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
         }
         else if (geom.type == SPHERE)
         {

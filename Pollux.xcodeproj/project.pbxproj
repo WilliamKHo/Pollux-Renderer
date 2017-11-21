@@ -117,14 +117,14 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		D85A88DD1FC4940E00E5F6A2 /* Data Structures */ = {
+		D85A88DD1FC4940E00E5F6A2 /* Data_Structures */ = {
 			isa = PBXGroup;
 			children = (
 				D84F8F1F1FC4682E0001CF76 /* simd_la.swift */,
 				D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */,
 				D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */,
 			);
-			path = "Data Structures";
+			path = Data_Structures;
 			sourceTree = "<group>";
 		};
 		D85A88DE1FC4942000E5F6A2 /* Shaders */ = {
@@ -162,7 +162,7 @@
 				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
 				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
-				D85A88DD1FC4940E00E5F6A2 /* Data Structures */,
+				D85A88DD1FC4940E00E5F6A2 /* Data_Structures */,
 				D8B81AC91FBE56D500E2AE82 /* Dregs */,
 				D8388BE21FB3A53700653E5D /* iOS */,
 				D8388BDC1FB3A51900653E5D /* macOS */,

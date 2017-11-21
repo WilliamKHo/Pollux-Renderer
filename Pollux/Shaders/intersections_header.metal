@@ -7,7 +7,7 @@
 //
 
 #include <metal_stdlib>
-#include "PolluxTypes.h"
+#include "../Data_Structures/PolluxTypes.h"
 
 using namespace metal;
 
@@ -27,3 +27,13 @@ float computeSphereIntersection(device Geom   *sphere,
                                 thread float3 &intersectionPoint,
                                 thread float3 &normal,
                                 thread bool   &outside);
+
+/**
+ * Compute the intersection of a ray `r` with a cube geometry
+ * Falls slightly short so that it doesn't intersect the object it's hitting.
+ */
+float computeCubeIntersection(device Geom   *cube,
+                              thread Ray    &r,
+                              thread float3 &intersectionPoint,
+                              thread float3 &normal,
+                              thread bool   &outside);
