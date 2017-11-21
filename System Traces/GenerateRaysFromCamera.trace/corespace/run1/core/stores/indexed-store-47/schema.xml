@@ -1,0 +1,7 @@
+
+<schema name="visual-chain" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRSampleTimestampTypeID" engineeringName="Timestamp" mnemonic="time" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRVisualConnectionUUID64TypeID" engineeringName="UUID" mnemonic="uuid"></column>
+    <column engineeringType="XRVisualUUIDChainTypeID" engineeringName="UUID Chain" mnemonic="uuid-chain"></column>
+    <column engineeringType="XRConnectionRouteTypeID" engineeringName="Route" mnemonic="route"></column>
+</schema>

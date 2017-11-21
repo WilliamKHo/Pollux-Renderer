@@ -1,0 +1,11 @@
+
+<schema name="graphics-resource-events" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRRecordedEventTimestampTypeID" engineeringName="Timestamp" mnemonic="timestamp" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRPrototypeStringTypeID" engineeringName="Event" mnemonic="event-type"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Label" mnemonic="resource-label"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Type" mnemonic="resource-type"></column>
+    <column engineeringType="XRPrototypeValueTypeID" engineeringName="ID" mnemonic="resource-id"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Num Bytes" mnemonic="num-bytes"></column>
+    <column engineeringType="XRPrototypeValueTypeID" engineeringName="Sharegroup ID" mnemonic="sharegroup-id"></column>
+    <column engineeringType="XRProcessTypeID" engineeringName="Process" mnemonic="process"></column>
+</schema>

@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string></string>
+	<string>Unknown</string>
+	<string>User</string>
+	<string>Supervisor</string>
+	<string>Running</string>
+	<string>Runnable</string>
+	<string>Blocked</string>
+	<string>Preempted</string>
+	<string>Uninterruptible</string>
+	<string>Suspended</string>
+	<string>Idle</string>
+	<string>Terminating</string>
+	<string>Terminated</string>
+	<string>TODO</string>
+	<string>com.apple.CoreImage</string>
+	<string>com.apple.CoreImage.args</string>
+	<string>com.apple.CoreImage.fromSurface</string>
+	<string>MTLIOAccelResourcePool</string>
+	<string>MTLIOAccelResourcePool (dbclass: 6)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 7)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 8)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 9)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 0)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 4)</string>
+	<string>Render (Driver)</string>
+	<string>Busy</string>
+	<string>Kernel</string>
+	<string>IOSurface write</string>
+	<string></string>
+	<string>IOSurface read</string>
+	<string>Vsync</string>
+	<string>Display</string>
+	<string>On Display</string>
+	<string>Vsync 2</string>
+	<string>N/A</string>
+	<string>ZeroFillResource</string>
+	<string>8192</string>
+	<string>PageOnResource</string>
+	<string>14131200</string>
+	<string>PageOffResource</string>
+	<string>655360</string>
+	<string>Surface was displayed for </string>
+	<string>GPU spent </string>
+	<string> executing </string>
+	<string> (Upper bound </string>
+	<string>)</string>
+	<string>Render for "Unknown"</string>
+	<string>Render Encoders</string>
+	<string>Command Buffers</string>
+	<string> (</string>
+	<string>Command Buffer 0</string>
+	<string>Compute Command 0</string>
+	<string>[0] Command Buffer 0</string>
+	<string>[0] Compute Command 0</string>
+	<string>Command Buffer 1</string>
+	<string>Render (GPU 1)</string>
+	<string>[1] Command Buffer 1</string>
+	<string>Command Buffer 2</string>
+	<string>[2] Command Buffer 2</string>
+	<string>Command Buffer 3</string>
+	<string>[3] Command Buffer 3</string>
+	<string>Command Buffer 4</string>
+	<string>[4] Command Buffer 4</string>
+	<string>Command Buffer 5</string>
+	<string>[5] Command Buffer 5</string>
+	<string>Command Buffer 6</string>
+	<string>[6] Command Buffer 6</string>
+	<string>Command Buffer 7</string>
+	<string>[7] Command Buffer 7</string>
+	<string>Command Buffer 8</string>
+	<string>[8] Command Buffer 8</string>
+	<string>Command Buffer 9</string>
+	<string>[9] Command Buffer 9</string>
+	<string>Command Buffer 10</string>
+	<string>[10] Command Buffer 10</string>
+	<string>Command Buffer 11</string>
+	<string>[11] Command Buffer 11</string>
+	<string>Command Buffer 12</string>
+	<string>[12] Command Buffer 12</string>
+	<string>Command Buffer 13</string>
+	<string>[13] Command Buffer 13</string>
+	<string>Command Buffer 14</string>
+	<string>[14] Command Buffer 14</string>
+	<string>Command Buffer 15</string>
+	<string>[15] Command Buffer 15</string>
+	<string>Command Buffer 16</string>
+	<string>[16] Command Buffer 16</string>
+	<string>Command Buffer 17</string>
+	<string>[17] Command Buffer 17</string>
+	<string>Command Buffer 18</string>
+	<string>[18] Command Buffer 18</string>
+	<string>Command Buffer 19</string>
+	<string>[19] Command Buffer 19</string>
+	<string>Command Buffer 20</string>
+	<string>[20] Command Buffer 20</string>
+	<string>Command Buffer 21</string>
+	<string>[21] Command Buffer 21</string>
+	<string>Command Buffer 22</string>
+	<string>[22] Command Buffer 22</string>
+	<string>Command Buffer 23</string>
+	<string>[23] Command Buffer 23</string>
+	<string>Command Buffer 24</string>
+	<string>[24] Command Buffer 24</string>
+	<string>Command Buffer 25</string>
+	<string>[25] Command Buffer 25</string>
+	<string>Command Buffer 26</string>
+	<string>[26] Command Buffer 26</string>
+	<string>Command Buffer 27</string>
+	<string>[27] Command Buffer 27</string>
+	<string>Command Buffer 28</string>
+	<string>[28] Command Buffer 28</string>
+	<string>Command Buffer 29</string>
+	<string>[29] Command Buffer 29</string>
+	<string>Command Buffer 30</string>
+	<string>[30] Command Buffer 30</string>
+	<string>Command Buffer 31</string>
+	<string>[31] Command Buffer 31</string>
+	<string>Command Buffer 32</string>
+	<string>[32] Command Buffer 32</string>
+	<string>Command Buffer 33</string>
+	<string>[33] Command Buffer 33</string>
+	<string>Command Buffer 34</string>
+	<string>[34] Command Buffer 34</string>
+	<string>Command Buffer 35</string>
+	<string>[35] Command Buffer 35</string>
+	<string>Command Buffer 36</string>
+	<string>[36] Command Buffer 36</string>
+	<string>Command Buffer 37</string>
+	<string>[37] Command Buffer 37</string>
+	<string>Command Buffer 38</string>
+	<string>[38] Command Buffer 38</string>
+	<string>Command Buffer 39</string>
+	<string>[39] Command Buffer 39</string>
+	<string>Command Buffer 40</string>
+	<string>[40] Command Buffer 40</string>
+	<string>Command Buffer 41</string>
+	<string>[41] Command Buffer 41</string>
+	<string>Command Buffer 42</string>
+	<string>[42] Command Buffer 42</string>
+	<string>Command Buffer 43</string>
+	<string>[43] Command Buffer 43</string>
+	<string>Command Buffer 44</string>
+	<string>[44] Command Buffer 44</string>
+	<string>Command Buffer 45</string>
+	<string>[45] Command Buffer 45</string>
+	<string>Command Buffer 46</string>
+	<string>[46] Command Buffer 46</string>
+	<string>Command Buffer 47</string>
+	<string>[47] Command Buffer 47</string>
+	<string>Command Buffer 48</string>
+	<string>[48] Command Buffer 48</string>
+	<string>Command Buffer 49</string>
+	<string>[49] Command Buffer 49</string>
+	<string>Command Buffer 50</string>
+	<string>[50] Command Buffer 50</string>
+	<string>Command Buffer 51</string>
+	<string>[51] Command Buffer 51</string>
+	<string>Command Buffer 52</string>
+	<string>[52] Command Buffer 52</string>
+	<string>Command Buffer 53</string>
+	<string>[53] Command Buffer 53</string>
+	<string>Command Buffer 54</string>
+	<string>[54] Command Buffer 54</string>
+	<string>Command Buffer 55</string>
+	<string>[55] Command Buffer 55</string>
+	<string>Command Buffer 56</string>
+	<string>[56] Command Buffer 56</string>
+	<string>Command Buffer 57</string>
+	<string>[57] Command Buffer 57</string>
+	<string>Command Buffer 58</string>
+	<string>[58] Command Buffer 58</string>
+	<string>Command Buffer 59</string>
+	<string>[59] Command Buffer 59</string>
+	<string>Command Buffer 60</string>
+	<string>[60] Command Buffer 60</string>
+	<string>Command Buffer 61</string>
+	<string>[61] Command Buffer 61</string>
+	<string>Command Buffer 62</string>
+	<string>[62] Command Buffer 62</string>
+	<string>Command Buffer 63</string>
+	<string>[63] Command Buffer 63</string>
+	<string>Command Buffer 64</string>
+	<string>[64] Command Buffer 64</string>
+	<string>Command Buffer 65</string>
+	<string>[65] Command Buffer 65</string>
+	<string>Command Buffer 66</string>
+	<string>[66] Command Buffer 66</string>
+	<string>Command Buffer 67</string>
+	<string>[67] Command Buffer 67</string>
+	<string>Command Buffer 68</string>
+	<string>[68] Command Buffer 68</string>
+	<string>Command Buffer 69</string>
+	<string>[69] Command Buffer 69</string>
+	<string>Command Buffer 70</string>
+	<string>[70] Command Buffer 70</string>
+	<string>Command Buffer 71</string>
+	<string>[71] Command Buffer 71</string>
+	<string>Command Buffer 72</string>
+	<string>[72] Command Buffer 72</string>
+	<string>Command Buffer 73</string>
+	<string>[73] Command Buffer 73</string>
+	<string>Command Buffer 74</string>
+	<string>[74] Command Buffer 74</string>
+	<string>Command Buffer 75</string>
+	<string>[75] Command Buffer 75</string>
+	<string>Command Buffer 76</string>
+	<string>[76] Command Buffer 76</string>
+	<string>Command Buffer 77</string>
+	<string>[77] Command Buffer 77</string>
+	<string>Command Buffer 78</string>
+	<string>[78] Command Buffer 78</string>
+	<string>Command Buffer 79</string>
+	<string>[79] Command Buffer 79</string>
+	<string>Command Buffer 80</string>
+	<string>[80] Command Buffer 80</string>
+	<string>Command Buffer 81</string>
+	<string>[81] Command Buffer 81</string>
+	<string>Command Buffer 82</string>
+	<string>[82] Command Buffer 82</string>
+	<string>Command Buffer 83</string>
+	<string>[83] Command Buffer 83</string>
+	<string>Command Buffer 84</string>
+	<string>[84] Command Buffer 84</string>
+	<string>Command Buffer 85</string>
+	<string>[85] Command Buffer 85</string>
+	<string>Command Buffer 86</string>
+	<string>[86] Command Buffer 86</string>
+	<string>Command Buffer 87</string>
+	<string>[87] Command Buffer 87</string>
+	<string>Command Buffer 88</string>
+	<string>[88] Command Buffer 88</string>
+	<string>Command Buffer 89</string>
+	<string>[89] Command Buffer 89</string>
+	<string>Command Buffer 90</string>
+	<string>[90] Command Buffer 90</string>
+	<string>Command Buffer 91</string>
+	<string>[91] Command Buffer 91</string>
+	<string>Command Buffer 92</string>
+	<string>[92] Command Buffer 92</string>
+	<string>Command Buffer 93</string>
+	<string>[93] Command Buffer 93</string>
+	<string>Command Buffer 94</string>
+	<string>[94] Command Buffer 94</string>
+	<string>Command Buffer 95</string>
+	<string>[95] Command Buffer 95</string>
+	<string>Command Buffer 96</string>
+	<string>[96] Command Buffer 96</string>
+	<string>Command Buffer 97</string>
+	<string>[97] Command Buffer 97</string>
+	<string>Command Buffer 98</string>
+	<string>[98] Command Buffer 98</string>
+	<string>Command Buffer 99</string>
+	<string>[99] Command Buffer 99</string>
+	<string>Command Buffer 100</string>
+	<string>[100] Command Buffer 100</string>
+	<string>Command Buffer 101</string>
+	<string>[101] Command Buffer 101</string>
+	<string>Command Buffer 102</string>
+	<string>[102] Command Buffer 102</string>
+	<string>Command Buffer 103</string>
+	<string>[103] Command Buffer 103</string>
+	<string>Command Buffer 104</string>
+	<string>[104] Command Buffer 104</string>
+	<string>Command Buffer 105</string>
+	<string>[105] Command Buffer 105</string>
+	<string>Command Buffer 106</string>
+	<string>[106] Command Buffer 106</string>
+	<string>Command Buffer 107</string>
+	<string>[107] Command Buffer 107</string>
+	<string>Command Buffer 108</string>
+	<string>[108] Command Buffer 108</string>
+	<string>Command Buffer 109</string>
+	<string>[109] Command Buffer 109</string>
+	<string>Command Buffer 110</string>
+	<string>[110] Command Buffer 110</string>
+	<string>Command Buffer 111</string>
+	<string>[111] Command Buffer 111</string>
+	<string>Command Buffer 112</string>
+	<string>[112] Command Buffer 112</string>
+	<string>Command Buffer 113</string>
+	<string>[113] Command Buffer 113</string>
+	<string>Command Buffer 114</string>
+	<string>[114] Command Buffer 114</string>
+	<string>Command Buffer 115</string>
+	<string>[115] Command Buffer 115</string>
+	<string>Command Buffer 116</string>
+	<string>[116] Command Buffer 116</string>
+	<string>Command Buffer 117</string>
+	<string>[117] Command Buffer 117</string>
+	<string>Command Buffer 118</string>
+	<string>[118] Command Buffer 118</string>
+	<string>Command Buffer 119</string>
+	<string>[119] Command Buffer 119</string>
+	<string>Command Buffer 120</string>
+	<string>[120] Command Buffer 120</string>
+	<string>Command Buffer 121</string>
+	<string>[121] Command Buffer 121</string>
+	<string>Command Buffer 122</string>
+	<string>[122] Command Buffer 122</string>
+	<string>Command Buffer 123</string>
+	<string>[123] Command Buffer 123</string>
+	<string>Command Buffer 124</string>
+	<string>[124] Command Buffer 124</string>
+	<string>Command Buffer 125</string>
+	<string>[125] Command Buffer 125</string>
+	<string>Command Buffer 126</string>
+	<string>[126] Command Buffer 126</string>
+	<string>Command Buffer 127</string>
+	<string>[127] Command Buffer 127</string>
+	<string>Command Buffer 128</string>
+	<string>[128] Command Buffer 128</string>
+	<string>Command Buffer 129</string>
+	<string>[129] Command Buffer 129</string>
+	<string>Command Buffer 130</string>
+	<string>[130] Command Buffer 130</string>
+	<string>Command Buffer 131</string>
+	<string>[131] Command Buffer 131</string>
+	<string>Command Buffer 132</string>
+	<string>[132] Command Buffer 132</string>
+	<string>Command Buffer 133</string>
+	<string>[133] Command Buffer 133</string>
+	<string>Command Buffer 134</string>
+	<string>[134] Command Buffer 134</string>
+	<string>Command Buffer 135</string>
+	<string>[135] Command Buffer 135</string>
+	<string>Command Buffer 136</string>
+	<string>[136] Command Buffer 136</string>
+	<string>Command Buffer 137</string>
+	<string>[137] Command Buffer 137</string>
+	<string>Command Buffer 138</string>
+	<string>[138] Command Buffer 138</string>
+	<string>Command Buffer 139</string>
+	<string>[139] Command Buffer 139</string>
+	<string>Command Buffer 140</string>
+	<string>[140] Command Buffer 140</string>
+	<string>Command Buffer 141</string>
+	<string>[141] Command Buffer 141</string>
+	<string>Command Buffer 142</string>
+	<string>[142] Command Buffer 142</string>
+	<string>Command Buffer 143</string>
+	<string>[143] Command Buffer 143</string>
+	<string>Command Buffer 144</string>
+	<string>[144] Command Buffer 144</string>
+	<string>Command Buffer 145</string>
+	<string>[145] Command Buffer 145</string>
+	<string>Command Buffer 146</string>
+	<string>[146] Command Buffer 146</string>
+	<string>Command Buffer 147</string>
+	<string>[147] Command Buffer 147</string>
+	<string>Command Buffer 148</string>
+	<string>[148] Command Buffer 148</string>
+	<string>Command Buffer 149</string>
+	<string>[149] Command Buffer 149</string>
+	<string>Command Buffer 150</string>
+	<string>[150] Command Buffer 150</string>
+	<string>Command Buffer 151</string>
+	<string>[151] Command Buffer 151</string>
+	<string>Command Buffer 152</string>
+	<string>[152] Command Buffer 152</string>
+	<string>Command Buffer 153</string>
+	<string>[153] Command Buffer 153</string>
+	<string>Command Buffer 154</string>
+	<string>[154] Command Buffer 154</string>
+	<string>Command Buffer 155</string>
+	<string>[155] Command Buffer 155</string>
+	<string>Command Buffer 156</string>
+	<string>[156] Command Buffer 156</string>
+	<string>Command Buffer 157</string>
+	<string>[157] Command Buffer 157</string>
+	<string>Command Buffer 158</string>
+	<string>[158] Command Buffer 158</string>
+	<string>Command Buffer 159</string>
+	<string>[159] Command Buffer 159</string>
+	<string>Command Buffer 160</string>
+	<string>[160] Command Buffer 160</string>
+	<string>Command Buffer 161</string>
+	<string>[161] Command Buffer 161</string>
+	<string>Command Buffer 162</string>
+	<string>[162] Command Buffer 162</string>
+	<string>Command Buffer 163</string>
+	<string>[163] Command Buffer 163</string>
+	<string>Command Buffer 164</string>
+	<string>[164] Command Buffer 164</string>
+	<string>Command Buffer 165</string>
+	<string>[165] Command Buffer 165</string>
+	<string>Command Buffer 166</string>
+	<string>[166] Command Buffer 166</string>
+	<string>Command Buffer 167</string>
+	<string>[167] Command Buffer 167</string>
+	<string>Command Buffer 168</string>
+	<string>[168] Command Buffer 168</string>
+	<string>Command Buffer 169</string>
+	<string>[169] Command Buffer 169</string>
+	<string>Command Buffer 170</string>
+	<string>[170] Command Buffer 170</string>
+	<string>Command Buffer 171</string>
+	<string>[171] Command Buffer 171</string>
+	<string>Command Buffer 172</string>
+	<string>[172] Command Buffer 172</string>
+	<string>Command Buffer 173</string>
+	<string>[173] Command Buffer 173</string>
+	<string>Command Buffer 174</string>
+	<string>[174] Command Buffer 174</string>
+	<string>Command Buffer 175</string>
+	<string>[175] Command Buffer 175</string>
+	<string>Command Buffer 176</string>
+	<string>[176] Command Buffer 176</string>
+	<string>Command Buffer 177</string>
+	<string>[177] Command Buffer 177</string>
+	<string>Command Buffer 178</string>
+	<string>[178] Command Buffer 178</string>
+	<string>Command Buffer 179</string>
+	<string>[179] Command Buffer 179</string>
+	<string>Command Buffer 180</string>
+	<string>[180] Command Buffer 180</string>
+	<string>Command Buffer 181</string>
+	<string>[181] Command Buffer 181</string>
+	<string>Command Buffer 182</string>
+	<string>[182] Command Buffer 182</string>
+	<string>Command Buffer 183</string>
+	<string>[183] Command Buffer 183</string>
+	<string>Command Buffer 184</string>
+	<string>[184] Command Buffer 184</string>
+	<string>Command Buffer 185</string>
+	<string>[185] Command Buffer 185</string>
+	<string>Command Buffer 186</string>
+	<string>[186] Command Buffer 186</string>
+	<string>Command Buffer 187</string>
+	<string>[187] Command Buffer 187</string>
+	<string>Command Buffer 188</string>
+	<string>[188] Command Buffer 188</string>
+	<string>Command Buffer 189</string>
+	<string>[189] Command Buffer 189</string>
+	<string>Command Buffer 190</string>
+	<string>[190] Command Buffer 190</string>
+	<string>Command Buffer 191</string>
+	<string>[191] Command Buffer 191</string>
+	<string>Command Buffer 192</string>
+	<string>[192] Command Buffer 192</string>
+	<string>Command Buffer 193</string>
+	<string>[193] Command Buffer 193</string>
+	<string>Command Buffer 194</string>
+	<string>[194] Command Buffer 194</string>
+	<string>Command Buffer 195</string>
+	<string>[195] Command Buffer 195</string>
+	<string>Command Buffer 196</string>
+	<string>[196] Command Buffer 196</string>
+	<string>Command Buffer 197</string>
+	<string>[197] Command Buffer 197</string>
+	<string>Command Buffer 198</string>
+	<string>[198] Command Buffer 198</string>
+	<string>Command Buffer 199</string>
+	<string>[199] Command Buffer 199</string>
+	<string>Command Buffer 200</string>
+	<string>[200] Command Buffer 200</string>
+	<string>Command Buffer 201</string>
+	<string>[201] Command Buffer 201</string>
+	<string>Command Buffer 202</string>
+	<string>[202] Command Buffer 202</string>
+	<string>Command Buffer 203</string>
+	<string>[203] Command Buffer 203</string>
+	<string>Command Buffer 204</string>
+	<string>[204] Command Buffer 204</string>
+	<string>Command Buffer 205</string>
+	<string>[205] Command Buffer 205</string>
+	<string>Command Buffer 206</string>
+	<string>[206] Command Buffer 206</string>
+	<string>Command Buffer 207</string>
+	<string>[207] Command Buffer 207</string>
+	<string>Command Buffer 208</string>
+	<string>[208] Command Buffer 208</string>
+	<string>Command Buffer 209</string>
+	<string>[209] Command Buffer 209</string>
+	<string>Command Buffer 210</string>
+	<string>[210] Command Buffer 210</string>
+	<string>Command Buffer 211</string>
+	<string>[211] Command Buffer 211</string>
+	<string>Command Buffer 212</string>
+	<string>[212] Command Buffer 212</string>
+	<string>Command Buffer 213</string>
+	<string>[213] Command Buffer 213</string>
+	<string>Command Buffer 214</string>
+	<string>[214] Command Buffer 214</string>
+	<string>Command Buffer 215</string>
+	<string>[215] Command Buffer 215</string>
+	<string>Command Buffer 216</string>
+	<string>[216] Command Buffer 216</string>
+	<string>Command Buffer 217</string>
+	<string>[217] Command Buffer 217</string>
+	<string>Command Buffer 218</string>
+	<string>[218] Command Buffer 218</string>
+	<string>Command Buffer 219</string>
+	<string>[219] Command Buffer 219</string>
+	<string>Command Buffer 220</string>
+	<string>[220] Command Buffer 220</string>
+	<string>Command Buffer 221</string>
+	<string>[221] Command Buffer 221</string>
+	<string>Command Buffer 222</string>
+	<string>[222] Command Buffer 222</string>
+	<string>Command Buffer 223</string>
+	<string>[223] Command Buffer 223</string>
+	<string>Command Buffer 224</string>
+	<string>[224] Command Buffer 224</string>
+	<string>Command Buffer 225</string>
+	<string>[225] Command Buffer 225</string>
+	<string>Command Buffer 226</string>
+	<string>[226] Command Buffer 226</string>
+	<string>Command Buffer 227</string>
+	<string>[227] Command Buffer 227</string>
+	<string>Command Buffer 228</string>
+	<string>[228] Command Buffer 228</string>
+	<string>Command Buffer 229</string>
+	<string>[229] Command Buffer 229</string>
+	<string>Command Buffer 230</string>
+	<string>[230] Command Buffer 230</string>
+	<string>Command Buffer 231</string>
+	<string>[231] Command Buffer 231</string>
+	<string>Blit Command 1</string>
+	<string>[232] com.apple.CoreImage</string>
+	<string>[1] Blit Command 1</string>
+	<string>Scheduled</string>
+	<string>Completed</string>
+	<string>Completed Callback</string>
+	<string>[233] com.apple.CoreImage</string>
+	<string>Display 2</string>
+	<string>States</string>
+	<string>Could not determine the application state for </string>
+	<string>.  This is normal when the target was not launched by Instruments.</string>
+	<string>Launching</string>
+	<string>Application took </string>
+	<string> between when UIApplicationMain() or NSApplicationMain() started and when the did-finish-launching notifications finished.</string>
+	<string>Foreground</string>
+	<string>The application was in the foreground for </string>
+	<string>.</string>
+	<string>Background</string>
+	<string>Currently running in the background...</string>
+</array>
+</plist>

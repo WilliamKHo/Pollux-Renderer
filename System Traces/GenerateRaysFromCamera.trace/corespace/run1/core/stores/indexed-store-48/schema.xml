@@ -1,0 +1,12 @@
+
+<schema name="visual-connection" topology="XRTD50_CC22_R_TypeID">
+    <column engineeringType="XRSampleTimestampTypeID" engineeringName="Timestamp" mnemonic="time" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRDurationTypeID" engineeringName="Duration" mnemonic="duration" topologyField="XRDurationFieldID"></column>
+    <column engineeringType="XRVisualConnectionUUID64TypeID" engineeringName="UUID" mnemonic="uuid"></column>
+    <column engineeringType="XRVisualConnectionUUID64TypeID" engineeringName="Source UUID" mnemonic="source-uuid"></column>
+    <column engineeringType="XRVisualConnectionUUID64TypeID" engineeringName="Sink UUID" mnemonic="sink-uuid"></column>
+    <column engineeringType="XRVisualConnectionFilterTypeID" engineeringName="Filter" mnemonic="filter"></column>
+    <column engineeringType="XRVisualConnectionMetadataTypeID" engineeringName="Metadata" mnemonic="metadata"></column>
+    <column engineeringType="XRAnyTypeID" engineeringName="Color" mnemonic="color"></column>
+    <column engineeringType="XRConnectionRouteTypeID" engineeringName="Route" mnemonic="route"></column>
+</schema>

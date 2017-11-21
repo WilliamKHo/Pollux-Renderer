@@ -1,0 +1,13 @@
+
+<schema name="metal-application-encoders-list" topology="XRTD50_CC22_R_TypeID">
+    <column engineeringType="XRStartTimeTypeID" engineeringName="Creation" mnemonic="start" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRDurationTypeID" engineeringName="Duration" mnemonic="duration" topologyField="XRDurationFieldID"></column>
+    <column engineeringType="XRStartTimeTypeID" engineeringName="Submission" mnemonic="end"></column>
+    <column engineeringType="XRGPUFrameNumberTypeID" engineeringName="Frame" mnemonic="frame-number"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Command Buffer" mnemonic="cmdbuffer-label"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Command Buffer (Indexed)" mnemonic="cmdbuffer-label-indexed"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Encoder" mnemonic="encoder-label"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Encoder (Indexed)" mnemonic="encoder-label-indexed"></column>
+    <column engineeringType="XRProcessTypeID" engineeringName="Process" mnemonic="process"></column>
+    <column engineeringType="XRThreadTypeID" engineeringName="Thread" mnemonic="thread"></column>
+</schema>

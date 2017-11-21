@@ -1,0 +1,9 @@
+
+<schema name="graphics-compositor-events" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRRecordedEventTimestampTypeID" engineeringName="Timestamp" mnemonic="timestamp" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Event Type" mnemonic="event-type"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Label" mnemonic="event-label"></column>
+    <column engineeringType="XRGPUFrameNumberTypeID" engineeringName="Frame ID" mnemonic="frame-id"></column>
+    <column engineeringType="XRRenderingBufferDepthTypeID" engineeringName="Color" mnemonic="color"></column>
+    <column engineeringType="XRProcessTypeID" engineeringName="Process" mnemonic="process"></column>
+</schema>
