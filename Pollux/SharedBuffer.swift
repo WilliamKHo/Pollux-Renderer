@@ -17,6 +17,7 @@ class SharedBuffer <T>  {
     // Buffer Size
     var count  : Int
     
+    // The actual Buffer that stores the data
     var data : MTLBuffer?
     
     // Raw Pointer to the memory address of the first element
@@ -33,7 +34,6 @@ class SharedBuffer <T>  {
     
     // Creates the Buffer
     init (count: Int, with device: MTLDevice) {
-        // TODO: Do we really need the count variable?
         self.count = count
         
         var memoryByteSize  = count * MemoryLayout<Ray>.size.self
@@ -43,8 +43,7 @@ class SharedBuffer <T>  {
         // Assign Memory
         let error_code = posix_memalign(&memory, alignment, memoryByteSize)
         if error_code != 0 {
-            // TODO: Improve Error code returned here to include type
-            fatalError("makeBuffer error: could not allocate memory for buffer")
+            fatalError("init() error: posix_memalign could not allocate memory for SharedBuffer<\(T.self)>")
         }
         
         // Setup Pointers
@@ -59,13 +58,17 @@ class SharedBuffer <T>  {
                                                  deallocator: nil)
         
         if self.data == nil {
-            // TODO: Improve Error code returned here to include type
-            fatalError("makeBuffer error: could not make buffer for rays in setupRaysBuffer")
+            fatalError("init() error: makeBuffer could not create SharedBuffer<\(T.self)> with length: \(memoryByteSize)")
         }
     }
     
     public subscript(i: Int) -> T {
-        return self.bufferPtr[i]
+        get {
+            return self.bufferPtr[i]
+        }
+        set (newValue) {
+            self.bufferPtr[i] = newValue
+        }
     }
     
     public func resize(count: Int, with device: MTLDevice) {
@@ -74,6 +77,8 @@ class SharedBuffer <T>  {
     
         // Update Count
         self.count = count
+        
+        //print("We need: \(count), but are getting:")
     
         // Realign MemoryByteSize (Round up to neares multiple)
         var memoryByteSize = count * MemoryLayout<Ray>.size.self
@@ -83,9 +88,9 @@ class SharedBuffer <T>  {
         // Assign Memory
         let error_code = posix_memalign(&memory, alignment, memoryByteSize)
         if error_code != 0 {
-            // TODO: Improve Error code returned here to include type
-            fatalError("makeBuffer error: could not allocate memory for buffer")
+            fatalError("resize() error: makeBuffer could not create SharedBuffer<\(T.self)> with length: \(memoryByteSize)")
         }
+        
         
         // Setup The Ray Buffer Again
         self.voidPtr     = OpaquePointer(memory)

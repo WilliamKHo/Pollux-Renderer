@@ -57,6 +57,7 @@ class PolluxRenderer: NSObject {
     **
     ******/
     let rays : SharedBuffer<Ray>
+//    var rayCount : Int
     
     /*****
      **
@@ -64,9 +65,16 @@ class PolluxRenderer: NSObject {
      **
      ******/
     let geoms      : SharedBuffer<Geom>
-    let geomsCount : Int
+    var geomCount : Int
     
     let colors : SharedBuffer<float4>
+    
+    /*****
+     **
+     **  Intersections Shared Buffer
+     **
+     ******/
+    let intersections : SharedBuffer<Intersection>
     
     /*****
      **
@@ -74,7 +82,6 @@ class PolluxRenderer: NSObject {
      **
      ******/
     var camera       : Camera
-    var cameraBuffer : MTLBuffer
     
     /********************************
     *********************************
@@ -86,15 +93,19 @@ class PolluxRenderer: NSObject {
     
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
     /// mtkView object to set the pixelformat and other properties of our drawable
-    init(with mtkView: MTKView) {
+    // TODO: Parse Scene
+//    init(in mtkView: MTKView, with geometry: Geom, and camera: Camera)
+    init(in mtkView: MTKView) {
         self.device = mtkView.device!;
         self.commandQueue = device.makeCommandQueue();
         self.defaultLibrary = device.makeDefaultLibrary()!
         
         // TODO: delet this:
+        // needed for displaying texture for debug views
         myview = mtkView
         
         // Tell the MTKView that we want to use other buffers to draw
+        // (needed for displaying from our own texture)
         mtkView.framebufferOnly = false
         
         // Indicate we would like to use the RGBAPisle format.
@@ -105,32 +116,45 @@ class PolluxRenderer: NSObject {
         mtkView.preferredFramesPerSecond = 60
         
         // TODO: Create dynamic geometry size
-        self.geomsCount = 4
+        self.geomCount = 1
         
         self.blankBitmapRawData = [UInt8](repeating: 0, count: Int(mtkView.frame.size.width * mtkView.frame.size.height * 4))
         
         // Initialize Camera:
         let width  = Float(mtkView.frame.size.width)
         let height = Float(mtkView.frame.size.height)
-        self.camera = Camera(data: float4(width, height, FOV, DEPTH),
-                             pos: float3(0.0, 5, 10.5),
-                             lookAt: float3(0.0, 5, 0),
-                             view: float3(0),
-                             right: float3(0),
-                             up: float3(0, 1, 0))
+        self.camera = Camera(data:   float4(width, height, FOV, DEPTH),
+                             pos:    float3(0.0, 0, 2.5),
+                             lookAt: float3(0.0, 0, 0),
+                             view:   float3(0),
+                             right:  float3(0),
+                             up:     float3(0, 1, 0))
         // Actually Computing the view and right vectors here
         self.camera.view   = simd_normalize(camera.lookAt - camera.pos);
         self.camera.right  = simd_cross(camera.view, camera.up);
         
-        // Set up the buffer for the camera
-        self.cameraBuffer  = device.makeBuffer(bytes: &self.camera, length: MemoryLayout<Camera>.size, options: [])!
         
         // Set up the buffer for the trace depth
         self.traceDepthBuffer = device.makeBuffer(bytes: &self.currentDepth, length: MemoryLayout<UInt>.size, options: [])!
         
-        self.rays  = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
-        self.geoms = SharedBuffer<Geom>(count: self.geomsCount, with: device)
+        self.rays   = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
+        self.geoms  = SharedBuffer<Geom>(count: self.geomCount, with: device)
         self.colors = SharedBuffer<float4>(count: self.rays.count, with: self.device)
+        self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
+        
+        var sphere = Geom();
+        sphere.type = SPHERE;
+        sphere.materialid = 0
+        sphere.translation = float3(0,0,0);
+        sphere.rotation = float3(0,0,0);
+        sphere.scale = float3(1,1,1);
+        let s_tr = simd_translation(dt: float3(0,0,0))
+        let s_rt = simd_rotation(dr:    float3(0,0,0))
+        let s_sc = simd_scale(ds:       float3(1,1,1))
+        sphere.transform = s_tr * s_rt * s_sc;
+        sphere.inverseTransform = simd_inverse(sphere.transform)
+        sphere.invTranspose     = simd_transpose(sphere.inverseTransform)
+        geoms[0] = sphere
         
         super.init()
         
@@ -180,7 +204,7 @@ extension PolluxRenderer {
         
         self.dispatchPipelineState(for: GENERATE_RAYS, using: commandEncoder!)
         
-        //self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
+        self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
         
         // Stream Compaction for Terminated Rays
         // self.dispatchPipelineState(for: COMPACT_RAYS)
@@ -189,11 +213,8 @@ extension PolluxRenderer {
         
        // self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         
-        guard let drawable = view.currentDrawable else
-        {
-            Swift.print("currentDrawable returned nil")
-            return
-        }
+        guard let drawable = view.currentDrawable
+            else { fatalError("currentDrawable returned nil") }
         
         commandEncoder!.endEncoding()
         commandBuffer!.present(drawable)
@@ -217,7 +238,7 @@ extension PolluxRenderer {
         // If we are currently computing the ray intersections, or shading those intersections,
         // Set up the threadgroups to go over all available rays (1D)
         if stage == COMPUTE_INTERSECTIONS || stage == SHADE {
-            let warp_size = ps_GenerateRaysFromCamera.threadExecutionWidth
+            let warp_size = ps_ComputeIntersections.threadExecutionWidth
             self.threadsPerThreadgroup = MTLSize(width: warp_size,height:1,depth:1)
             self.threadgroupsPerGrid   = MTLSize(width: self.rays.count / warp_size, height:1, depth:1)
         }
@@ -227,17 +248,25 @@ extension PolluxRenderer {
         switch (stage) {
         case GENERATE_RAYS:
             // TODO: Look into SetBytes Instead...
-            commandEncoder.setBuffer(cameraBuffer, offset: 0, index: 0)
-            commandEncoder.setBuffer(traceDepthBuffer, offset: 0, index: 1)
-            commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
+            // DONE.
+            commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
+            commandEncoder.setBuffer(self.traceDepthBuffer, offset: 0, index: 1)
+            commandEncoder.setBuffer(self.rays.data, offset: 0, index: 2)
+        case COMPUTE_INTERSECTIONS:
+            // TODO: Setup buffer for intersections shader
+            commandEncoder.setBytes(&self.rays.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBytes(&self.geomCount,  length: MemoryLayout<Int>.size, index: 1)
+            //commandEncoder.setBytes(rays) not needed because it's already done in prev stage
+            commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 3)
+            commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 4)
             
             //Temporary code for this stage only
             // TODO: Remove this code
-            commandEncoder.setBuffer(self.colors.data, offset: 0, index: 3)
-            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 3)
+            commandEncoder.setBuffer(self.colors.data, offset: 0, index: 6)
+            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 6)
+            var image = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
+            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 7)
             // TODO: End Remove
-        case COMPUTE_INTERSECTIONS:
-             // TODO: Setup buffer for intersections shader
             break;
         case SHADE:
            // TODO: Setup buffer for shading shader
@@ -287,11 +316,9 @@ extension PolluxRenderer : MTKViewDelegate {
         
         print(size)
         
-        // Remake the buffer
-        self.cameraBuffer  = device.makeBuffer(bytes: &self.camera, length: MemoryLayout<Camera>.size, options: [])!
-
         // Resize Rays Buffer
         self.rays.resize(count: Int(size.width*size.height), with: self.device)
+        self.intersections.resize(count: Int(size.width*size.height), with: self.device)
         self.colors.resize(count: Int(size.width*size.height), with: self.device)
     }
 }

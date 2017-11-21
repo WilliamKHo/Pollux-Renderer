@@ -77,5 +77,14 @@ typedef struct {
     vector_float3 up;
 } Camera;
 
+// Use with a corresponding PathSegment to do:
+// 1) color contribution computation
+// 2) BSDF evaluation: generate a new ray
+typedef struct {
+    float t;
+    vector_float3 normal;
+    int materialId;
+} Intersection;
+
 
 #endif /* PolluxTypes_h */

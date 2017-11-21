@@ -40,7 +40,7 @@ class PolluxViewController: PlatformViewController {
         }
         
         //Initializes the Renderer
-        renderer = PolluxRenderer(with: metalView!)
+        renderer = PolluxRenderer(in: metalView!)
         
         if(renderer == nil)
         {
