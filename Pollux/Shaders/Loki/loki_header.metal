@@ -29,6 +29,7 @@ using namespace metal;
 namespace Loki {
 //    thread uint* last_seed();
     uint TausStep(const unsigned z, const int s1, const int s2, const int s3, const unsigned M);
-    device float rng(const int initial_seed);
+    device float rng(const unsigned initial_seed, const unsigned second_seed = 1.f);
+    device float rng(const    float initial_seed, const    float second_seed = 1.f);
 //    device float rng();
 };

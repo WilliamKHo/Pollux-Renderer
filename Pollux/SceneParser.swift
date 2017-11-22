@@ -50,6 +50,7 @@ class SceneParser {
         var materials : [Material] = [Material]()
         for materialJSON in materialsJSON {
             var material = Material();
+            material.bsdf                = materialJSON["bsdf"] as? Int16 ?? 0
             material.color               = float3(materialJSON["color"] as? Array<Float> ?? [0.2, 0.2, 0.2])
             material.emittance           = float3(materialJSON["emittance"] as? Array<Float> ?? [0, 0, 0])
             material.hasReflective       = materialJSON["hasReflective"] as? Float ?? 0.0

@@ -8,8 +8,9 @@
 
 #include <metal_stdlib>
 #include "../Data_Types/PolluxTypes.h"
-#include "intersections_header.metal"
 #import  "Loki/loki_header.metal"
+#include "intersections_header.metal"
+#include "interactions_header.metal"
 
 using namespace metal;
 
@@ -105,6 +106,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
     
     if (hit_geom_index == -1)
     {
+        // The ray doesn't hit something (index == -1)
         intersection.t = -1.0f;
     }
     else
@@ -113,6 +115,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
         intersection.t = t_min;
         intersection.materialId = geoms[hit_geom_index].materialid;
         intersection.normal = normal;
+        intersection.point = intersect_point;
     }
 }
 
@@ -139,28 +142,32 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     Intersection intersection = intersections[position];
     device Ray& ray = rays[position];
     if (intersection.t > 0.0f) { // if the intersection exists...
-        // Set up the RNG
-       // float random = rng(iteration, position);
-        
         Material m = materials[intersection.materialId];
         
         // If the material indicates that the object was a light, "light" the ray
-        float pdf;
-        //scatterRay(ray, intersection, m, rng, pdf);
+        thread float pdf;
+        
+        // Seed a random number from the position and iteration number
+        float random = Loki::rng(position, iteration+1);
+        
+        // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
+        //       as a parameter
+        shadeAndScatter(ray, intersection, m, random, pdf);
     }
     else { // If there was no intersection, color the ray black.
+        // TODO: Environment Map Code goes here
+        //       something like: ray.color = getEnvMapColor(ray.direction);
         ray.color = float3(0);
         ray.idx_bounces[1] = 0;
     }
     
     //Get RNG
-    float random = Loki::rng(position);
-//    random = Loki::rng();
+    float random = Loki::rng(position, iteration+1);
     
     // TODO: Remove this. Just a debug view for this stage
     int x = position % imageDeets.x;
     int y = position / imageDeets.x;
-    outTexture.write(float4(float3(abs(random)), 1) , uint2(x,y));
+    outTexture.write(float4(float3(abs(ray.color)), 1) , uint2(x,y));
     // TODO: End Remove
 }
 

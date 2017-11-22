@@ -50,6 +50,7 @@ typedef struct {
     vector_float3 emittance;
     float hasRefractive;
     float index_of_refraction;
+    short bsdf;
 } Material;
 
 typedef struct {
@@ -82,8 +83,10 @@ typedef struct {
 // 1) color contribution computation
 // 2) BSDF evaluation: generate a new ray
 typedef struct {
-    float t;
     vector_float3 normal;
+    float t;
+    
+    vector_float3 point;
     int materialId;
 } Intersection;
 
