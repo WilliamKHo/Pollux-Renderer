@@ -7,8 +7,9 @@
 //
 
 #include <metal_stdlib>
-#include "../Data_Structures/PolluxTypes.h"
+#include "../Data_Types/PolluxTypes.h"
 #include "intersections_header.metal"
+#import  "Loki/loki_header.metal"
 
 using namespace metal;
 
@@ -56,12 +57,8 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
 kernel void kern_ComputeIntersections(constant uint& ray_count             [[ buffer(0) ]],
                                       constant uint& geom_count            [[ buffer(1) ]],
                                       device   Ray* rays                   [[ buffer(2) ]],
-                                      device   Geom* geoms                 [[ buffer(3) ]],
-                                      device   Intersection* intersections [[ buffer(4) ]],
-                                      // TODO: Delete buffers 6 & 7 for later stages
-                                      texture2d<float, access::write> outTexture [[texture(6)]],
-                                      constant uint2& imageDeets  [[ buffer(7) ]],
-                                      // TODO: END DELETE
+                                      device   Intersection* intersections [[ buffer(3) ]],
+                                      device   Geom* geoms                 [[ buffer(4) ]],
                                       const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count){ return;}
@@ -116,19 +113,54 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
         intersection.t = t_min;
         intersection.materialId = geoms[hit_geom_index].materialid;
         intersection.normal = normal;
-        
-        // TODO: Remove this. Just a debug view for this stage
-        int x = position % imageDeets.x;
-        int y = position / imageDeets.x;
-        outTexture.write(float4(float3(abs(t*t*t*t/40)), 1) , uint2(x,y));
-        // TODO: End Remove
     }
 }
 
 
 /// Shade
-kernel void kern_ShadeMaterials(uint2 position [[thread_position_in_grid]]) {
+//constant uint& ray_count             [[ buffer(0) ]],
+//constant uint& geom_count            [[ buffer(1) ]],
+//device   Ray* rays                   [[ buffer(2) ]],
+//device   Geom* geoms                 [[ buffer(3) ]],
+//device   Intersection* intersections [[ buffer(4) ]]
+kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer(0) ]],
+                                constant   uint& iteration             [[ buffer(1) ]],
+                                device     Ray* rays                   [[ buffer(2) ]],
+                                device     Intersection* intersections [[ buffer(3) ]],
+                                device     Material*     materials     [[ buffer(4) ]],
+                                // TODO: Delete buffers 5 & 6 for later stages
+                                texture2d<float, access::write> outTexture [[texture(5)]],
+                                constant uint2& imageDeets  [[ buffer(6) ]],
+                                // TODO: END DELETE
+                                const uint position [[thread_position_in_grid]]) {
     
+    if (position >= ray_count) {return;}
+    
+    Intersection intersection = intersections[position];
+    device Ray& ray = rays[position];
+    if (intersection.t > 0.0f) { // if the intersection exists...
+        // Set up the RNG
+       // float random = rng(iteration, position);
+        
+        Material m = materials[intersection.materialId];
+        
+        // If the material indicates that the object was a light, "light" the ray
+        float pdf;
+        //scatterRay(ray, intersection, m, rng, pdf);
+    }
+    else { // If there was no intersection, color the ray black.
+        ray.color = float3(0);
+        ray.idx_bounces[1] = 0;
+    }
+    
+    //Get RNG
+    float random = rng(position);
+    
+    // TODO: Remove this. Just a debug view for this stage
+    int x = position % imageDeets.x;
+    int y = position / imageDeets.x;
+    outTexture.write(float4(float3(abs(random)), 1) , uint2(x,y));
+    // TODO: End Remove
 }
 
 

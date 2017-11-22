@@ -28,6 +28,10 @@
 		D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD51FB2BE7B00260B81 /* Main.storyboard */; };
 		D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8718BDF1FB2BED300260B81 /* draggo.jpg */; };
 		D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8718BE11FB2BFFF00260B81 /* pathtrace.metal */; };
+		D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884B96D1FC4A284006A14CF /* SceneParser.swift */; };
+		D884B9711FC4EEC5006A14CF /* sphere.json in Resources */ = {isa = PBXBuildFile; fileRef = D884B9701FC4EEC5006A14CF /* sphere.json */; };
+		D884B9731FC51624006A14CF /* loki.metal in Sources */ = {isa = PBXBuildFile; fileRef = D884B9721FC51624006A14CF /* loki.metal */; };
+		D884B9751FC51A27006A14CF /* loki_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D884B9741FC51A27006A14CF /* loki_header.metal */; };
 		D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D20F8A1FBA1AD800345C2F /* Structs.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +64,10 @@
 		D8718BD91FB2BE7B00260B81 /* Pollux.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pollux.entitlements; sourceTree = "<group>"; };
 		D8718BDF1FB2BED300260B81 /* draggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = draggo.jpg; sourceTree = "<group>"; };
 		D8718BE11FB2BFFF00260B81 /* pathtrace.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = pathtrace.metal; sourceTree = "<group>"; };
+		D884B96D1FC4A284006A14CF /* SceneParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneParser.swift; sourceTree = "<group>"; };
+		D884B9701FC4EEC5006A14CF /* sphere.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sphere.json; sourceTree = "<group>"; };
+		D884B9721FC51624006A14CF /* loki.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = loki.metal; sourceTree = "<group>"; };
+		D884B9741FC51A27006A14CF /* loki_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = loki_header.metal; sourceTree = "<group>"; };
 		D8D20F8A1FBA1AD800345C2F /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,14 +125,14 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		D85A88DD1FC4940E00E5F6A2 /* Data_Structures */ = {
+		D85A88DD1FC4940E00E5F6A2 /* Data_Types */ = {
 			isa = PBXGroup;
 			children = (
 				D84F8F1F1FC4682E0001CF76 /* simd_la.swift */,
 				D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */,
 				D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */,
 			);
-			path = Data_Structures;
+			path = Data_Types;
 			sourceTree = "<group>";
 		};
 		D85A88DE1FC4942000E5F6A2 /* Shaders */ = {
@@ -133,6 +141,7 @@
 				D84F8F211FC483320001CF76 /* intersections_header.metal */,
 				D811105F1FC455E80059C01B /* intersections.metal */,
 				D8718BE11FB2BFFF00260B81 /* pathtrace.metal */,
+				D884B9761FC51B3B006A14CF /* Loki */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -161,8 +170,10 @@
 				D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */,
 				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
 				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
+				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
+				D884B96F1FC4AA98006A14CF /* Scenes */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
-				D85A88DD1FC4940E00E5F6A2 /* Data_Structures */,
+				D85A88DD1FC4940E00E5F6A2 /* Data_Types */,
 				D8B81AC91FBE56D500E2AE82 /* Dregs */,
 				D8388BE21FB3A53700653E5D /* iOS */,
 				D8388BDC1FB3A51900653E5D /* macOS */,
@@ -170,6 +181,23 @@
 				D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */,
 			);
 			path = Pollux;
+			sourceTree = "<group>";
+		};
+		D884B96F1FC4AA98006A14CF /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				D884B9701FC4EEC5006A14CF /* sphere.json */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		D884B9761FC51B3B006A14CF /* Loki */ = {
+			isa = PBXGroup;
+			children = (
+				D884B9741FC51A27006A14CF /* loki_header.metal */,
+				D884B9721FC51624006A14CF /* loki.metal */,
+			);
+			path = Loki;
 			sourceTree = "<group>";
 		};
 		D8B81AC91FBE56D500E2AE82 /* Dregs */ = {
@@ -278,6 +306,7 @@
 			files = (
 				D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
+				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,7 +331,10 @@
 				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
+				D884B9731FC51624006A14CF /* loki.metal in Sources */,
+				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
+				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
 				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
 				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
 				D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */,

@@ -39,8 +39,11 @@ class PolluxViewController: PlatformViewController {
             return;
         }
         
+        // TODO: Improve Scene parsing
+        let scene = SceneParser.parseScene(from: "sphere")
+        
         //Initializes the Renderer
-        renderer = PolluxRenderer(in: metalView!)
+        renderer = PolluxRenderer(in: metalView!, with: scene)
         
         if(renderer == nil)
         {

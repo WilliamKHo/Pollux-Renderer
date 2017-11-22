@@ -57,16 +57,22 @@ class PolluxRenderer: NSObject {
     **
     ******/
     let rays : SharedBuffer<Ray>
-//    var rayCount : Int
     
     /*****
      **
-     **  Geom Buffer Infos
+     **  Geoms Shared Buffer
      **
      ******/
     let geoms      : SharedBuffer<Geom>
-    var geomCount : Int
     
+    /*****
+     **
+     **  Materials Shared Buffer
+     **
+     ******/
+    let materials      : SharedBuffer<Material>
+    
+    // TODO: DELET THIS
     let colors : SharedBuffer<float4>
     
     /*****
@@ -95,7 +101,7 @@ class PolluxRenderer: NSObject {
     /// mtkView object to set the pixelformat and other properties of our drawable
     // TODO: Parse Scene
 //    init(in mtkView: MTKView, with geometry: Geom, and camera: Camera)
-    init(in mtkView: MTKView) {
+    init(in mtkView: MTKView, with scene: (Camera, [Geom], [Material])) {
         self.device = mtkView.device!;
         self.commandQueue = device.makeCommandQueue();
         self.defaultLibrary = device.makeDefaultLibrary()!
@@ -114,52 +120,27 @@ class PolluxRenderer: NSObject {
         //Some Other Stuff
         mtkView.sampleCount = 1
         mtkView.preferredFramesPerSecond = 60
-        
-        // TODO: Create dynamic geometry size
-        self.geomCount = 1
+
         
         self.blankBitmapRawData = [UInt8](repeating: 0, count: Int(mtkView.frame.size.width * mtkView.frame.size.height * 4))
         
         // Initialize Camera:
         let width  = Float(mtkView.frame.size.width)
         let height = Float(mtkView.frame.size.height)
-        self.camera = Camera(data:   float4(width, height, FOV, DEPTH),
-                             pos:    float3(0.0, 0, 2.5),
-                             lookAt: float3(0.0, 0, 0),
-                             view:   float3(0),
-                             right:  float3(0),
-                             up:     float3(0, 1, 0))
-        // Actually Computing the view and right vectors here
-        self.camera.view   = simd_normalize(camera.lookAt - camera.pos);
-        self.camera.right  = simd_cross(camera.view, camera.up);
-        
+        self.camera = scene.0
+        camera.data.x = width
+        camera.data.y = height
         
         // Set up the buffer for the trace depth
         self.traceDepthBuffer = device.makeBuffer(bytes: &self.currentDepth, length: MemoryLayout<UInt>.size, options: [])!
         
-        self.rays   = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
-        self.geoms  = SharedBuffer<Geom>(count: self.geomCount, with: device)
-        self.colors = SharedBuffer<float4>(count: self.rays.count, with: self.device)
+        self.rays          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
+        self.geoms         = SharedBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1)
+        self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
+        self.colors        = SharedBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
         
-        var sphere = Geom();
-        sphere.type = CUBE;
-        sphere.materialid = 0
-        sphere.translation = float3(0,0,0);
-        sphere.rotation = float3(0,0,0);
-        sphere.scale = float3(1,1,1);
-        let s_tr = simd_translation(dt: float3(0,0,0))
-        let s_rt = simd_rotation(dr:    float3(45,45,0))
-        let s_sc = simd_scale(ds:       float3(1,1,1))
-        sphere.transform = s_tr * s_rt * s_sc;
-        sphere.inverseTransform = simd_inverse(sphere.transform)
-        sphere.invTranspose     = simd_transpose(sphere.inverseTransform)
-        geoms[0] = sphere
-        
         super.init()
-        
-        // Shouldn't have to deal with this rn
-        // self.setupMaterialsBuffer()
         
         // Sets up the Compute Pipeline that we'll be working with
         self.setupComputePipeline()
@@ -209,7 +190,7 @@ extension PolluxRenderer {
         // Stream Compaction for Terminated Rays
         // self.dispatchPipelineState(for: COMPACT_RAYS)
         
-        //self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
+        self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
         
        // self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         
@@ -247,29 +228,34 @@ extension PolluxRenderer {
     fileprivate func setBuffers(for stage: PipelineStage, using commandEncoder: MTLComputeCommandEncoder) {
         switch (stage) {
         case GENERATE_RAYS:
-            // TODO: Look into SetBytes Instead...
-            // DONE.
             commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
             commandEncoder.setBuffer(self.traceDepthBuffer, offset: 0, index: 1)
             commandEncoder.setBuffer(self.rays.data, offset: 0, index: 2)
         case COMPUTE_INTERSECTIONS:
             // TODO: Setup buffer for intersections shader
             commandEncoder.setBytes(&self.rays.count, length: MemoryLayout<Int>.size, index: 0)
-            commandEncoder.setBytes(&self.geomCount,  length: MemoryLayout<Int>.size, index: 1)
+            commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 1)
             //commandEncoder.setBytes(rays) not needed because it's already done in prev stage
-            commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 3)
-            commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 4)
-            
-            //Temporary code for this stage only
-            // TODO: Remove this code
-            commandEncoder.setBuffer(self.colors.data, offset: 0, index: 6)
-            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 6)
-            var image = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
-            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 7)
-            // TODO: End Remove
+            commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 3)
+            commandEncoder.setBuffer(self.geoms.data        , offset: 0, index: 4)
             break;
         case SHADE:
            // TODO: Setup buffer for shading shader
+            // Buffer (0) is already set
+            // TODO: Add actual iteration here:
+            commandEncoder.setBytes(&self.currentDepth,  length: MemoryLayout<Int>.size, index: 1)
+            // Buffer (2) is already set
+            // Buffer (3) is already set
+            commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
+            
+            
+            //Temporary code for this stage only
+            // TODO: Remove this code
+            commandEncoder.setBuffer(self.colors.data, offset: 0, index: 5)
+            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 5)
+            var image = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
+            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 6)
+            // TODO: End Remove
             break;
         case FINAL_GATHER:
             // TODO: Setup buffer for final gather shader

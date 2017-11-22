@@ -39,17 +39,18 @@ typedef struct {
     matrix_float4x4 invTranspose;
 } Geom;
 
-//typedef struct {
-//    vector_float3 color;
-//
-//    float         specular_exponent;
-//    vector_float3 specular_color;
-//
-//    float hasReflective;
-//    float hasRefractive;
-//    float indexOfRefraction;
-//    float emittance;
-//} Material;
+typedef struct {
+    vector_float3 color;
+
+    float         specular_exponent;
+    vector_float3 specular_color;
+
+    float hasReflective;
+    
+    vector_float3 emittance;
+    float hasRefractive;
+    float index_of_refraction;
+} Material;
 
 typedef struct {
     // Ray Info

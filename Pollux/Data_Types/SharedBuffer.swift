@@ -33,7 +33,7 @@ class SharedBuffer <T>  {
     private var bufferPtr: UnsafeMutableBufferPointer<T>!
     
     // Creates the Buffer
-    init (count: Int, with device: MTLDevice) {
+    init (count: Int, with device: MTLDevice, containing contents : [T] = []) {
         self.count = count
         
         var memoryByteSize  = count * MemoryLayout<Ray>.size.self
@@ -56,6 +56,10 @@ class SharedBuffer <T>  {
                                                  length: memoryByteSize,
                                                  options: .storageModeShared,
                                                  deallocator: nil)
+        
+        for i in 0..<contents.count {
+            self.bufferPtr[i] = contents[i]
+        }
         
         if self.data == nil {
             fatalError("init() error: makeBuffer could not create SharedBuffer<\(T.self)> with length: \(memoryByteSize)")

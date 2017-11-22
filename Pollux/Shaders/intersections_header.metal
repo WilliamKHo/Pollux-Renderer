@@ -7,7 +7,7 @@
 //
 
 #include <metal_stdlib>
-#include "../Data_Structures/PolluxTypes.h"
+#include "../Data_Types/PolluxTypes.h"
 
 using namespace metal;
 
