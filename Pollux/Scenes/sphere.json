@@ -1,0 +1,27 @@
+{
+  "camera": {
+    "fov":   45,
+    "depth":  8,
+    "pos":  [0, 5, 10.5],
+    "lookAt": [0, 5, 0],
+    "up":     [0, 1, 0]
+  },
+  "geometry": [
+   {
+     "name": "Sphere",
+     "type": 0,
+     "material": 0,
+     "translate": [0,0,0],
+     "rotate": [0,0,0],
+     "scale": [1,1,1]
+   }
+  ],  
+  "materials": [
+    {
+      "name": "White Light",
+      "bsdf": -1,
+      "color": [1,1,1],
+      "emittance":[5,5,5]
+    }
+  ]
+}
