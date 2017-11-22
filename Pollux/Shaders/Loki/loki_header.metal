@@ -26,6 +26,9 @@
 #include <metal_stdlib>
 using namespace metal;
 
-uint TausStep(const unsigned z, const int s1, const int s2, const int s3, const unsigned M);
-
-device float rng(const int initial_seed);
+namespace Loki {
+//    thread uint* last_seed();
+    uint TausStep(const unsigned z, const int s1, const int s2, const int s3, const unsigned M);
+    device float rng(const int initial_seed);
+//    device float rng();
+};

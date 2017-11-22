@@ -154,7 +154,8 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     }
     
     //Get RNG
-    float random = rng(position);
+    float random = Loki::rng(position);
+//    random = Loki::rng();
     
     // TODO: Remove this. Just a debug view for this stage
     int x = position % imageDeets.x;
