@@ -141,6 +141,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     
     Intersection intersection = intersections[position];
     device Ray& ray = rays[position];
+    Loki rng = Loki(position, iteration+1);
     if (intersection.t > 0.0f) { // if the intersection exists...
         Material m = materials[intersection.materialId];
         
@@ -148,11 +149,11 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         thread float pdf;
         
         // Seed a random number from the position and iteration number
-        float random = Loki::rng(position, iteration+1);
+
         
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter
-        shadeAndScatter(ray, intersection, m, random, pdf);
+        shadeAndScatter(ray, intersection, m, rng, pdf);
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here
@@ -161,13 +162,10 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         ray.idx_bounces[1] = 0;
     }
     
-    //Get RNG
-    float random = Loki::rng(position, iteration+1);
-    
     // TODO: Remove this. Just a debug view for this stage
     int x = position % imageDeets.x;
     int y = position / imageDeets.x;
-    outTexture.write(float4(float3(abs(ray.color)), 1) , uint2(x,y));
+    outTexture.write(float4(ray.color, 1) , uint2(x,y));
     // TODO: End Remove
 }
 

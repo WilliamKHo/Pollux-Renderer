@@ -34,8 +34,8 @@
 		D884B9751FC51A27006A14CF /* loki_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D884B9741FC51A27006A14CF /* loki_header.metal */; };
 		D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56781FC5DF9900375BC2 /* interactions_header.metal */; };
 		D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567A1FC5E50B00375BC2 /* interactions.metal */; };
-		D8BD56801FC5F8A000375BC2 /* bsdf_interactions_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567F1FC5F8A000375BC2 /* bsdf_interactions_header.metal */; };
-		D8BD56821FC5F9F600375BC2 /* bsdf_interactions.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56811FC5F9F600375BC2 /* bsdf_interactions.metal */; };
+		D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */; };
+		D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */; };
 		D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */ = {isa = PBXBuildFile; fileRef = D8BD56831FC5FDEA00375BC2 /* cornell.json */; };
 		D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D20F8A1FBA1AD800345C2F /* Structs.swift */; };
 /* End PBXBuildFile section */
@@ -76,8 +76,8 @@
 		D8BD56781FC5DF9900375BC2 /* interactions_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; name = interactions_header.metal; path = Pollux/Shaders/interactions_header.metal; sourceTree = SOURCE_ROOT; };
 		D8BD567A1FC5E50B00375BC2 /* interactions.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = interactions.metal; sourceTree = "<group>"; };
 		D8BD567E1FC5ED3700375BC2 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		D8BD567F1FC5F8A000375BC2 /* bsdf_interactions_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_interactions_header.metal; sourceTree = "<group>"; };
-		D8BD56811FC5F9F600375BC2 /* bsdf_interactions.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_interactions.metal; sourceTree = "<group>"; };
+		D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_shading_header.metal; sourceTree = "<group>"; };
+		D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_shading.metal; sourceTree = "<group>"; };
 		D8BD56831FC5FDEA00375BC2 /* cornell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cornell.json; sourceTree = "<group>"; };
 		D8D20F8A1FBA1AD800345C2F /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,13 +150,13 @@
 		D85A88DE1FC4942000E5F6A2 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				D8718BE11FB2BFFF00260B81 /* pathtrace.metal */,
 				D84F8F211FC483320001CF76 /* intersections_header.metal */,
 				D811105F1FC455E80059C01B /* intersections.metal */,
-				D8718BE11FB2BFFF00260B81 /* pathtrace.metal */,
 				D8BD56781FC5DF9900375BC2 /* interactions_header.metal */,
 				D8BD567A1FC5E50B00375BC2 /* interactions.metal */,
-				D8BD567F1FC5F8A000375BC2 /* bsdf_interactions_header.metal */,
-				D8BD56811FC5F9F600375BC2 /* bsdf_interactions.metal */,
+				D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */,
+				D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */,
 				D884B9761FC51B3B006A14CF /* Loki */,
 			);
 			path = Shaders;
@@ -355,8 +355,8 @@
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
-				D8BD56801FC5F8A000375BC2 /* bsdf_interactions_header.metal in Sources */,
-				D8BD56821FC5F9F600375BC2 /* bsdf_interactions.metal in Sources */,
+				D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */,
+				D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */,
 				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
 				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
 				D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */,

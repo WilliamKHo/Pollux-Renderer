@@ -1,5 +1,5 @@
 //
-//  bsdf_interactions.metal
+//  bsdf_shading.metal
 //  Pollux
 //
 //  Created by Youssef Kamal Victor on 11/22/17.
@@ -7,7 +7,7 @@
 //
 
 
-#include "bsdf_interactions_header.metal"
+#include "bsdf_shading_header.metal"
 
 using namespace metal;
 
@@ -15,7 +15,7 @@ using namespace metal;
 void SnS_diffuse(device Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
-                 thread float& random,
+                 thread Loki& rng,
                  thread float& pdf) {
     const float3 n  = isect.normal;
     const float3 wo = -ray.direction;
@@ -32,7 +32,7 @@ void SnS_diffuse(device Ray& ray,
     pdf = cosTheta;
     
     if (abs(pdf) < ZeroEpsilon) {
-        ray.idx_bounces.x = 0;
+        ray.idx_bounces[1] = 0;
         return;
     }
     
@@ -42,14 +42,14 @@ void SnS_diffuse(device Ray& ray,
     
     //Scatter the Ray
     ray.origin = isect.point + n*EPSILON;
-    ray.direction = cosRandomDirection(n, random);
-    ray.idx_bounces.x--;
+    ray.direction = cosRandomDirection(n, rng);
+    ray.idx_bounces[1]--;
 }
 
 void SnS_specular(device Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
-                  thread float& random,
+                  thread Loki& rng,
                   thread float& pdf) {
     // TODO: Add Specular BSDF Interaction
 }
@@ -57,7 +57,7 @@ void SnS_specular(device Ray& ray,
 void SnS_fresnel(device Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
-                 thread float& random,
+                 thread Loki& rng,
                  thread float& pdf) {
     // TODO: Add Fresnel BSDF Interaction
 }
@@ -69,11 +69,10 @@ void SnS_fresnel(device Ray& ray,
  **************************/
 
 float3 cosRandomDirection(const float3 normal,
-                          thread float&  random) {
-    float up = sqrt(random); // cos(theta)
+                          thread Loki& rng) {
+    float up = sqrt(rng.rand()); // cos(theta)
     float over = sqrt(1 - up * up); // sin(theta)
-    random = Loki::rng(random);
-    float around = random * TWO_PI;
+    float around = rng.rand() * TWO_PI;
     
     // Find a direction that is not the normal based off of whether or not the
     // normal's components are all equal to sqrt(1/3) or whether or not at

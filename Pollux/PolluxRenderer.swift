@@ -27,8 +27,8 @@ class PolluxRenderer: NSObject {
     // Clear Color
     private let blankBitmapRawData : [UInt8]
     
-    // TODO: Remove This Debug Value
-    private var frameCount : Int = 0
+    // The iteration the renderer is on
+    private var iteration : Int = 0
     
     /****
     **
@@ -171,37 +171,6 @@ class PolluxRenderer: NSObject {
 
 
 extension PolluxRenderer {
-    
-    fileprivate func pathtrace(in view: MTKView) {
-        let commandBuffer = self.commandQueue.makeCommandBuffer()
-        commandBuffer?.label = "Iteration: \(frameCount)"
-        frameCount += 1
-        let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
-        
-        // If the commandEncoder could not be made
-        if commandEncoder == nil || commandBuffer == nil {
-            return
-        }
-        
-        self.dispatchPipelineState(for: GENERATE_RAYS, using: commandEncoder!)
-        
-        self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
-        
-        // Stream Compaction for Terminated Rays
-        // self.dispatchPipelineState(for: COMPACT_RAYS)
-        
-        self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
-        
-       // self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
-        
-        guard let drawable = view.currentDrawable
-            else { fatalError("currentDrawable returned nil") }
-        
-        commandEncoder!.endEncoding()
-        commandBuffer!.present(drawable)
-        commandBuffer!.commit()
-    }
-    
     fileprivate func updateThreadGroups(for stage: PipelineStage) {
         // If we are currently generating rays or coloring the buffer,
         // Set up the threadGroups to loop over all pixels in the image (2D)
@@ -243,7 +212,7 @@ extension PolluxRenderer {
            // TODO: Setup buffer for shading shader
             // Buffer (0) is already set
             // TODO: Add actual iteration here:
-            commandEncoder.setBytes(&self.currentDepth,  length: MemoryLayout<Int>.size, index: 1)
+            commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
@@ -282,6 +251,46 @@ extension PolluxRenderer {
         }
         commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
                                             threadsPerThreadgroup: self.threadsPerThreadgroup)
+    }
+    
+    fileprivate func pathtrace(in view: MTKView) {
+        let commandBuffer = self.commandQueue.makeCommandBuffer()
+        commandBuffer?.label = "Iteration: \(iteration)"
+        iteration += 1
+        let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
+        
+        // If the commandEncoder could not be made
+        if commandEncoder == nil || commandBuffer == nil {
+            return
+        }
+        
+        self.dispatchPipelineState(for: GENERATE_RAYS, using: commandEncoder!)
+        
+        
+        // Repeat Shading Steps `depth` number of times
+        for _ in 0 ..< Int(self.camera.data[3]) {
+            
+            self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
+            
+            // Stream Compaction for Terminated Rays
+            // self.dispatchPipelineState(for: COMPACT_RAYS)
+            
+            // TODO: Delete after implementing final gather
+            guard let drawable = view.currentDrawable
+                else { commandEncoder!.endEncoding(); return }
+            
+            self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
+        }
+        
+        guard let drawable = view.currentDrawable
+            else { return }
+        
+        // self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
+        
+        self.iteration += 1
+        commandEncoder!.endEncoding()
+        commandBuffer!.present(drawable)
+        commandBuffer!.commit()
     }
 }
 
