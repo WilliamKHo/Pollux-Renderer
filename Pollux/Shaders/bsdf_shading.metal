@@ -32,7 +32,7 @@ void SnS_diffuse(device Ray& ray,
     pdf = cosTheta;
     
     if (abs(pdf) < ZeroEpsilon) {
-        ray.idx_bounces[1] = 0;
+        ray.idx_bounces[2] = 0;
         return;
     }
     
@@ -43,7 +43,7 @@ void SnS_diffuse(device Ray& ray,
     //Scatter the Ray
     ray.origin = isect.point + n*EPSILON;
     ray.direction = cosRandomDirection(n, rng);
-    ray.idx_bounces[1]--;
+    ray.idx_bounces[2]--;
 }
 
 void SnS_specular(device Ray& ray,

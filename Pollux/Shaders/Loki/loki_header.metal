@@ -32,7 +32,7 @@ private:
     unsigned TausStep(const unsigned z, const int s1, const int s2, const int s3, const unsigned M);
     
 public:
-    thread Loki(const unsigned initial_seed, const unsigned second_seed );
+    thread Loki(const unsigned seed1, const unsigned seed2 = 1, const unsigned seed3 = 1);
     
     thread float rand();
 };

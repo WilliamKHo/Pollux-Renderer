@@ -49,8 +49,11 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
                                                - cam.up    * pixelLength.y * ((float)y -  height * 0.5f)
                                                );
         
-        ray.idx_bounces[0] = index;
-        ray.idx_bounces[1] = traceDepth;
+        ray.idx_bounces.x = x;
+        ray.idx_bounces.y = y;
+        ray.idx_bounces[2] = traceDepth;
+        ray.uv.x = x / width;
+        ray.uv.y = y / height;
     }
 }
 
@@ -121,11 +124,6 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
 
 
 /// Shade
-//constant uint& ray_count             [[ buffer(0) ]],
-//constant uint& geom_count            [[ buffer(1) ]],
-//device   Ray* rays                   [[ buffer(2) ]],
-//device   Geom* geoms                 [[ buffer(3) ]],
-//device   Intersection* intersections [[ buffer(4) ]]
 kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer(0) ]],
                                 constant   uint& iteration             [[ buffer(1) ]],
                                 device     Ray* rays                   [[ buffer(2) ]],
@@ -141,7 +139,11 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     
     Intersection intersection = intersections[position];
     device Ray& ray = rays[position];
-    Loki rng = Loki(position, iteration+1);
+    
+    //Naive Early Ray Termination
+    // TODO: Stream Compact and remove this line
+    if (ray.idx_bounces[2] <= 0) {return;}
+    
     if (intersection.t > 0.0f) { // if the intersection exists...
         Material m = materials[intersection.materialId];
         
@@ -149,7 +151,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         thread float pdf;
         
         // Seed a random number from the position and iteration number
-
+        Loki rng = Loki(position, iteration+1, ray.idx_bounces[2]);
         
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter
@@ -159,20 +161,28 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         // TODO: Environment Map Code goes here
         //       something like: ray.color = getEnvMapColor(ray.direction);
         ray.color = float3(0);
-        ray.idx_bounces[1] = 0;
+        ray.idx_bounces[2] = 0;
     }
-    
-    // TODO: Remove this. Just a debug view for this stage
-    int x = position % imageDeets.x;
-    int y = position / imageDeets.x;
-    outTexture.write(float4(ray.color, 1) , uint2(x,y));
-    // TODO: End Remove
 }
 
 
 /// Final Gather
-kernel void kern_FinalGather(uint2 position [[thread_position_in_grid]]) {
+kernel void kern_FinalGather(constant   uint& ray_count                   [[  buffer(0) ]],
+                             constant   uint& iteration                   [[  buffer(1) ]],
+                             device     Ray* rays                         [[  buffer(2) ]],
+                             texture2d<float, access::read>   inFrame     [[ texture(3) ]],
+                             texture2d<float, access::write> outFrame     [[ texture(4) ]],
+                             const uint position [[thread_position_in_grid]]) {
+    if (position >= ray_count) {return;}
     
+    device Ray& ray = rays[position];
+    
+    float4 ray_col     = float4(ray.color, 1.f);
+    float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
+    float4 combined_color = (accumulated*iteration + ray_col)
+                                 / (iteration + 1.0);
+    
+    outFrame.write(combined_color, ray.idx_bounces.xy);
 }
 
 

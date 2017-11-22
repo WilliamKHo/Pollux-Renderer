@@ -59,8 +59,10 @@ typedef struct {
     vector_float3 direction;
     vector_float3 color;
     
-    // Ray's Pixel Index, Remaining Bounces
-    vector_uint2 idx_bounces;
+    // Ray's Pixel Index x, y, and Remaining Bounces
+    vector_uint3 idx_bounces;
+    // Ray's Pixel Index in uv
+    vector_uint2 uv;
 } Ray;
 
 typedef struct {

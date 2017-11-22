@@ -25,6 +25,8 @@ class PolluxRenderer: NSObject {
     private let commandQueue: MTLCommandQueue!
     
     // Clear Color
+    private let bytesPerRow : Int
+    private let region : MTLRegion
     private let blankBitmapRawData : [UInt8]
     
     // The iteration the renderer is on
@@ -72,9 +74,6 @@ class PolluxRenderer: NSObject {
      ******/
     let materials      : SharedBuffer<Material>
     
-    // TODO: DELET THIS
-    let colors : SharedBuffer<float4>
-    
     /*****
      **
      **  Intersections Shared Buffer
@@ -89,18 +88,24 @@ class PolluxRenderer: NSObject {
      ******/
     var camera       : Camera
     
+    /*****
+     **
+     **  Frame Shared Buffer
+     **
+     ******/
+    let frame : SharedBuffer<float4>
+    
     /********************************
     *********************************
     ** ACTUAL SIMULATION VARIABLES **
     *********************************
     *********************************/
-    var currentDepth     : UInt       = 0
-    var traceDepthBuffer : MTLBuffer
+    var max_depth : UInt;
+    
     
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
     /// mtkView object to set the pixelformat and other properties of our drawable
     // TODO: Parse Scene
-//    init(in mtkView: MTKView, with geometry: Geom, and camera: Camera)
     init(in mtkView: MTKView, with scene: (Camera, [Geom], [Material])) {
         self.device = mtkView.device!;
         self.commandQueue = device.makeCommandQueue();
@@ -121,7 +126,9 @@ class PolluxRenderer: NSObject {
         mtkView.sampleCount = 1
         mtkView.preferredFramesPerSecond = 60
 
-        
+        // For Clearing the Frame Buffer
+        self.bytesPerRow = Int(4 * mtkView.frame.size.width)
+        self.region = MTLRegionMake2D(0, 0, Int(mtkView.frame.size.width), Int(mtkView.frame.size.height))
         self.blankBitmapRawData = [UInt8](repeating: 0, count: Int(mtkView.frame.size.width * mtkView.frame.size.height * 4))
         
         // Initialize Camera:
@@ -130,14 +137,12 @@ class PolluxRenderer: NSObject {
         self.camera = scene.0
         camera.data.x = width
         camera.data.y = height
-        
-        // Set up the buffer for the trace depth
-        self.traceDepthBuffer = device.makeBuffer(bytes: &self.currentDepth, length: MemoryLayout<UInt>.size, options: [])!
+        self.max_depth = UInt(camera.data[2])
         
         self.rays          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
         self.geoms         = SharedBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1)
         self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
-        self.colors        = SharedBuffer<float4>(count: self.rays.count, with: self.device)
+        self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
         
         super.init()
@@ -174,7 +179,7 @@ extension PolluxRenderer {
     fileprivate func updateThreadGroups(for stage: PipelineStage) {
         // If we are currently generating rays or coloring the buffer,
         // Set up the threadGroups to loop over all pixels in the image (2D)
-        if stage == GENERATE_RAYS || stage == FINAL_GATHER {
+        if stage == GENERATE_RAYS {
             let w = ps_GenerateRaysFromCamera.threadExecutionWidth
             let h = ps_GenerateRaysFromCamera.maxTotalThreadsPerThreadgroup / w
             self.threadsPerThreadgroup = MTLSizeMake(w, h, 1)
@@ -187,7 +192,7 @@ extension PolluxRenderer {
         }
         // If we are currently computing the ray intersections, or shading those intersections,
         // Set up the threadgroups to go over all available rays (1D)
-        if stage == COMPUTE_INTERSECTIONS || stage == SHADE {
+        else if stage == COMPUTE_INTERSECTIONS || stage == SHADE || stage == FINAL_GATHER {
             let warp_size = ps_ComputeIntersections.threadExecutionWidth
             self.threadsPerThreadgroup = MTLSize(width: warp_size,height:1,depth:1)
             self.threadgroupsPerGrid   = MTLSize(width: self.rays.count / warp_size, height:1, depth:1)
@@ -198,7 +203,7 @@ extension PolluxRenderer {
         switch (stage) {
         case GENERATE_RAYS:
             commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
-            commandEncoder.setBuffer(self.traceDepthBuffer, offset: 0, index: 1)
+            commandEncoder.setBytes(&self.max_depth, length: MemoryLayout<UInt>.size, index: 1)
             commandEncoder.setBuffer(self.rays.data, offset: 0, index: 2)
         case COMPUTE_INTERSECTIONS:
             // TODO: Setup buffer for intersections shader
@@ -211,7 +216,6 @@ extension PolluxRenderer {
         case SHADE:
            // TODO: Setup buffer for shading shader
             // Buffer (0) is already set
-            // TODO: Add actual iteration here:
             commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
             // Buffer (2) is already set
             // Buffer (3) is already set
@@ -220,14 +224,19 @@ extension PolluxRenderer {
             
             //Temporary code for this stage only
             // TODO: Remove this code
-            commandEncoder.setBuffer(self.colors.data, offset: 0, index: 5)
-            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 5)
-            var image = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
-            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 6)
-            // TODO: End Remove
+            
+//            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 5)
+//            var image = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
+//            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 6)
+//            // TODO: End Remove
             break;
         case FINAL_GATHER:
-            // TODO: Setup buffer for final gather shader
+            // Buffer (0) is already set
+            // Buffer (1) is already set
+            // Buffer (2) is already set
+            commandEncoder.setBuffer(self.frame.data, offset: 0, index: 3)
+            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 3)
+            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 4)
             break;
          default:
             fatalError("Undefined Pipeline Stage Passed to SetBuffers")
@@ -256,7 +265,6 @@ extension PolluxRenderer {
     fileprivate func pathtrace(in view: MTKView) {
         let commandBuffer = self.commandQueue.makeCommandBuffer()
         commandBuffer?.label = "Iteration: \(iteration)"
-        iteration += 1
         let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
         
         // If the commandEncoder could not be made
@@ -275,19 +283,19 @@ extension PolluxRenderer {
             // Stream Compaction for Terminated Rays
             // self.dispatchPipelineState(for: COMPACT_RAYS)
             
-            // TODO: Delete after implementing final gather
-            guard let drawable = view.currentDrawable
-                else { commandEncoder!.endEncoding(); return }
-            
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
         }
         
         guard let drawable = view.currentDrawable
-            else { return }
+            else { commandEncoder!.endEncoding(); return }
         
-        // self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
+        if (self.iteration == 0) {
+            drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
+        }
         
+        self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         self.iteration += 1
+        
         commandEncoder!.endEncoding()
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
@@ -314,6 +322,6 @@ extension PolluxRenderer : MTKViewDelegate {
         // Resize Rays Buffer
         self.rays.resize(count: Int(size.width*size.height), with: self.device)
         self.intersections.resize(count: Int(size.width*size.height), with: self.device)
-        self.colors.resize(count: Int(size.width*size.height), with: self.device)
+        self.frame.resize(count: Int(size.width*size.height), with: self.device)
     }
 }

@@ -20,7 +20,7 @@ void shadeAndScatter(device Ray& ray,
         case -1:
             // Light Shade and 'absorb' ray by terminating
             ray.color *= (m.color * m.emittance);
-            ray.idx_bounces[1] = 0;
+            ray.idx_bounces[2] = 0;
             break;
         case 0:
             SnS_diffuse(ray, isect, m, rng, pdf);
