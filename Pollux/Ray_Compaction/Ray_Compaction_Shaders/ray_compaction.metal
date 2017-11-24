@@ -10,13 +10,13 @@
 #include "../../Data_Types/PolluxTypes.h"
 using namespace metal;
 
-#define THREADGROUP_SIZE 512
-#define NUM_BANKS 32
+#define THREADGROUP_SIZE 512 // must match RayCompaction.swift
+#define NUM_BANKS 16
 
 // Evaluate rays for termination
-kernel void kern_evaluateRays(const device Ray *rays[[buffer(0)]],
-                              device uint* validation_buffer[[buffer(1)]],
-                              constant uint& numberOfRays[[buffer(2)]],
+kernel void kern_evaluateRays(const device  Ray *rays               [[  buffer(0)  ]],
+                              device        uint* validation_buffer [[  buffer(1)  ]],
+                              constant      uint& numberOfRays      [[  buffer(2)  ]],
                               uint id [[thread_position_in_grid]]) {
     if (id >= numberOfRays) {
         validation_buffer[id] = 1;
@@ -31,25 +31,17 @@ kernel void kern_evaluateRays(const device Ray *rays[[buffer(0)]],
     return;
 }
 
-// Scatter rays into compacted buffer after prefix sum
-kernel void kern_scatterRays(const device Ray *inRays[[buffer(0)]],
-                             device Ray *outRays[[buffer(1)]],
-                             const device uint *validation_buffer[[buffer(2)]],
-                             uint id [[thread_position_in_grid]]) {
-    if(inRays[id].idx_bounces[2] > 0) outRays[validation_buffer[id]] = inRays[id];
-}
-
 // Helper function to calculate offsetted indices to avoid bank conflicts
 device uint bankConflictOffset(uint x) {
     return x + (x / NUM_BANKS) * 3;
 }
 
 // Performs prefix-sum scan on an array of uints using shared memory
-kernel void kern_prefixSumScan(device uint *inData[[buffer(0)]],
-                                device uint *sums[[buffer(1)]],
-                                uint threadGroupId [[threadgroup_position_in_grid]],
-                                uint tid [[thread_position_in_threadgroup]],
-                                uint threadGroupDim [[threads_per_threadgroup]]) {
+kernel void kern_prefixSumScan(device uint *inData      [[  buffer(0)  ]],
+                               device uint *sums        [[  buffer(1)  ]],
+                               uint threadGroupId [[threadgroup_position_in_grid]],
+                               uint tid [[thread_position_in_threadgroup]],
+                               uint threadGroupDim [[threads_per_threadgroup]]) {
     
     // allocate shared memory
     threadgroup uint temp[THREADGROUP_SIZE * 2 + 3 * (THREADGROUP_SIZE*2 / NUM_BANKS)];
@@ -112,8 +104,8 @@ kernel void kern_prefixSumScan(device uint *inData[[buffer(0)]],
 }
 
 // Adds the per-threadgroup sums to obtain final prefix sum reduction
-kernel void kern_prefixPostSumAddition(device uint *data[[buffer(0)]],
-                                       device uint *sums[[buffer(1)]],
+kernel void kern_prefixPostSumAddition(device uint *data [[  buffer(0)  ]],
+                                       device uint *sums [[  buffer(1)  ]],
                                        uint threadGroupId [[threadgroup_position_in_grid]],
                                        uint tid [[thread_position_in_threadgroup]],
                                        uint threadGroupDim [[threads_per_threadgroup]]) {
@@ -122,3 +114,29 @@ kernel void kern_prefixPostSumAddition(device uint *data[[buffer(0)]],
     data[THREADGROUP_SIZE * 2 * (threadGroupId + 1) + tid * 2 + 1] += sum;
 }
 
+// Scatter rays into compacted buffer after prefix sum
+kernel void kern_scatterRays(const device   Ray *rays1             [[  buffer(0)  ]],
+                             device         Ray *rays2            [[  buffer(1)  ]],
+                             const device   uint *validation_buffer [[  buffer(2)  ]],
+                             uint id [[thread_position_in_grid]]) {
+    Ray ray = rays1[id];
+    if(ray.idx_bounces[2] > 0) rays2[validation_buffer[id]] = ray;
+}
+
+// TODO: This will be a pretty gross way of getting our final array of rays, but serves to at least
+// get the process working.
+// Certain refactoring requirements to make this function unnecesssary:
+// - Ping pong ray buffers in PolluxRenderer. GPU operates asynchronously so this might take some thought
+// - Multiple computeEncoders per iteration since we'll want to reduce the number of threadgroups dispatched after
+// stream compaction based on remaining Rays, but that can't be known ahead of time, or can it?
+kernel void kern_copyBack(device         Ray *rays1                  [[  buffer(0)  ]],
+                                 const device   Ray *rays2                  [[  buffer(1)  ]],
+                                 const device   uint *validation_buffer     [[  buffer(2)  ]],
+                                 constant       uint& numberOfRays          [[  buffer(3)  ]],
+                                 uint id [[thread_position_in_grid]]) {
+    if (id >= validation_buffer[numberOfRays]) {
+        rays1[id].idx_bounces[2] = 0;
+    } else {
+        rays1[id] = rays2[id];
+    }
+}

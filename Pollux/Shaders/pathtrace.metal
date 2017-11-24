@@ -69,6 +69,11 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
     
     thread Ray ray = rays[position];
     
+    //Naive Early Ray Termination
+    // TODO: Stream Compact and remove this line
+    if (ray.idx_bounces[2] <= 0) {return;}
+
+    
     float t;
     float3 intersect_point;
     float3 normal;

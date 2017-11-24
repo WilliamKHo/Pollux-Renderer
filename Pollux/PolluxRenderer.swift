@@ -58,8 +58,8 @@ class PolluxRenderer: NSObject {
     **  Rays Shared Buffer
     **
     ******/
-    let rays1 : SharedBuffer<Ray>
-    let rays2 : SharedBuffer<Ray>
+    var rays1 : SharedBuffer<Ray>
+    var rays2 : SharedBuffer<Ray>
     
     /*****
      **
@@ -316,6 +316,12 @@ extension PolluxRenderer {
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
             
             self.dispatchPipelineState(for: COMPACT_RAYS, using: commandEncoder!)
+            
+            // This won't work because GPU kernels are called asynchronously
+            // TODO: Remove this
+//            var tmp = self.rays1
+//            self.rays1 = self.rays2
+//            self.rays2 = tmp
         }
         
         // If drawable is not ready, don't draw
@@ -339,8 +345,8 @@ extension PolluxRenderer {
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
         // For stream compaction debugging purposes. TODO: Remove these completely
-        commandBuffer!.waitUntilCompleted()
-        RayCompaction.inspectBuffers()
+        // commandBuffer!.waitUntilCompleted()
+        // RayCompaction.inspectBuffers()
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RayCompaction.swift
 //  Pollux
 //
 //  Created by William Ho on 11/24/17.
@@ -10,7 +10,7 @@ import Cocoa
 
 class RayCompaction {
     
-    static var THREADGROUP_SIZE = 512 //highest threadgroup size on Intel Graphics Card
+    static var THREADGROUP_SIZE = 512 //highest threadgroup size on Intel Graphics Card. Must match ray_compaciton.metal
     
     //References to device.
     static var device: MTLDevice! = nil
@@ -29,6 +29,9 @@ class RayCompaction {
     static var kernScatter: MTLFunction?
     static var kernScatterPipelineState: MTLComputePipelineState! = nil
     
+    static var kernCopyBack: MTLFunction?
+    static var kernCopyBackPipelineState: MTLComputePipelineState! = nil
+    
     //Buffers
     static var validation_buffer: SharedBuffer<UInt32>!
     static var scanThreadSums_buffer: SharedBuffer<UInt32>!
@@ -42,29 +45,33 @@ class RayCompaction {
     static func setUpShaders() {
         kernEvaluateRays = defaultLibrary.makeFunction(name: "kern_evaluateRays")
         do { kernEvaluateRaysPipelineState = try device.makeComputePipelineState(function: kernEvaluateRays!) }
-        catch _ { print("failed to create ray evaulation pipeline state" ) }
+        catch _ { fatalError("failed to create ray evaulation pipeline state" ) }
         
         kernPrefixSumScan = defaultLibrary.makeFunction(name: "kern_prefixSumScan")
         do { kernPrefixSumScanPipelineState = try device.makeComputePipelineState(function: kernPrefixSumScan!) }
-        catch _ { print("failed to create prefix sum scan pipeline state" ) }
+        catch _ { fatalError("failed to create prefix sum scan pipeline state" ) }
         
         kernPrefixPostSumAddition = defaultLibrary.makeFunction(name: "kern_prefixPostSumAddition")
         do { kernPrefixPostSumAdditionPipelineState = try device.makeComputePipelineState(function: kernPrefixPostSumAddition!) }
-        catch _ { print("failed to create prefix post sum addition pipeline state" ) }
+        catch _ { fatalError("failed to create prefix post sum addition pipeline state" ) }
         
         kernScatter = defaultLibrary.makeFunction(name: "kern_scatterRays")
         do { kernScatterPipelineState = try device.makeComputePipelineState(function: kernScatter!) }
-        catch _ { print("failed to create scatter pipeline state" ) }
+        catch _ { fatalError("failed to create scatter pipeline state" ) }
+        
+        kernCopyBack = defaultLibrary.makeFunction(name: "kern_copyBack")
+        do { kernCopyBackPipelineState = try device.makeComputePipelineState(function: kernCopyBack!) }
+        catch _ { fatalError("failed to create copy back pipeline state" ) }
     }
     
     static func encodeCompactCommands(inRays: SharedBuffer<Ray>, outRays: SharedBuffer<Ray>, using commandEncoder: MTLComputeCommandEncoder) {
         
         // Set up bookkeeping buffers
-        var twoPowerCeiling = ceilf(log2f(Float(inRays.count)))
+        let twoPowerCeiling = ceilf(log2f(Float(inRays.count)))
         var numberOfRays = UInt32(inRays.count)
-        var validationBufferSize = Int(powf(2.0, twoPowerCeiling))
+        let validationBufferSize = Int(powf(2.0, twoPowerCeiling))
         validation_buffer = SharedBuffer(count: Int(validationBufferSize), with: device)
-        var numberOfSums = (validationBufferSize + THREADGROUP_SIZE * 2 - 1) / (THREADGROUP_SIZE * 2)
+        let numberOfSums = (validationBufferSize + THREADGROUP_SIZE * 2 - 1) / (THREADGROUP_SIZE * 2)
         scanThreadSums_buffer = SharedBuffer(count: numberOfSums, with: device)
         
         // Set buffers and encode command to evaluate rays for termination
@@ -93,10 +100,26 @@ class RayCompaction {
 
             commandEncoder.setComputePipelineState(kernPrefixPostSumAdditionPipelineState)
             commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 0)
-            threadsPerGroup = MTLSize(width: THREADGROUP_SIZE, height: 1, depth: 1)
             threadGroupsDispatched = MTLSize(width: (validationBufferSize / 2 - 1) / THREADGROUP_SIZE, height: 1, depth: 1)
             commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
         }
+        
+        //Set buffers for scatter
+        commandEncoder.setBuffer(inRays.data, offset: 0, index: 0)
+        commandEncoder.setBuffer(outRays.data, offset: 0, index: 1)
+        commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 2)
+        commandEncoder.setComputePipelineState(kernScatterPipelineState)
+        //Dispatch scatter kernel
+        threadsPerGroup = MTLSize(width: THREADGROUP_SIZE, height: 1, depth: 1)
+        threadGroupsDispatched = MTLSize(width: (inRays.count + THREADGROUP_SIZE - 1) / THREADGROUP_SIZE, height: 1, depth: 1)
+        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
+        
+        //Naively copy back wanted Rays
+        var rayCount: UInt32 = UInt32(inRays.count)
+        commandEncoder.setBytes(&rayCount, length: MemoryLayout<UInt32>.stride, index: 3)
+        commandEncoder.setComputePipelineState(kernCopyBackPipelineState)
+        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
+
     }
     // For debugging TODO: Remove this function 
     static func inspectBuffers() {
