@@ -1,4 +1,4 @@
-![headerpic](/Media/Header.png)
+![title_pic](Media/Header.png)
 
 
 
@@ -47,8 +47,8 @@ A `camera` dictionary with entries for:
  - `pos`: an array containing 3 floats EXACTLY, detailing the position of the camera in the scene
  - `lookAt`: an array containing 3 floats EXACTLY, detailing the target that the camera is looking at
  - `up`: an array containing 3 floats EXACTLY, detailing the direction of "up" for the camera
- - 
- A `materials` array of dictionaries with each material having entries for:
+
+A `materials` array of dictionaries with each material having entries for:
 
 - `bsdf`: the type of bsdf it is. BSDF types are defined as -1 for light, 0 for diffues, and `TODO: ADD MORE BSDF TYPES`
 - `name`: the name for a material. This is not used in code, but helpful for reading the scene file.
