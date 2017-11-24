@@ -243,7 +243,6 @@ extension PolluxRenderer {
             // Buffer (1) is already set
             // Buffer (2) is already set
             commandEncoder.setBuffer(self.frame.data, offset: 0, index: 3)
-            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 3)
             commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 4)
             break;
          default:
@@ -278,9 +277,9 @@ extension PolluxRenderer {
         // This triggers the CPU that the GPU has finished work
         // this function is run when the GPU ends an iteration
         // Needed for CPU/GPU Synchronization
-//        commandBuffer?.addCompletedHandler({ _ in //unused parameter
-//            _ = DispatchSemaphore.signal(self.iterationSemaphore)
-//        })
+        commandBuffer?.addCompletedHandler({ _ in //unused parameter
+            print(self.iteration)
+        })
         
         let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
         
@@ -303,13 +302,16 @@ extension PolluxRenderer {
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
         }
         
+        // If drawable is not ready, don't draw
         guard let drawable = view.currentDrawable
         else { // If drawable
             print("Drawable not ready for iteration #\(self.iteration)")
             commandEncoder!.endEncoding()
+            commandBuffer!.commit()
             return;
         }
         
+        // Clear the drawable on the first iteration
         if (self.iteration == 0) {
             drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
         }
@@ -321,6 +323,7 @@ extension PolluxRenderer {
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
     }
+    
 }
 
 extension PolluxRenderer : MTKViewDelegate {

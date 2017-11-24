@@ -170,19 +170,20 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
 kernel void kern_FinalGather(constant   uint& ray_count                   [[  buffer(0) ]],
                              constant   uint& iteration                   [[  buffer(1) ]],
                              device     Ray* rays                         [[  buffer(2) ]],
-                             texture2d<float, access::read>   inFrame     [[ texture(3) ]],
-                             texture2d<float, access::write> outFrame     [[ texture(4) ]],
+                             device     float4* accumulated               [[  buffer(3) ]],
+                             texture2d<float, access::write> drawable     [[ texture(4) ]],
                              const uint position [[thread_position_in_grid]]) {
     if (position >= ray_count) {return;}
     
     device Ray& ray = rays[position];
     
-    float4 ray_col     = float4(ray.color, 1.f);
-    float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
-    float4 combined_color = (accumulated*iteration + ray_col)
-                                 / (iteration + 1.0);
+//    float4 ray_col     = float4(ray.color, 1.f);
+//    float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
+    accumulated[position] += float4(ray.color, 1.f);
     
-    outFrame.write(combined_color, ray.idx_bounces.xy);
+    float4 normalized = accumulated[position] / (iteration + 1.0);
+    
+    drawable.write(normalized, ray.idx_bounces.xy);
 }
 
 
