@@ -6,7 +6,6 @@
 //  Copyright © 2017 Youssef Victor. All rights reserved.
 //
 
-import Cocoa
 import Metal
 import MetalKit
 import simd
@@ -30,7 +29,7 @@ class PolluxRenderer: NSObject {
     private let blankBitmapRawData : [UInt8]
     
     // The iteration the renderer is on
-    private var iteration : Int = 0
+    var iteration : Int = 0
     
     /****
     **
@@ -274,12 +273,31 @@ extension PolluxRenderer {
         commandBuffer?.label = "Iteration: \(iteration)"
         
         // MARK: SEMAPHORE CODE - Completion Handler
-        // This triggers the CPU that the GPU has finished work
-        // this function is run when the GPU ends an iteration
-        // Needed for CPU/GPU Synchronization
         commandBuffer?.addCompletedHandler({ _ in //unused parameter
-            print(self.iteration)
+            // This triggers the CPU that the GPU has finished work
+            // this function is run when the GPU ends an iteration
+            // Needed for CPU/GPU Synchronization
+            // TODO: Semaphores
+//            print(self.iteration)
         })
+        
+        
+        // If drawable is not ready, skip this iteration
+        guard let drawable = view.currentDrawable
+            else { // If drawable
+                print("Drawable not ready for iteration #\(self.iteration)")
+                return;
+        }
+        
+        // Clear the drawable on the first iteration
+        if (self.iteration == 0) {
+            let blitCommandEnconder = commandBuffer?.makeBlitCommandEncoder()
+            let frameRange = Range(0 ..< MemoryLayout<float4>.stride * self.frame.count)
+            blitCommandEnconder?.fill(buffer: self.frame.data!, range: frameRange, value: 0)
+            blitCommandEnconder?.endEncoding()
+            
+            drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
+        }
         
         let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
         
@@ -302,22 +320,9 @@ extension PolluxRenderer {
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
         }
         
-        // If drawable is not ready, don't draw
-        guard let drawable = view.currentDrawable
-        else { // If drawable
-            print("Drawable not ready for iteration #\(self.iteration)")
-            commandEncoder!.endEncoding()
-            commandBuffer!.commit()
-            return;
-        }
-        
-        // Clear the drawable on the first iteration
-        if (self.iteration == 0) {
-            drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
-        }
-        
         self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         self.iteration += 1
+        
 
         commandEncoder!.endEncoding()
         commandBuffer!.present(drawable)
@@ -353,3 +358,28 @@ extension PolluxRenderer : MTKViewDelegate {
         self.frame.resize(count: Int(size.width*size.height), with: self.device)
     }
 }
+
+// MARK: Handles User Gestures
+extension PolluxRenderer {
+    
+    // Pans the camera along it's right and up vectors by dt.x and -dt.y respectively
+    func panCamera(by dt: PlatformPoint) {
+        // Change pos values
+        self.camera.pos += self.camera.right * Float(dt.x) / gestureDampening
+        self.camera.pos -= self.camera.up    * Float(dt.y) / gestureDampening
+        
+        // Change the lookAt as well
+        self.camera.lookAt += self.camera.right * Float(dt.x) / gestureDampening
+        self.camera.lookAt -= self.camera.up    * Float(dt.y) / gestureDampening
+        
+        // Clear buffer by setting iteration = 0
+        self.iteration = 0
+    }
+    
+    // Zooms the camera along it's view vector by dz
+    func zoomCamera(by dz: Float) {
+        // Clear buffer by setting iteration = 0
+        self.iteration = 0
+    }
+}
+
