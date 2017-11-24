@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE731FC88B8700865F35 /* RayCompaction.swift */; };
+		0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE771FC8939C00865F35 /* ray_compaction.metal */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */; };
 		D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CD1FBD056E00385DA6 /* Scene.swift */; };
@@ -41,6 +43,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BC8FE731FC88B8700865F35 /* RayCompaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayCompaction.swift; sourceTree = "<group>"; };
+		0BC8FE771FC8939C00865F35 /* ray_compaction.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ray_compaction.metal; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D82563CD1FBD056E00385DA6 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
@@ -104,6 +108,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0BC8FE721FC88B1A00865F35 /* Ray_Compaction */ = {
+			isa = PBXGroup;
+			children = (
+				0BC8FE761FC8937B00865F35 /* Ray_Compaction_Shaders */,
+				0BC8FE731FC88B8700865F35 /* RayCompaction.swift */,
+			);
+			path = Ray_Compaction;
+			sourceTree = "<group>";
+		};
+		0BC8FE761FC8937B00865F35 /* Ray_Compaction_Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				0BC8FE771FC8939C00865F35 /* ray_compaction.metal */,
+			);
+			path = Ray_Compaction_Shaders;
+			sourceTree = "<group>";
+		};
 		D8388BD31FB3972E00653E5D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +204,7 @@
 		D8718BCE1FB2BE7B00260B81 /* Pollux */ = {
 			isa = PBXGroup;
 			children = (
+				0BC8FE721FC88B1A00865F35 /* Ray_Compaction */,
 				D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */,
 				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
 				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
@@ -348,10 +370,12 @@
 				D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */,
 				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
+				0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
+				0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */,
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
@@ -550,7 +574,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
@@ -569,7 +593,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;

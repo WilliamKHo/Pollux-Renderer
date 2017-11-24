@@ -24,6 +24,7 @@ enum GeomType {
 enum PipelineStage {
     GENERATE_RAYS,
     COMPUTE_INTERSECTIONS,
+    COMPACT_RAYS,
     SHADE,
     FINAL_GATHER,
 };

@@ -58,7 +58,8 @@ class PolluxRenderer: NSObject {
     **  Rays Shared Buffer
     **
     ******/
-    let rays : SharedBuffer<Ray>
+    let rays1 : SharedBuffer<Ray>
+    let rays2 : SharedBuffer<Ray>
     
     /*****
      **
@@ -147,11 +148,12 @@ class PolluxRenderer: NSObject {
         camera.data.y = height
         self.max_depth = UInt(camera.data[2])
         
-        self.rays          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
+        self.rays1          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
+        self.rays2          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
         self.geoms         = SharedBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1)
         self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
-        self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
-        self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
+        self.frame         = SharedBuffer<float4>(count: self.rays1.count, with: self.device)
+        self.intersections = SharedBuffer<Intersection>(count: self.rays1.count, with: self.device)
         
         super.init()
         
@@ -179,6 +181,8 @@ class PolluxRenderer: NSObject {
         self.kern_FinalGather = defaultLibrary.makeFunction(name: "kern_FinalGather")
         do    { try ps_FinalGather = device.makeComputePipelineState(function: kern_FinalGather)}
         catch { fatalError("FinalGather computePipelineState failed ") }
+        
+        RayCompaction.setUpOnDevice(self.device, library: defaultLibrary)
     }
 }
 
@@ -203,7 +207,7 @@ extension PolluxRenderer {
         else if stage == COMPUTE_INTERSECTIONS || stage == SHADE || stage == FINAL_GATHER {
             let warp_size = ps_ComputeIntersections.threadExecutionWidth
             self.threadsPerThreadgroup = MTLSize(width: warp_size,height:1,depth:1)
-            self.threadgroupsPerGrid   = MTLSize(width: self.rays.count / warp_size, height:1, depth:1)
+            self.threadgroupsPerGrid   = MTLSize(width: self.rays1.count / warp_size, height:1, depth:1)
         }
     }
     
@@ -212,10 +216,10 @@ extension PolluxRenderer {
         case GENERATE_RAYS:
             commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
             commandEncoder.setBytes(&self.max_depth, length: MemoryLayout<UInt>.size, index: 1)
-            commandEncoder.setBuffer(self.rays.data, offset: 0, index: 2)
+            commandEncoder.setBuffer(self.rays1.data, offset: 0, index: 2)
         case COMPUTE_INTERSECTIONS:
             // TODO: Setup buffer for intersections shader
-            commandEncoder.setBytes(&self.rays.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
             commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 1)
             //commandEncoder.setBytes(rays) not needed because it's already done in prev stage
             commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 3)
@@ -348,7 +352,7 @@ extension PolluxRenderer : MTKViewDelegate {
         print(size)
         
         // Resize Rays Buffer
-        self.rays.resize(count: Int(size.width*size.height), with: self.device)
+        self.rays1.resize(count: Int(size.width*size.height), with: self.device)
         self.intersections.resize(count: Int(size.width*size.height), with: self.device)
         self.frame.resize(count: Int(size.width*size.height), with: self.device)
     }
