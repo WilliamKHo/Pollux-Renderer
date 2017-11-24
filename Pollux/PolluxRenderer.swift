@@ -305,6 +305,7 @@ extension PolluxRenderer {
         
         guard let drawable = view.currentDrawable
         else { // If drawable
+            print("Drawable not ready for iteration #\(self.iteration)")
             commandEncoder!.endEncoding()
             return;
         }
