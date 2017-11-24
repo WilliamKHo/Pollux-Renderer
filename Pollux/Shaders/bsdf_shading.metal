@@ -17,6 +17,7 @@ void SnS_diffuse(device Ray& ray,
                  thread Material &m,
                  thread Loki& rng,
                  thread float& pdf) {
+    
     const float3 n  = isect.normal;
     const float3 wo = -ray.direction;
     

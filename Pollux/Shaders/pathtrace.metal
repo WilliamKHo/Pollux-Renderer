@@ -151,7 +151,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         thread float pdf;
         
         // Seed a random number from the position and iteration number
-        Loki rng = Loki(position, iteration+1, ray.idx_bounces[2]);
+        Loki rng = Loki(position, iteration + 1, ray.idx_bounces[2] + 1);
         
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter

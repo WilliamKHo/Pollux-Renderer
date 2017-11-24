@@ -69,7 +69,7 @@ float computeCubeIntersection(device Geom   *box,
                               thread float3 &normal,
                               thread bool   &outside) {
     thread Ray rt;
-    rt.origin = float3(box->inverseTransform * float4(r.origin, 1.0f));
+    rt.origin    =           float3(box->inverseTransform * float4(r.origin, 1.0f));
     rt.direction = normalize(float3(box->inverseTransform * float4(r.direction, 0.0f)));
     
     float tmin = -1e38f;
@@ -104,7 +104,7 @@ float computeCubeIntersection(device Geom   *box,
             outside = false;
         }
         intersectionPoint =  float3(box->transform * float4(getPointOnRay(&rt, tmin), 1.0f));
-        normal = normalize(float3(box->transform * float4(tmin_n, 0.0f)));
+        normal = normalize(float3(box->invTranspose * float4(tmin_n, 0.0f)));
         
         return length(r.origin - intersectionPoint);
     }
