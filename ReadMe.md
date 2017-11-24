@@ -1,6 +1,4 @@
-# **Pollux Renderer**
-
-![Header](/Media/Header.png)
+![headerpic](/Media/Header.png)
 
 
 
