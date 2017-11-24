@@ -72,10 +72,35 @@ class RayCompaction {
         commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 1)
         commandEncoder.setBytes(&numberOfRays, length: MemoryLayout<UInt32>.stride, index: 2)
         commandEncoder.setComputePipelineState(kernEvaluateRaysPipelineState)
-        var threadsPerGroup = MTLSize(width: 32, height: 1, depth: 1)
-        var threadGroupsDispatched = MTLSize(width: validationBufferSize / 32, height: 1, depth: 1)
+        var threadsPerGroup = MTLSize(width: THREADGROUP_SIZE, height: 1, depth: 1)
+        var threadGroupsDispatched = MTLSize(width: (validationBufferSize + THREADGROUP_SIZE - 1) / THREADGROUP_SIZE, height: 1, depth: 1)
         commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
         
+        //Set buffers for Prefix Sum Scan
+        commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 0)
+        commandEncoder.setBuffer(scanThreadSums_buffer.data, offset: 0, index: 1)
+        //Dispatch kernels for Prefix Sum Scan
+        commandEncoder.setComputePipelineState(kernPrefixSumScanPipelineState)
+        threadsPerGroup = MTLSize(width: THREADGROUP_SIZE, height: 1, depth: 1)
+        threadGroupsDispatched = MTLSize(width: (validationBufferSize / 2 + THREADGROUP_SIZE - 1) / THREADGROUP_SIZE, height: 1, depth: 1)
+        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
+        
+        //Second pass if buffer size exceeds a single threadgroup
+        if (validationBufferSize > THREADGROUP_SIZE * 2) {
+            commandEncoder.setBuffer(scanThreadSums_buffer.data, offset: 0, index: 0)
+            threadGroupsDispatched = MTLSize(width: 1, height: 1, depth: 1)
+            commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
+
+            commandEncoder.setComputePipelineState(kernPrefixPostSumAdditionPipelineState)
+            commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 0)
+            threadsPerGroup = MTLSize(width: THREADGROUP_SIZE, height: 1, depth: 1)
+            threadGroupsDispatched = MTLSize(width: (validationBufferSize / 2 - 1) / THREADGROUP_SIZE, height: 1, depth: 1)
+            commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
+        }
+    }
+    // For debugging TODO: Remove this function 
+    static func inspectBuffers() {
+        validation_buffer.inspectData()
     }
     
 }

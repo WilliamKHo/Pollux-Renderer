@@ -15,23 +15,28 @@ using namespace metal;
 
 // Evaluate rays for termination
 kernel void kern_evaluateRays(const device Ray *rays[[buffer(0)]],
-                              device uint *validation_buffer[[buffer(1)]],
-                              device uint& numberOfRays[[buffer(2)]],
+                              device uint* validation_buffer[[buffer(1)]],
+                              constant uint& numberOfRays[[buffer(2)]],
                               uint id [[thread_position_in_grid]]) {
-    if (id >= numberOfRays) validation_buffer[id] = 0;
-    if (rays[id].idx_bounces.z > 0) {
+    if (id >= numberOfRays) {
+        validation_buffer[id] = 1;
+        return;
+    }
+    // Quick and dirty
+    if (rays[id].idx_bounces[2] > 0) {
         validation_buffer[id] = 1;
     } else {
         validation_buffer[id] = 0;
     }
+    return;
 }
 
 // Scatter rays into compacted buffer after prefix sum
 kernel void kern_scatterRays(const device Ray *inRays[[buffer(0)]],
-                              device Ray *outRays[[buffer(1)]],
-                              const device uint *validation_buffer[[buffer(2)]],
-                              uint id [[thread_position_in_grid]]) {
-    if(inRays[id].idx_bounces.z > 0) outRays[validation_buffer[id]] = inRays[id];
+                             device Ray *outRays[[buffer(1)]],
+                             const device uint *validation_buffer[[buffer(2)]],
+                             uint id [[thread_position_in_grid]]) {
+    if(inRays[id].idx_bounces[2] > 0) outRays[validation_buffer[id]] = inRays[id];
 }
 
 // Helper function to calculate offsetted indices to avoid bank conflicts

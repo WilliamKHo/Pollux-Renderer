@@ -221,7 +221,7 @@ extension PolluxRenderer {
             // TODO: Setup buffer for intersections shader
             commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
             commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 1)
-            //commandEncoder.setBytes(rays) not needed because it's already done in prev stage
+            commandEncoder.setBuffer(self.rays1.data, offset: 0, index: 2)
             commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 3)
             commandEncoder.setBuffer(self.geoms.data        , offset: 0, index: 4)
             break;
@@ -242,7 +242,12 @@ extension PolluxRenderer {
 //            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 6)
 //            // TODO: End Remove
             break;
+        case COMPACT_RAYS:
+            break;
         case FINAL_GATHER:
+            commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
+            commandEncoder.setBuffer(self.rays1.data, offset: 0, index: 2)
             // Buffer (0) is already set
             // Buffer (1) is already set
             // Buffer (2) is already set
@@ -260,17 +265,25 @@ extension PolluxRenderer {
         switch (stage) {
             case GENERATE_RAYS:
                 commandEncoder.setComputePipelineState(ps_GenerateRaysFromCamera)
+                commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                                    threadsPerThreadgroup: self.threadsPerThreadgroup)
             case COMPUTE_INTERSECTIONS:
                 commandEncoder.setComputePipelineState(ps_ComputeIntersections)
+                commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                                    threadsPerThreadgroup: self.threadsPerThreadgroup)
             case SHADE:
                 commandEncoder.setComputePipelineState(ps_ShadeMaterials)
+                commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                                    threadsPerThreadgroup: self.threadsPerThreadgroup)
+            case COMPACT_RAYS:
+                RayCompaction.encodeCompactCommands(inRays: self.rays1, outRays: self.rays2, using: commandEncoder)
             case FINAL_GATHER:
                 commandEncoder.setComputePipelineState(ps_FinalGather)
+                commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                                    threadsPerThreadgroup: self.threadsPerThreadgroup)
             default:
                 fatalError("Undefined Pipeline Stage Passed to DispatchPipelineState")
         }
-        commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
-                                            threadsPerThreadgroup: self.threadsPerThreadgroup)
     }
     
     fileprivate func pathtrace(in view: MTKView) {
@@ -300,10 +313,9 @@ extension PolluxRenderer {
             
             self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
             
-            // Stream Compaction for Terminated Rays
-            // self.dispatchPipelineState(for: COMPACT_RAYS)
-            
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
+            
+            self.dispatchPipelineState(for: COMPACT_RAYS, using: commandEncoder!)
         }
         
         // If drawable is not ready, don't draw
@@ -326,6 +338,9 @@ extension PolluxRenderer {
         commandEncoder!.endEncoding()
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
+        // For stream compaction debugging purposes. TODO: Remove these completely
+        commandBuffer!.waitUntilCompleted()
+        RayCompaction.inspectBuffers()
     }
     
 }

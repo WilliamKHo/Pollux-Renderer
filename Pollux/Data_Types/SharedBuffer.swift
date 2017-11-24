@@ -107,6 +107,19 @@ class SharedBuffer <T>  {
                                             options: .storageModeShared,
                                             deallocator: nil)
     }
+    // For debugging TODO: Remove this function
+    public func inspectData() {
+        var bufferVoidPtr = OpaquePointer(memory)
+        var yvectorFloatPtr = UnsafeMutablePointer<T>(bufferVoidPtr)
+        var yvectorFloatBufferPtr = UnsafeMutableBufferPointer(start: yvectorFloatPtr, count: self.count)
+        var debugResultString = [String](repeating: "", count: self.count)
+        var i = 0
+        for index in yvectorFloatBufferPtr.startIndex..<yvectorFloatBufferPtr.endIndex {
+            debugResultString[i] = "\(yvectorFloatBufferPtr[index]),"
+            i += 1
+        }
+        var x = 5 // breakpoint here to sanity check validation buffer
+    }
     
     deinit {
         free(memory)
