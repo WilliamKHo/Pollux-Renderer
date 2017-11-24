@@ -1,0 +1,5 @@
+
+<schema name="narrative-heuristic" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRRecordedEventTimestampTypeID" engineeringName="Timestamp" mnemonic="timestamp" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRNarrativeEntryTypeID" engineeringName="Narrative" mnemonic="narrative"></column>
+</schema>

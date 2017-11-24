@@ -1,0 +1,14 @@
+
+<schema name="displayed-surfaces-surface-interval" topology="XRTD50_CC22_R_TypeID">
+    <column engineeringType="XRStartTimeTypeID" engineeringName="Start Time" mnemonic="start" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRDurationTypeID" engineeringName="Duration" mnemonic="duration" topologyField="XRDurationFieldID"></column>
+    <column engineeringType="XRStartTimeTypeID" engineeringName="End Time" mnemonic="end"></column>
+    <column engineeringType="XRGPUHardwareEngineTypeID" engineeringName="Event" mnemonic="event-type"></column>
+    <column engineeringType="XRGPUHardwareEngineStateTypeID" engineeringName="State" mnemonic="state"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Label" mnemonic="event-label"></column>
+    <column engineeringType="XRVisualConnectionUUID64TypeID" engineeringName="Connection UUID" mnemonic="connection-UUID"></column>
+    <column engineeringType="XRRenderingBufferDepthTypeID" engineeringName="Color" mnemonic="color"></column>
+    <column engineeringType="XRNarrativeEntryTypeID" engineeringName="Process" mnemonic="process"></column>
+    <column engineeringType="XRDisplayedSurfacePriorityTypeID" engineeringName="Priority" mnemonic="event-priority"></column>
+    <column engineeringType="XRMetalEncodingParellismLevelTypeID" engineeringName="Plane" mnemonic="event-plane"></column>
+</schema>

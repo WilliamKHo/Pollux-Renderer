@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string></string>
+	<string>Unknown</string>
+	<string>User</string>
+	<string>Supervisor</string>
+	<string>Running</string>
+	<string>Runnable</string>
+	<string>Blocked</string>
+	<string>Preempted</string>
+	<string>Uninterruptible</string>
+	<string>Suspended</string>
+	<string>Idle</string>
+	<string>Terminating</string>
+	<string>Terminated</string>
+	<string>TODO</string>
+	<string>com.apple.CoreImage</string>
+	<string>com.apple.CoreImage.args</string>
+	<string>com.apple.CoreImage.fromSurface</string>
+	<string>MTLIOAccelResourcePool</string>
+	<string>MTLIOAccelResourcePool (dbclass: 6)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 7)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 8)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 9)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 0)</string>
+	<string>MTLIOAccelResourcePool (dbclass: 4)</string>
+	<string>Iteration: 0</string>
+	<string>Drawable</string>
+	<string>Iteration: 1</string>
+	<string>Iteration: 2</string>
+	<string>Iteration: 3</string>
+	<string>Iteration: 4</string>
+	<string>Iteration: 5</string>
+	<string>Iteration: 6</string>
+	<string>Iteration: 7</string>
+	<string>Iteration: 8</string>
+	<string>Iteration: 9</string>
+	<string>Iteration: 10</string>
+	<string>Iteration: 11</string>
+	<string>Iteration: 12</string>
+	<string>Iteration: 13</string>
+	<string>Iteration: 14</string>
+	<string>Iteration: 15</string>
+	<string>Iteration: 16</string>
+	<string>Iteration: 17</string>
+	<string>Iteration: 18</string>
+	<string>Iteration: 19</string>
+	<string>Iteration: 20</string>
+	<string>Iteration: 21</string>
+	<string>Iteration: 22</string>
+	<string>Iteration: 23</string>
+	<string>Iteration: 24</string>
+	<string>Iteration: 25</string>
+	<string>Iteration: 26</string>
+	<string>Render (Driver)</string>
+	<string>Busy</string>
+	<string>Kernel</string>
+	<string>IOSurface write</string>
+	<string></string>
+	<string>IOSurface read</string>
+	<string>Vsync</string>
+	<string>Display</string>
+	<string>On Display</string>
+	<string>Vsync 2</string>
+	<string>N/A</string>
+	<string>ZeroFillResource</string>
+	<string>8192</string>
+	<string>PageOnResource</string>
+	<string>4300800</string>
+	<string>GPU spent </string>
+	<string> executing </string>
+	<string> (Upper bound </string>
+	<string>)</string>
+	<string>Render for "Unknown"</string>
+	<string>Render Encoders</string>
+	<string>Command Buffers</string>
+	<string> (</string>
+	<string>Compute Command 0</string>
+	<string>[0] Iteration: 26</string>
+	<string>[0] Compute Command 0</string>
+	<string>Scheduled</string>
+	<string>Scheduled Callback</string>
+	<string>[1] Iteration: 25</string>
+	<string>Render (GPU 1)</string>
+	<string>[2] Iteration: 24</string>
+	<string>Completed</string>
+	<string>[3] Iteration: 23</string>
+	<string>[4] Iteration: 22</string>
+	<string>[5] Iteration: 21</string>
+	<string>[6] Iteration: 20</string>
+	<string>[7] Iteration: 19</string>
+	<string>[8] Iteration: 18</string>
+	<string>[9] Iteration: 17</string>
+	<string>[10] Iteration: 16</string>
+	<string>[11] Iteration: 15</string>
+	<string>[12] Iteration: 14</string>
+	<string>[13] Iteration: 13</string>
+	<string>[14] Iteration: 12</string>
+	<string>[15] Iteration: 11</string>
+	<string>[16] Iteration: 10</string>
+	<string>[17] Iteration: 9</string>
+	<string>[18] Iteration: 8</string>
+	<string>[19] Iteration: 7</string>
+	<string>[20] Iteration: 6</string>
+	<string>[21] Iteration: 5</string>
+	<string>[22] Iteration: 4</string>
+	<string>[23] Iteration: 3</string>
+	<string>[24] Iteration: 2</string>
+	<string>[25] Iteration: 1</string>
+	<string>[26] Iteration: 0</string>
+	<string>Blit Command 1</string>
+	<string>[27] com.apple.CoreImage</string>
+	<string>[1] Blit Command 1</string>
+	<string>Completed Callback</string>
+	<string>[28] com.apple.CoreImage</string>
+	<string>Display 2</string>
+	<string>States</string>
+	<string>Could not determine the application state for </string>
+	<string>.  This is normal when the target was not launched by Instruments.</string>
+	<string>Launching</string>
+	<string>Application took </string>
+	<string> between when UIApplicationMain() or NSApplicationMain() started and when the did-finish-launching notifications finished.</string>
+	<string>Foreground</string>
+	<string>Currently running in the foreground...</string>
+</array>
+</plist>

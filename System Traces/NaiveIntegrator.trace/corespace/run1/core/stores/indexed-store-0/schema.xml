@@ -1,0 +1,6 @@
+
+<schema name="kdebug-strings" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRRecordedEventTimestampTypeID" engineeringName="Timestamp" mnemonic="time" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRRawStringTypeID" engineeringName="Raw String" mnemonic="raw-string" topologyField="XRCategory1FieldID"></column>
+    <column engineeringType="XRKDebugStringIDTypeID" engineeringName="Raw String ID" mnemonic="raw-string-id"></column>
+</schema>

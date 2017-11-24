@@ -185,8 +185,8 @@
 			children = (
 				D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */,
 				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
-				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
 				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
+				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
 				D884B96F1FC4AA98006A14CF /* Scenes */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
 				D85A88DD1FC4940E00E5F6A2 /* Data_Types */,

@@ -1,0 +1,5 @@
+
+<schema name="displayed-surfaces-vsync-events" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRVSYNCTimestampTypeID" engineeringName="VSYNC" mnemonic="vsync-event" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Label" mnemonic="event-label"></column>
+</schema>

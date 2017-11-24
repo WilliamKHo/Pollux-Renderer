@@ -20,10 +20,11 @@ void SnS_diffuse(device Ray& ray,
     const float3 n  = isect.normal;
     const float3 wo = -ray.direction;
     
-
-    float3 accum_color = m.color * InvPi;
     
-    //This is lamberFactor. See Line 23 of NaiveIntegrator.cpp in my CPU Pathtracer
+    // Material's color divided `R` which in this case is InvPi
+    float3 f = m.color * InvPi;
+    
+    //This is lambert factor for light attenuation
     float lambert_factor = fabs(dot(n, wo));
     
     //PDF Calculation
@@ -36,8 +37,8 @@ void SnS_diffuse(device Ray& ray,
         return;
     }
     
-    float3 integral = (accum_color * lambert_factor)
-                                    / pdf;
+    float3 integral = (f * lambert_factor)
+                            / pdf;
     ray.color *= integral;
     
     //Scatter the Ray

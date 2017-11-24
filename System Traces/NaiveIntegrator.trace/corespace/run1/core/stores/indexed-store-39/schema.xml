@@ -1,0 +1,13 @@
+
+<schema name="graphics-compositor-intervals" topology="XRTD50_CC22_R_TypeID">
+    <column engineeringType="XRStartTimeTypeID" engineeringName="Start Time" mnemonic="start" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRDurationTypeID" engineeringName="Duration" mnemonic="duration" topologyField="XRDurationFieldID"></column>
+    <column engineeringType="XRStartTimeTypeID" engineeringName="End Time" mnemonic="end"></column>
+    <column engineeringType="XRRenderingBufferDepthTypeID" engineeringName="Color" mnemonic="color"></column>
+    <column engineeringType="XRGPUFrameNumberTypeID" engineeringName="Frame ID" mnemonic="frame-id"></column>
+    <column engineeringType="XRMetalObjectLabelTypeID" engineeringName="Event" mnemonic="event-label"></column>
+    <column engineeringType="XRMetalEncodingParellismLevelTypeID" engineeringName="Plane" mnemonic="event-plane"></column>
+    <column engineeringType="XRMetalWorkloadPriorityTypeID" engineeringName="Priority" mnemonic="event-priority"></column>
+    <column engineeringType="XRMetalEncodingNestingLevelTypeID" engineeringName="Depth" mnemonic="event-depth"></column>
+    <column engineeringType="XRProcessTypeID" engineeringName="Process" mnemonic="process"></column>
+</schema>

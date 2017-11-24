@@ -95,12 +95,20 @@ class PolluxRenderer: NSObject {
      ******/
     let frame : SharedBuffer<float4>
     
-    /********************************
-    *********************************
-    ** ACTUAL SIMULATION VARIABLES **
-    *********************************
-    *********************************/
+    /*****
+     **
+     **  Simulation Variable(s)
+     **
+     ******/
     var max_depth : UInt;
+    
+    /*****
+     **
+     **  CPU/GPU Synchronization Stuff
+     **
+     ******/
+    // MARK: SEMAPHORE CODE - Initialization
+//    let iterationSemaphore : DispatchSemaphore = DispatchSemaphore(value: Int(MaxBuffers))
     
     
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
@@ -265,6 +273,15 @@ extension PolluxRenderer {
     fileprivate func pathtrace(in view: MTKView) {
         let commandBuffer = self.commandQueue.makeCommandBuffer()
         commandBuffer?.label = "Iteration: \(iteration)"
+        
+        // MARK: SEMAPHORE CODE - Completion Handler
+        // This triggers the CPU that the GPU has finished work
+        // this function is run when the GPU ends an iteration
+        // Needed for CPU/GPU Synchronization
+//        commandBuffer?.addCompletedHandler({ _ in //unused parameter
+//            _ = DispatchSemaphore.signal(self.iterationSemaphore)
+//        })
+        
         let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
         
         // If the commandEncoder could not be made
@@ -287,7 +304,10 @@ extension PolluxRenderer {
         }
         
         guard let drawable = view.currentDrawable
-            else { commandEncoder!.endEncoding(); return }
+        else { // If drawable
+            commandEncoder!.endEncoding()
+            return;
+        }
         
         if (self.iteration == 0) {
             drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
@@ -295,7 +315,7 @@ extension PolluxRenderer {
         
         self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         self.iteration += 1
-        
+
         commandEncoder!.endEncoding()
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
@@ -306,6 +326,10 @@ extension PolluxRenderer : MTKViewDelegate {
     
     // Is called on each frame
     func draw(in view: MTKView) {
+        // MARK: SEMAPHORE CODE - Wait
+        // Wait until the last iteration is finished
+//        _ = self.iterationSemaphore.wait(timeout: DispatchTime.distantFuture)
+        
         self.pathtrace(in: view)
     }
     

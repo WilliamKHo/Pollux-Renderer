@@ -1,0 +1,6 @@
+
+<schema name="time-info" topology="XRT50_C22_TypeID">
+    <column engineeringType="XRSampleTimestampTypeID" engineeringName="Update Time" mnemonic="update-time" topologyField="XRTraceRelativeTimestampFieldID"></column>
+    <column engineeringType="XRMachAbsoluteTimeTypeID" engineeringName="Run Epoch" mnemonic="mabs-epoch"></column>
+    <column engineeringType="XRMachTimebaseInfoTypeID" engineeringName="Timebase" mnemonic="timebase-info"></column>
+</schema>
