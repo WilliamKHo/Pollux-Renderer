@@ -84,7 +84,7 @@
 		D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = renderBuffer.metal; sourceTree = "<group>"; };
 		D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolluxTypes.h; sourceTree = "<group>"; };
 		D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pollux-Bridging-Header.h"; sourceTree = "<group>"; };
-		D8718BCC1FB2BE7B00260B81 /* Pollux.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pollux.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8718BD31FB2BE7B00260B81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8718BD61FB2BE7B00260B81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 		D8718BCD1FB2BE7B00260B81 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8718BCC1FB2BE7B00260B81 /* Pollux.app */,
+				D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */,
 				D826C0881FC88E0C00BD8A3E /* Pollux-iOS.app */,
 			);
 			name = Products;
@@ -274,9 +274,9 @@
 			productReference = D826C0881FC88E0C00BD8A3E /* Pollux-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D8718BCB1FB2BE7B00260B81 /* Pollux */ = {
+		D8718BCB1FB2BE7B00260B81 /* Pollux-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux" */;
+			buildConfigurationList = D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux-macOS" */;
 			buildPhases = (
 				D8718BC81FB2BE7B00260B81 /* Sources */,
 				D8718BC91FB2BE7B00260B81 /* Frameworks */,
@@ -286,9 +286,9 @@
 			);
 			dependencies = (
 			);
-			name = Pollux;
+			name = "Pollux-macOS";
 			productName = Pollux;
-			productReference = D8718BCC1FB2BE7B00260B81 /* Pollux.app */;
+			productReference = D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -325,7 +325,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8718BCB1FB2BE7B00260B81 /* Pollux */,
+				D8718BCB1FB2BE7B00260B81 /* Pollux-macOS */,
 				D826C0871FC88E0C00BD8A3E /* Pollux-iOS */,
 			);
 		};
@@ -654,7 +654,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux" */ = {
+		D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8718BDD1FB2BE7B00260B81 /* Debug */,

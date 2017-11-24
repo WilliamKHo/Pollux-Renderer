@@ -273,13 +273,13 @@ extension PolluxRenderer {
         commandBuffer?.label = "Iteration: \(iteration)"
         
         // MARK: SEMAPHORE CODE - Completion Handler
-        commandBuffer?.addCompletedHandler({ _ in //unused parameter
+//        commandBuffer?.addCompletedHandler({ _ in //unused parameter
             // This triggers the CPU that the GPU has finished work
             // this function is run when the GPU ends an iteration
             // Needed for CPU/GPU Synchronization
             // TODO: Semaphores
 //            print(self.iteration)
-        })
+//        })
         
         
         // If drawable is not ready, skip this iteration
