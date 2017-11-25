@@ -127,24 +127,7 @@ kernel void kern_scatterRays(const device   Ray *rays1              [[  buffer(0
                              uint id [[thread_position_in_grid]]) {
     uint invalidOffset = valids_buffer[numberOfRays];
     Ray ray = rays1[id];
-    if(ray.idx_bounces[2] > 0) {
-        rays2[valids_buffer[id]] = ray;
-    } else {
-        rays2[invalids_buffer[id] + invalidOffset] = ray;
-    }
+    uint finalPosition = (ray.idx_bounces[2] > 0) ? valids_buffer[id] : invalids_buffer[id] + invalidOffset;
+    rays2[finalPosition] = ray;
 }
 
-// TODO: This will be a pretty gross way of getting our final array of rays, but serves to at least
-// get the process working.
-// Certain refactoring requirements to make this function unnecesssary:
-// - Ping pong ray buffers in PolluxRenderer. GPU operates asynchronously so this might take some thought
-// - Multiple computeEncoders per iteration since we'll want to reduce the number of threadgroups dispatched after
-// stream compaction based on remaining Rays, but that can't be known ahead of time
-kernel void kern_copyBack(device         Ray *rays1                  [[  buffer(0)  ]],
-                          const device   Ray *rays2                  [[  buffer(1)  ]],
-                          const device   uint *validation_buffer     [[  buffer(2)  ]],
-                          constant       uint& numberOfRays          [[  buffer(3)  ]],
-                          uint id [[thread_position_in_grid]]) {
-    if (id >= numberOfRays) return;
-    rays1[id] = rays2[id];
-}

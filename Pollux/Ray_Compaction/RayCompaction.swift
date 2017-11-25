@@ -29,9 +29,6 @@ class RayCompaction {
     static var kernScatter: MTLFunction?
     static var kernScatterPipelineState: MTLComputePipelineState! = nil
     
-    static var kernCopyBack: MTLFunction?
-    static var kernCopyBackPipelineState: MTLComputePipelineState! = nil
-    
     //Buffers
     static var valids_buffer: SharedBuffer<UInt32>!
     static var invalids_buffer: SharedBuffer<UInt32>!
@@ -72,10 +69,6 @@ class RayCompaction {
         kernScatter = defaultLibrary.makeFunction(name: "kern_scatterRays")
         do { kernScatterPipelineState = try device.makeComputePipelineState(function: kernScatter!) }
         catch _ { fatalError("failed to create scatter pipeline state" ) }
-        
-        kernCopyBack = defaultLibrary.makeFunction(name: "kern_copyBack")
-        do { kernCopyBackPipelineState = try device.makeComputePipelineState(function: kernCopyBack!) }
-        catch _ { fatalError("failed to create copy back pipeline state" ) }
     }
     
     static func encodeCompactCommands(inRays: SharedBuffer<Ray>, outRays: SharedBuffer<Ray>, using commandEncoder: MTLComputeCommandEncoder) {
@@ -134,8 +127,8 @@ class RayCompaction {
         }
         
         // Scatter kernel
-        threadsPerGroup = MTLSize(width: THREADGROUP_SIZE, height: 1, depth: 1)
-        threadGroupsDispatched = MTLSize(width: (inRays.count + THREADGROUP_SIZE - 1) / THREADGROUP_SIZE, height: 1, depth: 1)
+        threadsPerGroup = MTLSize(width: 32, height: 1, depth: 1)
+        threadGroupsDispatched = MTLSize(width: (inRays.count + 31) / 32, height: 1, depth: 1)
         commandEncoder.setComputePipelineState(kernScatterPipelineState)
         commandEncoder.setBuffer(inRays.data, offset: 0, index: 0)
         commandEncoder.setBuffer(outRays.data, offset: 0, index: 1)
