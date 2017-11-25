@@ -36,10 +36,20 @@ class RayCompaction {
     static var validation_buffer: SharedBuffer<UInt32>!
     static var scanThreadSums_buffer: SharedBuffer<UInt32>!
     
+    static var validationBufferSize: Int!
+    
     static func setUpOnDevice(_ device: MTLDevice?, library: MTLLibrary?) {
         self.device = device!
         self.defaultLibrary = library!
         setUpShaders()
+    }
+    
+    static func setUpBuffers(count: Int) {
+        let twoPowerCeiling = ceilf(log2f(Float(count)))
+        validationBufferSize = Int(powf(2.0, twoPowerCeiling))
+        validation_buffer = SharedBuffer(count: Int(validationBufferSize), with: device)
+        let numberOfSums = (validationBufferSize + THREADGROUP_SIZE * 2 - 1) / (THREADGROUP_SIZE * 2)
+        scanThreadSums_buffer = SharedBuffer(count: numberOfSums, with: device)
     }
     
     static func setUpShaders() {
@@ -66,13 +76,9 @@ class RayCompaction {
     
     static func encodeCompactCommands(inRays: SharedBuffer<Ray>, outRays: SharedBuffer<Ray>, using commandEncoder: MTLComputeCommandEncoder) {
         
-        // Set up bookkeeping buffers
-        let twoPowerCeiling = ceilf(log2f(Float(inRays.count)))
+        
         var numberOfRays = UInt32(inRays.count)
-        let validationBufferSize = Int(powf(2.0, twoPowerCeiling))
-        validation_buffer = SharedBuffer(count: Int(validationBufferSize), with: device)
-        let numberOfSums = (validationBufferSize + THREADGROUP_SIZE * 2 - 1) / (THREADGROUP_SIZE * 2)
-        scanThreadSums_buffer = SharedBuffer(count: numberOfSums, with: device)
+
         
         // Set buffers and encode command to evaluate rays for termination
         commandEncoder.setBuffer(inRays.data, offset: 0, index: 0)

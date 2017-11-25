@@ -155,6 +155,9 @@ class PolluxRenderer: NSObject {
         self.frame         = SharedBuffer<float4>(count: self.rays1.count, with: self.device)
         self.intersections = SharedBuffer<Intersection>(count: self.rays1.count, with: self.device)
         
+        RayCompaction.setUpOnDevice(self.device, library: defaultLibrary)
+        RayCompaction.setUpBuffers(count: Int(mtkView.frame.size.width * mtkView.frame.size.height))
+        
         super.init()
         
         // Sets up the Compute Pipeline that we'll be working with
@@ -181,8 +184,6 @@ class PolluxRenderer: NSObject {
         self.kern_FinalGather = defaultLibrary.makeFunction(name: "kern_FinalGather")
         do    { try ps_FinalGather = device.makeComputePipelineState(function: kern_FinalGather)}
         catch { fatalError("FinalGather computePipelineState failed ") }
-        
-        RayCompaction.setUpOnDevice(self.device, library: defaultLibrary)
     }
 }
 
@@ -309,8 +310,8 @@ extension PolluxRenderer {
         
         
         // Repeat Shading Steps `depth` number of times
-        for _ in 0 ..< Int(self.camera.data[3]) {
-            
+        for _ in 0 ..< 8 {
+        //for _ in 0 ..< Int(self.camera.data[3]) {
             self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
             
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
@@ -345,8 +346,8 @@ extension PolluxRenderer {
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
         // For stream compaction debugging purposes. TODO: Remove these completely
-        // commandBuffer!.waitUntilCompleted()
-        // RayCompaction.inspectBuffers()
+         commandBuffer!.waitUntilCompleted()
+         //RayCompaction.inspectBuffers()
     }
     
 }

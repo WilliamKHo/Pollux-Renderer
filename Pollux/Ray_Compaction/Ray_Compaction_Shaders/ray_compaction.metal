@@ -19,7 +19,7 @@ kernel void kern_evaluateRays(const device  Ray *rays               [[  buffer(0
                               constant      uint& numberOfRays      [[  buffer(2)  ]],
                               uint id [[thread_position_in_grid]]) {
     if (id >= numberOfRays) {
-        validation_buffer[id] = 1;
+        validation_buffer[id] = 0;
         return;
     }
     // Quick and dirty
@@ -115,8 +115,8 @@ kernel void kern_prefixPostSumAddition(device uint *data [[  buffer(0)  ]],
 }
 
 // Scatter rays into compacted buffer after prefix sum
-kernel void kern_scatterRays(const device   Ray *rays1             [[  buffer(0)  ]],
-                             device         Ray *rays2            [[  buffer(1)  ]],
+kernel void kern_scatterRays(const device   Ray *rays1              [[  buffer(0)  ]],
+                             device         Ray *rays2              [[  buffer(1)  ]],
                              const device   uint *validation_buffer [[  buffer(2)  ]],
                              uint id [[thread_position_in_grid]]) {
     Ray ray = rays1[id];
@@ -128,12 +128,12 @@ kernel void kern_scatterRays(const device   Ray *rays1             [[  buffer(0)
 // Certain refactoring requirements to make this function unnecesssary:
 // - Ping pong ray buffers in PolluxRenderer. GPU operates asynchronously so this might take some thought
 // - Multiple computeEncoders per iteration since we'll want to reduce the number of threadgroups dispatched after
-// stream compaction based on remaining Rays, but that can't be known ahead of time, or can it?
+// stream compaction based on remaining Rays, but that can't be known ahead of time
 kernel void kern_copyBack(device         Ray *rays1                  [[  buffer(0)  ]],
-                                 const device   Ray *rays2                  [[  buffer(1)  ]],
-                                 const device   uint *validation_buffer     [[  buffer(2)  ]],
-                                 constant       uint& numberOfRays          [[  buffer(3)  ]],
-                                 uint id [[thread_position_in_grid]]) {
+                          const device   Ray *rays2                  [[  buffer(1)  ]],
+                          const device   uint *validation_buffer     [[  buffer(2)  ]],
+                          constant       uint& numberOfRays          [[  buffer(3)  ]],
+                          uint id [[thread_position_in_grid]]) {
     if (id >= validation_buffer[numberOfRays]) {
         rays1[id].idx_bounces[2] = 0;
     } else {

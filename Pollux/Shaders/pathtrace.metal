@@ -184,9 +184,10 @@ kernel void kern_FinalGather(constant   uint& ray_count                   [[  bu
     
 //    float4 ray_col     = float4(ray.color, 1.f);
 //    float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
-    accumulated[position] += float4(ray.color, 1.f);
+    int pixel = ray.idx_bounces[0] + 1280 * ray.idx_bounces[1];
+    accumulated[pixel] += float4(ray.color, 1.f);
     
-    float4 normalized = accumulated[position] / (iteration + 1.0);
+    float4 normalized = accumulated[pixel] / (iteration + 1.0);
     
     drawable.write(normalized, ray.idx_bounces.xy);
 }
