@@ -55,7 +55,8 @@ class PolluxRenderer: NSObject {
     
     /*****
     **
-    **  Rays Shared Buffer
+    **  Rays Shared Buffers
+    **  These buffers are ping-ponged at every bounce calculation
     **
     ******/
     var rays1 : SharedBuffer<Ray>
@@ -212,17 +213,19 @@ extension PolluxRenderer {
         }
     }
     
-    fileprivate func setBuffers(for stage: PipelineStage, using commandEncoder: MTLComputeCommandEncoder) {
+    fileprivate func setBuffers(for stage: PipelineStage, using commandEncoder: MTLComputeCommandEncoder, at depth: Int) {
+        let rays = (depth % 2 == 0) ? self.rays1 : self.rays2
+        //let rays = self.rays1
         switch (stage) {
         case GENERATE_RAYS:
             commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
             commandEncoder.setBytes(&self.max_depth, length: MemoryLayout<UInt>.size, index: 1)
-            commandEncoder.setBuffer(self.rays1.data, offset: 0, index: 2)
+            commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
         case COMPUTE_INTERSECTIONS:
             // TODO: Setup buffer for intersections shader
             commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
             commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 1)
-            commandEncoder.setBuffer(self.rays1.data, offset: 0, index: 2)
+            commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
             commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 3)
             commandEncoder.setBuffer(self.geoms.data        , offset: 0, index: 4)
             break;
@@ -248,10 +251,7 @@ extension PolluxRenderer {
         case FINAL_GATHER:
             commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
             commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
-            commandEncoder.setBuffer(self.rays1.data, offset: 0, index: 2)
-            // Buffer (0) is already set
-            // Buffer (1) is already set
-            // Buffer (2) is already set
+            commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
             commandEncoder.setBuffer(self.frame.data, offset: 0, index: 3)
             commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 4)
             break;
@@ -260,8 +260,8 @@ extension PolluxRenderer {
         }
     }
     
-    fileprivate func dispatchPipelineState(for stage: PipelineStage,using commandEncoder: MTLComputeCommandEncoder) {
-        setBuffers(for: stage, using: commandEncoder);
+    fileprivate func dispatchPipelineState(for stage: PipelineStage, using commandEncoder: MTLComputeCommandEncoder, at depth: Int) {
+        setBuffers(for: stage, using: commandEncoder, at: depth);
         updateThreadGroups(for: stage);
         switch (stage) {
             case GENERATE_RAYS:
@@ -277,7 +277,11 @@ extension PolluxRenderer {
                 commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
                                                     threadsPerThreadgroup: self.threadsPerThreadgroup)
             case COMPACT_RAYS:
-                RayCompaction.encodeCompactCommands(inRays: self.rays1, outRays: self.rays2, using: commandEncoder)
+                if (depth % 2 == 0) {
+                    RayCompaction.encodeCompactCommands(inRays: self.rays1, outRays: self.rays2, using: commandEncoder)
+                } else {
+                    RayCompaction.encodeCompactCommands(inRays: self.rays2, outRays: self.rays1, using: commandEncoder)
+                }
             case FINAL_GATHER:
                 commandEncoder.setComputePipelineState(ps_FinalGather)
                 commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
@@ -306,23 +310,17 @@ extension PolluxRenderer {
             return
         }
         
-        self.dispatchPipelineState(for: GENERATE_RAYS, using: commandEncoder!)
+        self.dispatchPipelineState(for: GENERATE_RAYS, using: commandEncoder!, at: 0)
         
         
         // Repeat Shading Steps `depth` number of times
-        for _ in 0 ..< 2 {
+        for i in 0 ..< 8 {
         //for _ in 0 ..< Int(self.camera.data[3]) {
-            self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
+            self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!, at: i)
             
-            self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
+            self.dispatchPipelineState(for: SHADE, using: commandEncoder!, at: i)
             
-            self.dispatchPipelineState(for: COMPACT_RAYS, using: commandEncoder!)
-            
-            // This won't work because GPU kernels are called asynchronously
-            // TODO: Remove this
-//            var tmp = self.rays1
-//            self.rays1 = self.rays2
-//            self.rays2 = tmp
+            self.dispatchPipelineState(for: COMPACT_RAYS, using: commandEncoder!, at: i)
         }
         
         // If drawable is not ready, don't draw
@@ -339,7 +337,8 @@ extension PolluxRenderer {
             drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
         }
         
-        self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
+        //self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!, at: Int(self.camera.data[3]))
+        self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!, at: 8)
         self.iteration += 1
 
         commandEncoder!.endEncoding()

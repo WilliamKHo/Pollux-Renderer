@@ -80,10 +80,8 @@ class RayCompaction {
     
     static func encodeCompactCommands(inRays: SharedBuffer<Ray>, outRays: SharedBuffer<Ray>, using commandEncoder: MTLComputeCommandEncoder) {
         
-        
         var numberOfRays = UInt32(inRays.count)
 
-        
         // Set buffers and encode command to evaluate rays for termination
         commandEncoder.setBuffer(inRays.data, offset: 0, index: 0)
         commandEncoder.setBuffer(valids_buffer.data, offset: 0, index: 1)
@@ -144,12 +142,6 @@ class RayCompaction {
         commandEncoder.setBuffer(valids_buffer.data, offset: 0, index: 2)
         commandEncoder.setBuffer(invalids_buffer.data, offset: 0, index: 3)
         commandEncoder.setBytes(&numberOfRays, length: MemoryLayout<UInt32>.stride, index: 4)
-        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-        
-        // Naively copy back wanted Rays
-        var rayCount: UInt32 = UInt32(inRays.count)
-        commandEncoder.setBytes(&rayCount, length: MemoryLayout<UInt32>.stride, index: 3)
-        commandEncoder.setComputePipelineState(kernCopyBackPipelineState)
         commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
 
     }
