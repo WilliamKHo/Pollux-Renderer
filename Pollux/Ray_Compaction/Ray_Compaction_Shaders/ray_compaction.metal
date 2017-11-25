@@ -15,18 +15,22 @@ using namespace metal;
 
 // Evaluate rays for termination
 kernel void kern_evaluateRays(const device  Ray *rays               [[  buffer(0)  ]],
-                              device        uint* validation_buffer [[  buffer(1)  ]],
-                              constant      uint& numberOfRays      [[  buffer(2)  ]],
+                              device        uint* valids_buffer     [[  buffer(1)  ]],
+                              device        uint* invalids_buffer   [[  buffer(2)  ]],
+                              constant      uint& numberOfRays      [[  buffer(3)  ]],
                               uint id [[thread_position_in_grid]]) {
     if (id >= numberOfRays) {
-        validation_buffer[id] = 0;
+        valids_buffer[id] = 0;
+        invalids_buffer[id] = 0;
         return;
     }
     // Quick and dirty
     if (rays[id].idx_bounces[2] > 0) {
-        validation_buffer[id] = 1;
+        valids_buffer[id] = 1;
+        invalids_buffer[id] = 0;
     } else {
-        validation_buffer[id] = 0;
+        valids_buffer[id] = 0;
+        invalids_buffer[id] = 1;
     }
     return;
 }
@@ -117,10 +121,17 @@ kernel void kern_prefixPostSumAddition(device uint *data [[  buffer(0)  ]],
 // Scatter rays into compacted buffer after prefix sum
 kernel void kern_scatterRays(const device   Ray *rays1              [[  buffer(0)  ]],
                              device         Ray *rays2              [[  buffer(1)  ]],
-                             const device   uint *validation_buffer [[  buffer(2)  ]],
+                             const device   uint *valids_buffer     [[  buffer(2)  ]],
+                             const device   uint *invalids_buffer   [[  buffer(3)  ]],
+                             constant       uint& numberOfRays      [[  buffer(4)  ]],
                              uint id [[thread_position_in_grid]]) {
+    uint invalidOffset = valids_buffer[numberOfRays];
     Ray ray = rays1[id];
-    if(ray.idx_bounces[2] > 0) rays2[validation_buffer[id]] = ray;
+    if(ray.idx_bounces[2] > 0) {
+        rays2[valids_buffer[id]] = ray;
+    } else {
+        rays2[invalids_buffer[id] + invalidOffset] = ray;
+    }
 }
 
 // TODO: This will be a pretty gross way of getting our final array of rays, but serves to at least
@@ -134,9 +145,6 @@ kernel void kern_copyBack(device         Ray *rays1                  [[  buffer(
                           const device   uint *validation_buffer     [[  buffer(2)  ]],
                           constant       uint& numberOfRays          [[  buffer(3)  ]],
                           uint id [[thread_position_in_grid]]) {
-    if (id >= validation_buffer[numberOfRays]) {
-        rays1[id].idx_bounces[2] = 0;
-    } else {
-        rays1[id] = rays2[id];
-    }
+    if (id >= numberOfRays) return;
+    rays1[id] = rays2[id];
 }
