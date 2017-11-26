@@ -165,6 +165,15 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     }
 }
 
+// Evaluate rays for early termination using stream compaction
+kernel void kern_EvaluateRays(constant      uint& ray_count         [[  buffer(0)  ]],
+                              device        uint* validation_buffer [[  buffer(1)  ]],
+                              const device  Ray *rays               [[  buffer(2)  ]],
+                              uint id [[thread_position_in_grid]]) {
+    // Quicker and clean.
+    validation_buffer[id] = (id >= ray_count) ? 0 : int(rays[id].idx_bounces[2] > 0);
+}
+
 
 /// Final Gather
 kernel void kern_FinalGather(constant   uint& ray_count                   [[  buffer(0) ]],
@@ -179,11 +188,13 @@ kernel void kern_FinalGather(constant   uint& ray_count                   [[  bu
     
 //    float4 ray_col     = float4(ray.color, 1.f);
 //    float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
-    accumulated[position] += float4(ray.color, 1.f);
+//    accumulated[position] += float4(ray.color, 1.f);
     
-    float4 normalized = accumulated[position] / (iteration + 1.0);
+//    float4 normalized = accumulated[position] / (iteration + 1.0);
     
-    drawable.write(normalized, ray.idx_bounces.xy);
+    float3 debug_color = float3(min(ray.idx_bounces[2], unsigned(1)));
+    
+    drawable.write(float4(debug_color,1), ray.idx_bounces.xy);
 }
 
 

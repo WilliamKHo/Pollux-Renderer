@@ -25,7 +25,7 @@ class PolluxRenderer: NSObject {
     
     // Clear Color
     private let bytesPerRow : Int
-    private let region : MTLRegion
+    private var region : MTLRegion
     private let blankBitmapRawData : [UInt8]
     
     // The iteration the renderer is on
@@ -45,6 +45,8 @@ class PolluxRenderer: NSObject {
     
     private var ps_ComputeIntersections: MTLComputePipelineState!;
     private var kern_ComputeIntersections: MTLFunction!
+    
+    private var rayCompactor : StreamCompactor<Ray>!
     
     private var ps_ShadeMaterials: MTLComputePipelineState!;
     private var kern_ShadeMaterials: MTLFunction!
@@ -173,6 +175,11 @@ class PolluxRenderer: NSObject {
         self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterials")
         do    { try ps_ShadeMaterials = device.makeComputePipelineState(function: kern_ShadeMaterials)}
         catch { fatalError("ShadeMaterials computePipelineState failed") }
+        
+        self.rayCompactor = StreamCompactor<Ray>(for: self.rays,
+                                                 on: device,
+                                                 with: defaultLibrary,
+                                                 applying: "kern_EvaluateRays")
         
         // Create Pipeline State for Final Gather
         self.kern_FinalGather = defaultLibrary.makeFunction(name: "kern_FinalGather")
@@ -311,15 +318,15 @@ extension PolluxRenderer {
         
         // Repeat Shading Steps `depth` number of times
         for _ in 0 ..< Int(self.camera.data[3]) {
-            
+
             self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
-            
-            // Stream Compaction for Terminated Rays
-            // self.dispatchPipelineState(for: COMPACT_RAYS)
-            
+
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
+
+            // Stream Compaction for Terminated Rays
+            self.rayCompactor.compact(using: commandEncoder!, buffersSet: true)
         }
-        
+    
         self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         self.iteration += 1
         
@@ -353,6 +360,7 @@ extension PolluxRenderer : MTKViewDelegate {
         print(size)
         
         // Resize Rays Buffer
+        self.region = MTLRegionMake2D(0, 0, Int(view.frame.size.width), Int(view.frame.size.height))
         self.rays.resize(count: Int(size.width*size.height), with: self.device)
         self.intersections.resize(count: Int(size.width*size.height), with: self.device)
         self.frame.resize(count: Int(size.width*size.height), with: self.device)

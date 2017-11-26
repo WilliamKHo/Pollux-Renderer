@@ -25,6 +25,7 @@ enum PipelineStage {
     GENERATE_RAYS,
     COMPUTE_INTERSECTIONS,
     SHADE,
+    COMPACT_RAYS,
     FINAL_GATHER,
 };
 
