@@ -161,11 +161,11 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter
-        //shadeAndScatter(ray, intersection, m, rng, pdf);
+        shadeAndScatter(ray, intersection, m, rng, pdf);
         
-        thread Geom light = geoms[0];
+        //thread Geom light = geoms[0];
         
-        shadeDirectLighting(ray, intersection, m, rng, pdf, light);
+        //shadeDirectLighting(ray, intersection, m, rng, pdf, light);
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here
@@ -230,11 +230,20 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter
-        //shadeAndScatter(ray, intersection, m, rng, pdf);
+        //
         
         thread Geom light = geoms[0];
         
-        shadeDirectLighting(ray, intersection, m, rng, pdf, light);
+        thread Ray lightRay = rays[position];
+        shadeDirectLighting(lightRay, intersection, m, rng, pdf, light);
+        
+        thread Ray brdfRay = rays[position];
+        shadeAndScatter(brdfRay, intersection, m, rng, pdf);
+        
+        ray.origin = brdfRay.origin;
+        ray.color = 0.5 * brdfRay.color + 0.5 * lightRay.color;
+        ray.direction = 0.5 * brdfRay.direction + 0.5 * lightRay.direction;
+        ray.idx_bounces[2] = brdfRay.idx_bounces[2];
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here

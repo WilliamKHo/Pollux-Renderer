@@ -34,6 +34,30 @@ void shadeAndScatter(device Ray& ray,
     }
 }
 
+// For MIS
+void shadeAndScatter(thread Ray& ray,
+                     thread Intersection& isect,
+                     thread Material &m,
+                     thread Loki& rng,
+                     thread float& pdf) {
+    switch (m.bsdf) {
+        case -1:
+            // Light Shade and 'absorb' ray by terminating
+            ray.color *= (m.color * m.emittance);
+            ray.idx_bounces[2] = 0;
+            break;
+        case 0:
+            SnS_diffuse(ray, isect, m, rng, pdf);
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        default:
+            break;
+    }
+}
+
 float3 sample_li(constant Geom& light,
                  constant Material& m,
                  constant float3& ref,
@@ -43,7 +67,7 @@ float3 sample_li(constant Geom& light,
     return float3(0);
 }
 
-void shadeDirectLighting(device Ray& ray,
+void shadeDirectLighting(thread Ray& ray,
                          thread Intersection& isect,
                          thread Material &m,
                          thread Loki& rng,

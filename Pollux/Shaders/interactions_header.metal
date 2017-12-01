@@ -36,6 +36,12 @@ void shadeAndScatter(device Ray& ray,
                      thread Material &m,
                      thread Loki& rng,
                      thread float& pdf);
+
+void shadeAndScatter(thread Ray& ray,
+                     thread Intersection& isect,
+                     thread Material &m,
+                     thread Loki& rng,
+                     thread float& pdf);
 /**
  * Sample a random point `shape_sample` on a scene light.
  *
@@ -57,7 +63,7 @@ float3 sample_li(device Geom& light,
                  thread float3 *wi,
                  thread float* pdf_li);
 
-void shadeDirectLighting(device Ray& ray,
+void shadeDirectLighting(thread Ray& ray,
                          thread Intersection& isect,
                          thread Material &m,
                          thread Loki& rng,
