@@ -177,7 +177,7 @@ class PolluxRenderer: NSObject {
         catch { fatalError("ComputeIntersections computePipelineState failed") }
         
         // Create Pipeline State for ShadeMaterials
-        self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterials")
+        self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterialsMIS")
         do    { try ps_ShadeMaterials = device.makeComputePipelineState(function: kern_ShadeMaterials)}
         catch { fatalError("ShadeMaterials computePipelineState failed") }
         
@@ -235,7 +235,8 @@ extension PolluxRenderer {
             commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
             // Buffer (2) is already set
             // Buffer (3) is already set
-            commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
+            commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 4)
+            commandEncoder.setBuffer(self.materials.data, offset: 0, index: 5)
             
             
             //Temporary code for this stage only

@@ -35,6 +35,13 @@ void SnS_fresnel(device Ray& ray,
                  thread Loki& rng,
                  thread float& pdf);
 
+void SnS_diffuseDirectLighting(device Ray& ray,
+                               thread Intersection& isect,
+                               thread Material &m,
+                               thread Loki& rng,
+                               thread float& pdf,
+                               thread Geom& light);
+
 /**
  * Computes a cosine-weighted random direction in a hemisphere.
  * Used for diffuse lighting.
@@ -49,3 +56,6 @@ void SnS_fresnel(device Ray& ray,
  */
 float3 cosRandomDirection(const  float3 normal,
                           thread Loki& rng);
+
+float3 sampleLight(thread Geom& light,
+                   thread Loki& rng);

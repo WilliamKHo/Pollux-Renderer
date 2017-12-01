@@ -57,3 +57,9 @@ float3 sample_li(device Geom& light,
                  thread float3 *wi,
                  thread float* pdf_li);
 
+void shadeDirectLighting(device Ray& ray,
+                         thread Intersection& isect,
+                         thread Material &m,
+                         thread Loki& rng,
+                         thread float& pdf,
+                         thread Geom& light);

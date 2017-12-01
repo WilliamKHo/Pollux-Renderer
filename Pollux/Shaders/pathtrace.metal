@@ -133,7 +133,8 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
                                 constant   uint& iteration             [[ buffer(1) ]],
                                 device     Ray* rays                   [[ buffer(2) ]],
                                 device     Intersection* intersections [[ buffer(3) ]],
-                                device     Material*     materials     [[ buffer(4) ]],
+                                device     Geom*         geoms         [[ buffer(4)]],
+                                device     Material*     materials     [[ buffer(5) ]],
                                 // TODO: Delete buffers 5 & 6 for later stages
                                 texture2d<float, access::write> outTexture [[texture(5)]],
                                 constant uint2& imageDeets  [[ buffer(6) ]],
@@ -160,7 +161,11 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter
-        shadeAndScatter(ray, intersection, m, rng, pdf);
+        //shadeAndScatter(ray, intersection, m, rng, pdf);
+        
+        thread Geom light = geoms[0];
+        
+        shadeDirectLighting(ray, intersection, m, rng, pdf, light);
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here
@@ -190,6 +195,53 @@ kernel void kern_FinalGather(constant   uint& ray_count                   [[  bu
     float4 normalized = accumulated[pixel] / (iteration + 1.0);
     
     drawable.write(normalized, ray.idx_bounces.xy);
+}
+
+// Shade with MIS
+kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buffer(0) ]],
+                                   constant   uint& iteration             [[ buffer(1) ]],
+                                   device     Ray* rays                   [[ buffer(2) ]],
+                                   device     Intersection* intersections [[ buffer(3) ]],
+                                   device     Geom*         geoms         [[ buffer(4)]],
+                                   device     Material*     materials     [[ buffer(5) ]],
+                                   // TODO: Delete buffers 5 & 6 for later stages
+                                   texture2d<float, access::write> outTexture [[texture(5)]],
+                                   constant uint2& imageDeets  [[ buffer(6) ]],
+                                   // TODO: END DELETE
+                                   const uint position [[thread_position_in_grid]]) {
+    
+    if (position >= ray_count) {return;}
+    
+    Intersection intersection = intersections[position];
+    device Ray& ray = rays[position];
+    
+    //Naive Early Ray Termination
+    // TODO: Stream Compact and remove this line
+    if (ray.idx_bounces[2] <= 0) {return;}
+    
+    if (intersection.t > 0.0f) { // if the intersection exists...
+        Material m = materials[intersection.materialId];
+        
+        // If the material indicates that the object was a light, "light" the ray
+        thread float pdf;
+        
+        // Seed a random number from the position and iteration number
+        Loki rng = Loki(position, iteration + 1, ray.idx_bounces[2] + 1);
+        
+        // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
+        //       as a parameter
+        //shadeAndScatter(ray, intersection, m, rng, pdf);
+        
+        thread Geom light = geoms[0];
+        
+        shadeDirectLighting(ray, intersection, m, rng, pdf, light);
+    }
+    else { // If there was no intersection, color the ray black.
+        // TODO: Environment Map Code goes here
+        //       something like: ray.color = getEnvMapColor(ray.direction);
+        ray.color = float3(0);
+        ray.idx_bounces[2] = 0;
+    }
 }
 
 

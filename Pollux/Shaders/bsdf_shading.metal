@@ -64,6 +64,41 @@ void SnS_fresnel(device Ray& ray,
     // TODO: Add Fresnel BSDF Interaction
 }
 
+void SnS_diffuseDirectLighting(device Ray& ray,
+                               thread Intersection& isect,
+                               thread Material &m,
+                               thread Loki& rng,
+                               thread float& pdf,
+                               thread Geom& light) {
+    const float3 n  = isect.normal;
+    const float3 wo = -ray.direction;
+    
+    //Scatter the Ray
+    ray.origin = isect.point + n*EPSILON;
+    ray.direction = normalize(sampleLight(light, rng) - ray.origin);
+    ray.idx_bounces[2]--;
+    
+    // Material's color divided `R` which in this case is InvPi
+    float3 f = m.color * InvPi;
+    
+    //This is lambert factor for light attenuation
+    float lambert_factor = fabs(dot(n, ray.direction));
+    
+    //PDF Calculation
+    float dotWo = dot(n, ray.direction);
+    float cosTheta = fabs(dotWo) * InvPi;
+    pdf = cosTheta;
+    
+    if (abs(pdf) < ZeroEpsilon) {
+        ray.idx_bounces[2] = 0;
+        return;
+    }
+    
+    float3 integral = (f * lambert_factor)
+    / pdf;
+    ray.color *= integral * 0.5;
+}
+
 /**************************
  **************************
  ***** HELPER METHODS *****
@@ -102,3 +137,15 @@ float3 cosRandomDirection(const float3 normal,
     + cos(around) * over * perpendicularDirection1
     + sin(around) * over * perpendicularDirection2;
 }
+
+float3 sampleLight(thread Geom& light,
+                   thread Loki& rng) {
+    float x = rng.rand() * 2 - 1;
+    float y = rng.rand() * 2 - 1;
+    float z = rng.rand() * 2 - 1;
+    
+    return float3(x * light.scale[0] + light.translation[0],
+                  y * light.scale[1] + light.translation[1],
+                  z * light.scale[2] + light.translation[2]);
+}
+
