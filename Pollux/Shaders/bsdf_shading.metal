@@ -77,9 +77,8 @@ void SnS_refract(device Ray& ray,
     }
     ray.origin = isect.point + refractedRay * 0.1;
     ray.color *= m.color;
-    ray.direction = refractedRay;
+    ray.direction = normalize(refractedRay);
     ray.idx_bounces[2]--;
-    
 }
 
 void SnS_reflect(device Ray& ray,

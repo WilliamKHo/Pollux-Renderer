@@ -16,10 +16,17 @@ void refract(const float3 incoming,
              thread float3& output) {
     float3 i = normalize(incoming);
     float3 n = normalize(surfaceNormal);
+    float indexRatios = ior;
     
-    float3 iNorm = dot(i, n) * n;
-    float cosi = length(iNorm);
-    output = ior * i + (ior * cosi - sqrt(1.f - (ior * ior) * (1.f - cosi * cosi)));
+    float cosi = dot(i, n);
+    if (cosi < 0) {
+        cosi = -cosi;
+    } else {
+        n = -n;
+        indexRatios = ior / 1.f;
+    }
+    float k = 1.f - (ior * ior) * (1.f - cosi * cosi);
+    output = (k < 0) ? 0 : ior * i + (ior * cosi - sqrt(k)) * n;
 }
 
 void reflect(const float3 incoming,
