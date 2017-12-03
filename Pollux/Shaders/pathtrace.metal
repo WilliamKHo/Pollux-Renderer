@@ -72,59 +72,9 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
     //Naive Early Ray Termination
     // TODO: Stream Compact and remove this line
     if (ray.idx_bounces[2] <= 0) {return;}
-
-    
-    float t;
-    float3 intersect_point;
-    float3 normal;
-    float t_min = FLT_MAX;
-    int hit_geom_index = -1;
-    bool outside = true;
-    
-    float3 tmp_intersect;
-    float3 tmp_normal;
-    
-    // naive parse through global geoms
-    for (uint i = 0; i < geom_count; i++)
-    {
-        device Geom& geom = geoms[i];
-        
-        if (geom.type == CUBE)
-        {
-            t = computeCubeIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
-        }
-        else if (geom.type == SPHERE)
-        {
-            t = computeSphereIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
-        }
-        // TODO: add more intersection tests here... triangle? metaball? CSG?
-        
-        // Compute the minimum t from the intersection tests to determine what
-        // scene geometry object was hit first.
-        if (t > 0.0f && t_min > t)
-        {
-            t_min = t;
-            hit_geom_index = i;
-            intersect_point = tmp_intersect;
-            normal = tmp_normal;
-        }
-    }
     
     device Intersection& intersection = intersections[position];
-    
-    if (hit_geom_index == -1)
-    {
-        // The ray doesn't hit something (index == -1)
-        intersection.t = -1.0f;
-    }
-    else
-    {
-        //The ray hits something
-        intersection.t = t_min;
-        intersection.materialId = geoms[hit_geom_index].materialid;
-        intersection.normal = normal;
-        intersection.point = intersect_point;
-    }
+    getIntersection(ray, geoms, intersection, geom_count);
 }
 
 
@@ -232,18 +182,44 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         //       as a parameter
         //
         
-        thread Geom light = geoms[0];
+        //Scatter a ray and collect a color sample for light contribution
+        int lightId = 0; // TODO: Make useful for multiple lights
+        device Geom& light = geoms[lightId];
+        device Material& light_m = materials[light.materialid];
+        thread float pdf_li;
+        thread Ray lightRay = ray;
         
-        thread Ray lightRay = rays[position];
-        shadeDirectLighting(lightRay, intersection, m, rng, pdf, light);
+        lightRay.origin = intersection.point + intersection.normal * EPSILON;
+        float3 lightContribution = sample_li(light, light_m, intersection.point, rng, lightRay.direction, pdf_li);
         
-        thread Ray brdfRay = rays[position];
-        shadeAndScatter(brdfRay, intersection, m, rng, pdf);
+        thread Intersection lightIntersection = intersection;
         
-        ray.origin = brdfRay.origin;
-        ray.color = 0.5 * brdfRay.color + 0.5 * lightRay.color;
-        ray.direction = 0.5 * brdfRay.direction + 0.5 * lightRay.direction;
-        ray.idx_bounces[2] = brdfRay.idx_bounces[2];
+        getIntersection(lightRay, geoms, lightIntersection, 7); //TODO: replace with light count
+        
+        if (lightIntersection.t > 0.f && lightIntersection.materialId != lightId) lightContribution = float3(0);
+        
+        lightContribution *= dot(intersection.normal, lightRay.direction) * m.color * pdf_li;
+        lightContribution = float3(max(0.f,lightContribution.x), max(0.f,lightContribution.y), max(0.f,lightContribution.z));
+        
+        //collect a color sample based on a light, light material, current ray origin
+        
+        //getIntersection
+        
+        //shadeDirectLighting(lightRay, intersection, m, rng, pdf, light);
+        
+        //Scatter a ray and collect a color sample for brdf contribution
+        
+        //thread Ray brdfRay = rays[position];
+        //shadeAndScatter(brdfRay, intersection, m, rng, pdf);
+        
+        //Generate a new ray
+        
+//        ray.origin = lightRay.origin;
+//        ray.direction = lightRay.direction;
+        ray.color = lightContribution;
+        ray.idx_bounces[2] == 0;
+//        ray.direction = 0.5 * brdfRay.direction + 0.5 * lightRay.direction;
+//        ray.idx_bounces[2] = brdfRay.idx_bounces[2];
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here

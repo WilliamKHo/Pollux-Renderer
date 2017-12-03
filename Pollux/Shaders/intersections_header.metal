@@ -19,6 +19,21 @@ float3 getPointOnRay(thread Ray* r,
                      thread float& t);
 
 /**
+ * Compute an intersection for a ray
+ */
+
+void getIntersection(thread Ray ray,
+                     device Geom* geoms,
+                     device Intersection& intersection,
+                     uint geom_count);
+
+// Operate on thread space intersection
+void getIntersection(thread Ray ray,
+                     device Geom* geoms,
+                     thread Intersection& intersection,
+                     uint geom_count);
+
+/**
  * Compute the intersection of a ray `r` with a sphere geometry
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */

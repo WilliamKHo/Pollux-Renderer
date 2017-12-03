@@ -7,6 +7,7 @@
 //
 
 #include "interactions_header.metal"
+#include "mis_helper_header.metal"
 
 using namespace metal;
 
@@ -58,13 +59,13 @@ void shadeAndScatter(thread Ray& ray,
     }
 }
 
-float3 sample_li(constant Geom& light,
-                 constant Material& m,
-                 constant float3& ref,
+float3 sample_li(device Geom& light,
+                 device Material& m,
+                 thread float3& ref,
                  thread Loki& rng,
-                 thread float3 *wi,
-                 thread float* pdf_li) {
-    return float3(0);
+                 thread float3& wi,
+                 thread float& pdf_li) {
+    return sampleCube(light, m, ref, rng, wi, pdf_li);
 }
 
 void shadeDirectLighting(thread Ray& ray,

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */; };
+		0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */; };
 		0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE731FC88B8700865F35 /* RayCompaction.swift */; };
 		0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE771FC8939C00865F35 /* ray_compaction.metal */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
@@ -43,6 +45,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper_header.metal; sourceTree = "<group>"; };
+		0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper.metal; sourceTree = "<group>"; };
 		0BC8FE731FC88B8700865F35 /* RayCompaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayCompaction.swift; sourceTree = "<group>"; };
 		0BC8FE771FC8939C00865F35 /* ray_compaction.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ray_compaction.metal; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */,
 				D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */,
 				D884B9761FC51B3B006A14CF /* Loki */,
+				0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */,
+				0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -373,10 +379,12 @@
 				0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
+				0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
 				0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */,
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
+				0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
 				D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */,

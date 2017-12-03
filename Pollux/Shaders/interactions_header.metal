@@ -58,10 +58,10 @@ void shadeAndScatter(thread Ray& ray,
  */
 float3 sample_li(device Geom& light,
                  device Material& m,
-                 constant float3& ref,
+                 thread float3& ref,
                  thread Loki& rng,
-                 thread float3 *wi,
-                 thread float* pdf_li);
+                 thread float3& wi,
+                 thread float& pdf_li);
 
 void shadeDirectLighting(thread Ray& ray,
                          thread Intersection& isect,
