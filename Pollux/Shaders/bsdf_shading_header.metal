@@ -10,6 +10,7 @@
 #include "../Data_Types/PolluxTypes.h"
 #include "../Data_Types/Constants.h"
 #include "Loki/loki_header.metal"
+#include "light_behavior_header.metal"
 
 // TODO: Add comments describing what this file does
 
@@ -30,6 +31,18 @@ void SnS_specular(device Ray& ray,
                   thread float& pdf);
 
 void SnS_fresnel(device Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf);
+
+void SnS_refract(device Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf);
+
+void SnS_reflect(device Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,

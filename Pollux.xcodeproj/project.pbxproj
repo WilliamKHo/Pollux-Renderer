@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BB13F821FD3EA9300E01871 /* light_behavior_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F811FD3EA9300E01871 /* light_behavior_header.metal */; };
+		0BB13F841FD3EAC900E01871 /* light_behavior.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F831FD3EAC900E01871 /* light_behavior.metal */; };
+		0BB13F861FD3EB5E00E01871 /* cornellReflectRefract.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F851FD3EB5E00E01871 /* cornellReflectRefract.json */; };
+		0BB13F871FD3EB5E00E01871 /* cornellReflectRefract.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F851FD3EB5E00E01871 /* cornellReflectRefract.json */; };
 		0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE731FC88B8700865F35 /* RayCompaction.swift */; };
 		0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE771FC8939C00865F35 /* ray_compaction.metal */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
@@ -43,6 +47,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BB13F811FD3EA9300E01871 /* light_behavior_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = light_behavior_header.metal; sourceTree = "<group>"; };
+		0BB13F831FD3EAC900E01871 /* light_behavior.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = light_behavior.metal; sourceTree = "<group>"; };
+		0BB13F851FD3EB5E00E01871 /* cornellReflectRefract.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cornellReflectRefract.json; sourceTree = "<group>"; };
 		0BC8FE731FC88B8700865F35 /* RayCompaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayCompaction.swift; sourceTree = "<group>"; };
 		0BC8FE771FC8939C00865F35 /* ray_compaction.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ray_compaction.metal; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
@@ -179,6 +186,8 @@
 				D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */,
 				D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */,
 				D884B9761FC51B3B006A14CF /* Loki */,
+				0BB13F811FD3EA9300E01871 /* light_behavior_header.metal */,
+				0BB13F831FD3EAC900E01871 /* light_behavior.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -226,6 +235,7 @@
 			children = (
 				D8BD56831FC5FDEA00375BC2 /* cornell.json */,
 				D884B9701FC4EEC5006A14CF /* sphere.json */,
+				0BB13F851FD3EB5E00E01871 /* cornellReflectRefract.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -334,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8388BEE1FB3A53800653E5D /* LaunchScreen.storyboard in Resources */,
+				0BB13F871FD3EB5E00E01871 /* cornellReflectRefract.json in Resources */,
 				D8388BEB1FB3A53800653E5D /* Assets.xcassets in Resources */,
 				D8388BE91FB3A53800653E5D /* Main.storyboard in Resources */,
 			);
@@ -344,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */,
+				0BB13F861FD3EB5E00E01871 /* cornellReflectRefract.json in Resources */,
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
@@ -372,7 +384,9 @@
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
 				0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
+				0BB13F821FD3EA9300E01871 /* light_behavior_header.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
+				0BB13F841FD3EAC900E01871 /* light_behavior.metal in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
 				0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */,

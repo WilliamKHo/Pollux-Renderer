@@ -64,6 +64,27 @@ void SnS_fresnel(device Ray& ray,
     // TODO: Add Fresnel BSDF Interaction
 }
 
+void SnS_refract(device Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf){
+    
+}
+
+void SnS_reflect(device Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf){
+    ray.origin = isect.point + isect.normal * EPSILON;
+    ray.color *= m.color;
+    float3 reflectedRay;
+    reflect(ray.direction, isect.normal, reflectedRay);
+    ray.direction = reflectedRay;
+    ray.idx_bounces[2]--;
+}
+
 /**************************
  **************************
  ***** HELPER METHODS *****
