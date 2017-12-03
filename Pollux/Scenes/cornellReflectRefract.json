@@ -62,6 +62,14 @@
                  "translate": [-1,4, -1],
                  "rotate": [0, 0, 0],
                  "scale": [3, 3, 3]
+                 },
+                 {
+                 "name": "Cube",
+                 "type": 0,
+                 "material": 6,
+                 "translate": [1,2, 1],
+                 "rotate": [0, 0, 0],
+                 "scale": [2, 2, 2]
                  }
                  ],
     "materials": [
@@ -95,6 +103,12 @@
                   "bsdf"  : 3,
                   "name": "Reflect White",
                   "color": [0.98, 0.98, 0.98]
+                  },
+                  {
+                  "bsdf"  : 4,
+                  "name": "Refract White",
+                  "color": [0.98, 0.98, 0.98],
+                  "index_of_refraction" : 1.5
                   }
                   ]
 }

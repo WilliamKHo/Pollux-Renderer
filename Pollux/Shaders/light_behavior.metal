@@ -10,9 +10,9 @@
 
 using namespace metal;
 
-void refract(const thread float3& incoming,
-             const thread float3& surfaceNormal,
-             const thread float& ior,
+void refract(const float3 incoming,
+             const float3 surfaceNormal,
+             const float ior,
              thread float3& output) {
     float3 i = normalize(incoming);
     float3 n = normalize(surfaceNormal);

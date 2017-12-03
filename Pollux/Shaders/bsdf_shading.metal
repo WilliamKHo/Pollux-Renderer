@@ -69,6 +69,16 @@ void SnS_refract(device Ray& ray,
                  thread Material &m,
                  thread Loki& rng,
                  thread float& pdf){
+    float3 refractedRay;
+    if (isect.outside) {
+        refract(ray.direction, isect.normal, 1.f / m.index_of_refraction, refractedRay);
+    } else {
+        refract(ray.direction, isect.normal, m.index_of_refraction, refractedRay);
+    }
+    ray.origin = isect.point + refractedRay * 0.1;
+    ray.color *= m.color;
+    ray.direction = refractedRay;
+    ray.idx_bounces[2]--;
     
 }
 

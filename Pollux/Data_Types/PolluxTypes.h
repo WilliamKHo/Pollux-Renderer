@@ -91,6 +91,7 @@ typedef struct {
     
     vector_float3 point;
     int materialId;
+    int outside;
 } Intersection;
 
 

@@ -124,6 +124,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
         intersection.materialId = geoms[hit_geom_index].materialid;
         intersection.normal = normal;
         intersection.point = intersect_point;
+        intersection.outside = outside;
     }
 }
 

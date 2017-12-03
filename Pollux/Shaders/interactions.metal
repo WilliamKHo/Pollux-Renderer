@@ -31,6 +31,10 @@ void shadeAndScatter(device Ray& ray,
             break;
         case 3:
             SnS_reflect(ray, isect, m, rng, pdf);
+            break;
+        case 4:
+            SnS_refract(ray, isect, m, rng, pdf);
+            break;
         default:
             break;
     }
