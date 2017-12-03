@@ -22,12 +22,6 @@ void SnS_diffuse(device Ray& ray,
                  thread Material &m,
                  thread Loki& rng,
                  thread float& pdf);
-// for MIS
-void SnS_diffuse(thread Ray& ray,
-                 thread Intersection& isect,
-                 thread Material &m,
-                 thread Loki& rng,
-                 thread float& pdf);
 
 void SnS_specular(device Ray& ray,
                   thread Intersection& isect,
@@ -40,13 +34,6 @@ void SnS_fresnel(device Ray& ray,
                  thread Material &m,
                  thread Loki& rng,
                  thread float& pdf);
-
-void SnS_diffuseDirectLighting(thread Ray& ray,
-                               thread Intersection& isect,
-                               thread Material &m,
-                               thread Loki& rng,
-                               thread float& pdf,
-                               thread Geom& light);
 
 /**
  * Computes a cosine-weighted random direction in a hemisphere.

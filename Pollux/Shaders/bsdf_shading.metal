@@ -48,43 +48,6 @@ void SnS_diffuse(device Ray& ray,
     ray.idx_bounces[2]--;
 }
 
-// for MIS
-void SnS_diffuse(thread Ray& ray,
-                 thread Intersection& isect,
-                 thread Material &m,
-                 thread Loki& rng,
-                 thread float& pdf) {
-    
-    const float3 n  = isect.normal;
-    const float3 wo = -ray.direction;
-    
-    
-    // Material's color divided `R` which in this case is InvPi
-    float3 f = m.color * InvPi;
-    
-    //This is lambert factor for light attenuation
-    float lambert_factor = fabs(dot(n, wo));
-    
-    //PDF Calculation
-    float dotWo = dot(n, wo);
-    float cosTheta = fabs(dotWo) * InvPi;
-    pdf = cosTheta;
-    
-    if (abs(pdf) < ZeroEpsilon) {
-        ray.idx_bounces[2] = 0;
-        return;
-    }
-    
-    float3 integral = (f * lambert_factor)
-    / pdf;
-    ray.color *= integral;
-    
-    //Scatter the Ray
-    ray.origin = isect.point + n*EPSILON;
-    ray.direction = cosRandomDirection(n, rng);
-    ray.idx_bounces[2]--;
-}
-
 void SnS_specular(device Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
@@ -99,41 +62,6 @@ void SnS_fresnel(device Ray& ray,
                  thread Loki& rng,
                  thread float& pdf) {
     // TODO: Add Fresnel BSDF Interaction
-}
-
-void SnS_diffuseDirectLighting(thread Ray& ray,
-                               thread Intersection& isect,
-                               thread Material &m,
-                               thread Loki& rng,
-                               thread float& pdf,
-                               thread Geom& light) {
-    const float3 n  = isect.normal;
-    const float3 wo = -ray.direction;
-    
-    //Scatter the Ray
-    ray.origin = isect.point + n*EPSILON;
-    ray.direction = normalize(sampleLight(light, rng) - ray.origin);
-    ray.idx_bounces[2]--;
-    
-    // Material's color divided `R` which in this case is InvPi
-    float3 f = m.color * InvPi;
-    
-    //This is lambert factor for light attenuation
-    float lambert_factor = fabs(dot(n, ray.direction));
-    
-    //PDF Calculation
-    float dotWo = dot(n, ray.direction);
-    float cosTheta = fabs(dotWo) * InvPi;
-    pdf = cosTheta;
-    
-    if (abs(pdf) < ZeroEpsilon) {
-        ray.idx_bounces[2] = 0;
-        return;
-    }
-    
-    float3 integral = (f * lambert_factor)
-    / pdf;
-    ray.color *= integral * 0.5;
 }
 
 /**************************

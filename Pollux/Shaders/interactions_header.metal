@@ -37,11 +37,17 @@ void shadeAndScatter(device Ray& ray,
                      thread Loki& rng,
                      thread float& pdf);
 
-void shadeAndScatter(thread Ray& ray,
-                     thread Intersection& isect,
-                     thread Material &m,
-                     thread Loki& rng,
-                     thread float& pdf);
+void scatterRay(device Ray& ray,
+                thread Intersection& isect,
+                thread Material &m,
+                thread Loki& rng,
+                thread float& pdf);
+
+void scatterRay(thread Ray& ray,
+                thread Intersection& isect,
+                thread Material &m,
+                thread Loki& rng,
+                thread float& pdf);
 /**
  * Sample a random point `shape_sample` on a scene light.
  *

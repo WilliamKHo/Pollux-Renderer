@@ -11,6 +11,7 @@
 #import  "Loki/loki_header.metal"
 #include "intersections_header.metal"
 #include "interactions_header.metal"
+#include "mis_helper_header.metal"
 
 using namespace metal;
 
@@ -112,10 +113,6 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
         //       as a parameter
         shadeAndScatter(ray, intersection, m, rng, pdf);
-        
-        //thread Geom light = geoms[0];
-        
-        //shadeDirectLighting(ray, intersection, m, rng, pdf, light);
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here
@@ -174,15 +171,19 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         
         // If the material indicates that the object was a light, "light" the ray
         thread float pdf;
+        if (m.bsdf == -1) {
+            //light the ray
+            ray.color *= (m.color * m.emittance);
+            ray.idx_bounces[2] = 0;
+            return;
+        }
         
         // Seed a random number from the position and iteration number
         Loki rng = Loki(position, iteration + 1, ray.idx_bounces[2] + 1);
         
-        // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
-        //       as a parameter
-        //
-        
-        //Scatter a ray and collect a color sample for light contribution
+        /*
+        * Light Importance Sampling
+        */
         int lightId = 0; // TODO: Make useful for multiple lights
         device Geom& light = geoms[lightId];
         device Material& light_m = materials[light.materialid];
@@ -196,30 +197,36 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         
         getIntersection(lightRay, geoms, lightIntersection, 7); //TODO: replace with light count
         
-        if (lightIntersection.t > 0.f && lightIntersection.materialId != lightId) lightContribution = float3(0);
+        if (lightIntersection.t > 0.f && lightIntersection.materialId != light.materialid) lightContribution = float3(0);
         
-        lightContribution *= dot(intersection.normal, lightRay.direction) * m.color * pdf_li;
+        lightContribution *= dot(intersection.normal, lightRay.direction) * m.color * ray.color; //TODO: Calculate weight using power heuristic
         lightContribution = float3(max(0.f,lightContribution.x), max(0.f,lightContribution.y), max(0.f,lightContribution.z));
         
-        //collect a color sample based on a light, light material, current ray origin
+        /*
+         * BSDF Importance Sampling
+         */
         
-        //getIntersection
+        thread float pdf_bsdf;
+        thread Ray bsdfRay;
+        bsdfRay.color = float3(1);
+        bsdfRay.origin = intersection.point + intersection.normal * EPSILON ;
+        scatterRay(bsdfRay, intersection, m, rng, pdf_bsdf);
+        thread Intersection bsdfIntersection = intersection;
+        getIntersection(bsdfRay, geoms, bsdfIntersection, 7);
+
+        // Only add contribution if it's a light
+        if (bsdfIntersection.t > 0.f && bsdfIntersection.materialId == light.materialid) {
+            // Assumption: There's a single light material
+            bsdfRay.color = m.color * light_m.emittance * ray.color * dot(intersection.normal, bsdfRay.direction);
+            bsdfRay.color = float3(max(0.f, bsdfRay.color.x), max(0.f, bsdfRay.color.y), max(0.f, bsdfRay.color.z));
+        }
+        float nf = 1.f, gf = 1.f;
+        float dlWeight = powerHeuristic(nf, pdf_li, gf, pdf_bsdf);
+        float bsdfWeight = powerHeuristic(nf, pdf_bsdf, gf, pdf_li);
         
-        //shadeDirectLighting(lightRay, intersection, m, rng, pdf, light);
-        
-        //Scatter a ray and collect a color sample for brdf contribution
-        
-        //thread Ray brdfRay = rays[position];
-        //shadeAndScatter(brdfRay, intersection, m, rng, pdf);
-        
-        //Generate a new ray
-        
-//        ray.origin = lightRay.origin;
-//        ray.direction = lightRay.direction;
-        ray.color = lightContribution;
-        ray.idx_bounces[2] == 0;
-//        ray.direction = 0.5 * brdfRay.direction + 0.5 * lightRay.direction;
-//        ray.idx_bounces[2] = brdfRay.idx_bounces[2];
+        //Ray for next iteration
+        ray.color = (lightContribution * pdf_li + bsdfRay.color * pdf_bsdf) * 0.5;
+        scatterRay(ray, intersection, m, rng, pdf);
     }
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here

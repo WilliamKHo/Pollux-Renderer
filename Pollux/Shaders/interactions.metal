@@ -35,20 +35,42 @@ void shadeAndScatter(device Ray& ray,
     }
 }
 
-// For MIS
-void shadeAndScatter(thread Ray& ray,
-                     thread Intersection& isect,
-                     thread Material &m,
-                     thread Loki& rng,
-                     thread float& pdf) {
+void scatterRay(device Ray& ray,
+                thread Intersection& isect,
+                thread Material &m,
+                thread Loki& rng,
+                thread float& pdf) {
     switch (m.bsdf) {
         case -1:
-            // Light Shade and 'absorb' ray by terminating
-            ray.color *= (m.color * m.emittance);
-            ray.idx_bounces[2] = 0;
             break;
         case 0:
-            SnS_diffuse(ray, isect, m, rng, pdf);
+            ray.origin = isect.point + isect.normal*EPSILON;
+            ray.direction = cosRandomDirection(isect.normal, rng);
+            ray.idx_bounces[2]--;
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        default:
+            break;
+    }
+}
+
+void scatterRay(thread Ray& ray,
+                thread Intersection& isect,
+                thread Material &m,
+                thread Loki& rng,
+                thread float& pdf) {
+    switch (m.bsdf) {
+        case -1:
+            break;
+        case 0:
+            //PDF Calculation
+            pdf = fabs(dot(isect.normal, -ray.direction)) * InvPi;
+            ray.origin = isect.point + isect.normal*EPSILON;
+            ray.direction = cosRandomDirection(isect.normal, rng);
+            ray.idx_bounces[2]--;
             break;
         case 1:
             break;
@@ -66,30 +88,4 @@ float3 sample_li(device Geom& light,
                  thread float3& wi,
                  thread float& pdf_li) {
     return sampleCube(light, m, ref, rng, wi, pdf_li);
-}
-
-void shadeDirectLighting(thread Ray& ray,
-                         thread Intersection& isect,
-                         thread Material &m,
-                         thread Loki& rng,
-                         thread float& pdf,
-                         thread Geom& light) {
-    // simple direct lighting, redirect the ray to a point on the light
-    switch (m.bsdf) {
-        case -1:
-            // Light Shade and 'absorb' ray by terminating
-            ray.color *= (m.color * m.emittance);
-            ray.idx_bounces[2] = 0;
-            break;
-        case 0:
-            SnS_diffuseDirectLighting(ray, isect, m, rng, pdf, light);
-            ray.color *= 0.5;
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        default:
-            break;
-    }
 }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */; };
 		0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */; };
+		0BB13F7F1FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */; };
+		0BB13F801FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */; };
 		0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE731FC88B8700865F35 /* RayCompaction.swift */; };
 		0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE771FC8939C00865F35 /* ray_compaction.metal */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
@@ -47,6 +49,7 @@
 /* Begin PBXFileReference section */
 		0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper_header.metal; sourceTree = "<group>"; };
 		0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper.metal; sourceTree = "<group>"; };
+		0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cornellReflectionRefraction.json; sourceTree = "<group>"; };
 		0BC8FE731FC88B8700865F35 /* RayCompaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayCompaction.swift; sourceTree = "<group>"; };
 		0BC8FE771FC8939C00865F35 /* ray_compaction.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ray_compaction.metal; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
@@ -232,6 +235,7 @@
 			children = (
 				D8BD56831FC5FDEA00375BC2 /* cornell.json */,
 				D884B9701FC4EEC5006A14CF /* sphere.json */,
+				0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -341,6 +345,7 @@
 			files = (
 				D8388BEE1FB3A53800653E5D /* LaunchScreen.storyboard in Resources */,
 				D8388BEB1FB3A53800653E5D /* Assets.xcassets in Resources */,
+				0BB13F801FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */,
 				D8388BE91FB3A53800653E5D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +356,7 @@
 			files = (
 				D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */,
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
+				0BB13F7F1FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
