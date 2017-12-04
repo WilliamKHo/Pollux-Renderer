@@ -6,12 +6,22 @@
 //  Copyright © 2017 William Ho. All rights reserved.
 //
 
+
+// General TODO's:
+// - Update Buffers for SC stages
+// - Update kernel to write to sums_y
+// - Run over block_sums
+// - Scatter
+
 import Cocoa
+
+let TG_SIZE = 64
+var sc_iter = 0
 
 // Stream Compactor takes in a generic `T` parameter type and
 // a corresponding kernel that applies a predicate to the
 // buffer passed in
-class StreamCompactor<T> {
+class StreamCompactor2D<T> {
     
     private enum CompactionStage {
         // Applies the passed in predicate function that
@@ -21,6 +31,25 @@ class StreamCompactor<T> {
         // Computes a standard prefix sum on the evaluated
         // buffer
         case PREFIX_SUM
+        
+        // Computes a standard prefix sum on the block_sums
+        // buffer
+        case PREFIX_SUM_OF_SUMS
+        
+        // Computes a standard prefix sum on the evaluated
+        // sums of the each row, this is to sum up the
+        // columns
+        case PREFIX_SUM_FOR_Y
+        
+        // Computes a standard prefix sum on the block_sums
+        // buffer of the VERTICAL ELEMENTS
+        case PREFIX_SUM_OF_SUMS_FOR_Y
+        
+        // Computes a standard prefix sum on the block_sums
+        // buffer
+        case ADJUST_AND_SCATTER
+        
+        case DEBUG
     }
     
     // *********************
@@ -29,7 +58,7 @@ class StreamCompactor<T> {
     
     //References to device.
     private let device: MTLDevice
-    private let defaultLibrary: MTLLibrary
+    private let library: MTLLibrary
     
     // Dynamic thread distribution based pipeline stage:
     // (see updateThreadGroups)
@@ -44,36 +73,35 @@ class StreamCompactor<T> {
     // *********************
     // **** Buffer Data ****
     // *********************
-    private let items : SharedBuffer<T>
-    
+    private var items : MTLBuffer! = nil
+    private var size  : uint2      = uint2(1,1)
+    private let device_items : DeviceBuffer<T>
+    private let block_sums   : DeviceBuffer<uint>
+    private let sums_y       : DeviceBuffer<uint>
+    private let block_sums_y : DeviceBuffer<uint>
     
     
     // *********************
     // **** Kernel Data ****
     // *********************
     
-    // Name of the kernel that applies the predicate to the array items
-    // ------------------  implementation based -----------------------
-    private let name_ApplyPredicate         : String
-    // Kernel function pointer and pipeline state
-    private var kern_ApplyPredicate         : MTLFunction?
-    private var ps_ApplyPredicate           : MTLComputePipelineState! = nil
+    // The kernel that applies the predicate to the array items
+    private let name_ApplyPredicate         : String          // ----  implementation based ----
+    private var kern_ApplyPredicate         : MTLFunction!
+    private var ps_ApplyPredicate           : MTLComputePipelineState!
     
-//    static var kernPrefixSumScan: MTLFunction?
-//    static var kernPrefixSumScanPipelineState: MTLComputePipelineState! = nil
-//
-//    static var kernPrefixPostSumAddition: MTLFunction?
-//    static var kernPrefixPostSumAdditionPipelineState: MTLComputePipelineState! = nil
-//
-//    static var kernScatter: MTLFunction?
-//    static var kernScatterPipelineState: MTLComputePipelineState! = nil
-//
-//    static var kernCopyBack: MTLFunction?
-//    static var kernCopyBackPipelineState: MTLComputePipelineState! = nil
+    // Prefix Sum Calculation Stage
+    private var kern_PrefixSum              : MTLFunction!
+    private var ps_PrefixSum                : MTLComputePipelineState!
+
+    // Adds the accumulated sum of the block (adjustment) and scatters the new value
+    private var kern_AdjustAndScatter       : MTLFunction!
+    private var ps_AdjustAndScatter         : MTLComputePipelineState!
     
     //Buffers
-    private var validation_buffer: SharedBuffer<UInt32>!
-//    private var scanThreadSums_buffer: SharedBuffer<UInt32>!
+    private var validation_buffer  : DeviceBuffer<uint>?
+    private var scan_result_buffer : DeviceBuffer<uint>?
+    private var count_buffer       : SharedBuffer<uint>
 
     
     // Initializes a `StreamCompactor` with the following params:
@@ -95,55 +123,128 @@ class StreamCompactor<T> {
     //                  set in place for our calculations. Saves having to reset buffers
     //                  for first stage. Defaults to false.
     //
-    init(for items: SharedBuffer<T>,
-         on device: MTLDevice,
+    init(on device: MTLDevice,
          with library: MTLLibrary,
          applying predicateKernel: String) {
-        self.items               = items
         self.device              = device
-        self.defaultLibrary      = library
+        self.library             = library
         self.name_ApplyPredicate = predicateKernel
+        self.device_items        = DeviceBuffer(count:  Int(self.size.x * self.size.y) , with: device)
+        self.block_sums          = DeviceBuffer(count: (Int(self.size.x * self.size.y) / TG_SIZE) + 1, with: device)
+        self.sums_y              = DeviceBuffer(count: (Int(self.size.y)          ) + 0, with: device)
+        self.block_sums_y        = DeviceBuffer(count: (Int(self.size.y) / TG_SIZE) + 1, with: device)
+        self.count_buffer        = SharedBuffer<uint>(count: 1, with: device,
+                                                      containing: [uint(self.device_items.count)])
+        
         self.createHelperBuffers()
         
         // Setup compute pipeline
-        do { try self.setupPipeline(on: self.device, with: self.defaultLibrary)}
+        do { try self.setupPipeline()}
         catch { fatalError("failed to creare computePipeline for streamCompaction")}
     }
     
     private func createHelperBuffers() {
-        let twoPowerCeiling = ceilf(log2f(Float(self.items.count)))
-        let validationBufferSize = Int(powf(2.0, twoPowerCeiling))
-        validation_buffer = SharedBuffer(count: Int(validationBufferSize), with: device)
-//        let numberOfSums = (validationBufferSize + kernApp.threadExecutionWidth * 2 - 1) / (kernEvaluateRaysPipelineState.threadExecutionWidth * 2)
-//        scanThreadSums_buffer = SharedBuffer(count: numberOfSums, with: device)
+        let logCountCeiling = ceilf(log2f(Float(self.size.x * self.size.y)))
+        self.validation_buffer  = self.size.x > 1 ? DeviceBuffer(count: 1 << Int(logCountCeiling), with: device) : nil
+        self.scan_result_buffer = self.size.x > 1 ? DeviceBuffer(count: 1 << Int(logCountCeiling), with: device) : nil
     }
     
-    // An all encompassing function that handles the entire Ray compaction phase
-    func compact(using commandEncoder: MTLComputeCommandEncoder, buffersSet : Bool = false) {
+    // An all encompassing function that handles the entire stream compaction phase
+    func compact(_ buffer: MTLBuffer, of size: uint2, using commandEncoder: MTLComputeCommandEncoder, buffersSet : Bool = false, commandBuffer: MTLCommandBuffer?) -> Int {
+        self.items               = buffer
+        self.size               = size
+        
         self.buffersSet = buffersSet
+        
+        // Ignore call if we still haven't initialized the buffers
+        if self.validation_buffer == nil { fatalError("invalid compact call"); }
         
         // Apply the predicate
         self.dispatchPipelineStage(for: .APPLY_PREDICATE, using: commandEncoder)
         
         // Compute the prefix sum of validation buffer
         self.dispatchPipelineStage(for: .PREFIX_SUM, using: commandEncoder)
+        
+        // Compute the prefix sum of block_sums
+        self.dispatchPipelineStage(for: .PREFIX_SUM_OF_SUMS, using: commandEncoder)
+        
+        // TODO: UNCOMMENT THESE TWO STAGES
+        // Compute the prefix sum of validation buffer
+        self.dispatchPipelineStage(for: .PREFIX_SUM_FOR_Y, using: commandEncoder)
+        
+        // Compute the prefix sum of block_sums
+        self.dispatchPipelineStage(for: .PREFIX_SUM_OF_SUMS_FOR_Y, using: commandEncoder)
+        
+        // Scatter the valid items to a new temporary array
+        self.dispatchPipelineStage(for: .ADJUST_AND_SCATTER, using: commandEncoder)
+        
+        // Copy from buffer to buffer
+        self.copyBack(using: commandBuffer)
+        
+//        self.dispatchPipelineStage(for: .DEBUG, using: commandEncoder)
+        return self.device_items.count
     }
     
-    private func setupPipeline(on device: MTLDevice, with library: MTLLibrary) throws {
-        kern_ApplyPredicate = library.makeFunction(name : self.name_ApplyPredicate)
-        ps_ApplyPredicate   = try device.makeComputePipelineState(function : kern_ApplyPredicate!)
+    private func copyBack(using commandBuffer : MTLCommandBuffer?) {
+        let blitCommandEncoder = commandBuffer?.makeBlitCommandEncoder()!
+        // Copy new rays to old buff
+        blitCommandEncoder?.copy(from: self.device_items.data!,
+                                 sourceOffset: 0,
+                                 to: self.items,
+                                 destinationOffset: 0,
+                                 size: self.device_items.count * MemoryLayout<T>.size)
+        blitCommandEncoder?.copy(from: self.scan_result_buffer!.data!,
+                                 sourceOffset: (self.device_items.count - 1) * MemoryLayout<uint>.size,
+                                 to: self.count_buffer.data!,
+                                 destinationOffset: 0,
+                                 size: MemoryLayout<uint>.size)
+        blitCommandEncoder?.endEncoding()
+        commandBuffer?.addCompletedHandler({ _ in
+            let nc = Int(self.count_buffer[0])
+            self.device_items.count = nc == 0 ? self.device_items.count : nc
+        })
+        commandBuffer?.commit()
+        commandBuffer?.waitUntilCompleted()
+  
+    }
+    
+    // Resize the buffers
+    func resize(size: uint2) {
+        self.size = size
+        let logCountCeiling = ceilf(log2f(Float(self.size.x * self.size.y)))
+        if self.validation_buffer == nil {
+            self.validation_buffer = DeviceBuffer(count: 1 << Int(logCountCeiling), with: self.device)
+            self.scan_result_buffer = DeviceBuffer(count: 1 << Int(logCountCeiling), with: self.device)
+        } else {
+            self.validation_buffer!.resize (count: 1 << Int(logCountCeiling), with: self.device)
+            self.scan_result_buffer!.resize(count: 1 << Int(logCountCeiling), with: self.device)
+        }
         
-//        kernPrefixSumScan = library.makeFunction(name: "kern_prefixSumScan")
-//        kernPrefixSumScanPipelineState = try device.makeComputePipelineState(function: kernPrefixSumScan!)
+        // Resize the sums of the individual blocks.
+        // This count should be less than 64 * rows
+        self.block_sums.resize(count: (self.validation_buffer!.count) / TG_SIZE, with: self.device)
         
-//        kernPrefixPostSumAddition = library.makeFunction(name: "kern_prefixPostSumAddition")
-//        kernPrefixPostSumAdditionPipelineState = try device.makeComputePipelineState(function: kernPrefixPostSumAddition!)
-//
-//        kernScatter = library.makeFunction(name: "kern_scatterRays")
-//        kernScatterPipelineState = try device.makeComputePipelineState(function: kernScatter!)
-//
-//        kernCopyBack = library.makeFunction(name: "kern_copyBack")
-//        kernCopyBackPipelineState = try device.makeComputePipelineState(function: kernCopyBack!)
+        // Resize the copy buffer of items that is on the device
+        self.device_items.resize(count: Int(self.size.x * self.size.y), with: self.device)
+        
+        // Resize the higher order dimension (y in this implementation) stuff
+        let logCountCeiling_y = ceilf(log2f(Float(self.size.y)))
+        self.sums_y.resize(count:        (1 << Int(logCountCeiling_y)          ) + 0, with: device)
+        self.block_sums_y.resize(count: (1 << Int(logCountCeiling_y) / TG_SIZE) + 1, with: device)
+        
+        // Reset count buffer JIC
+        self.count_buffer[0] = uint(self.device_items.count)
+    }
+    
+    private func setupPipeline() throws {
+        kern_ApplyPredicate   = self.library.makeFunction(name : self.name_ApplyPredicate)
+        ps_ApplyPredicate     = try self.device.makeComputePipelineState(function : kern_ApplyPredicate!)
+        
+        kern_PrefixSum        = self.library.makeFunction(name: "kern_PrefixSum")
+        ps_PrefixSum          = try self.device.makeComputePipelineState(function: kern_PrefixSum!)
+
+        kern_AdjustAndScatter = self.library.makeFunction(name: "kern_AdjustAndScatter")
+        ps_AdjustAndScatter   = try device.makeComputePipelineState(function: kern_AdjustAndScatter!)
     }
     
     private func dispatchPipelineStage(for stage: CompactionStage, using commandEncoder: MTLComputeCommandEncoder) {
@@ -155,8 +256,18 @@ class StreamCompactor<T> {
             commandEncoder.setComputePipelineState(ps_ApplyPredicate)
             commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
                                                 threadsPerThreadgroup: self.threadsPerThreadgroup)
-        case .PREFIX_SUM:
-            // TODO: Set compute Pipeline state and dispatch command for Prefix sum
+            
+        case .PREFIX_SUM, .PREFIX_SUM_OF_SUMS, .PREFIX_SUM_FOR_Y, .PREFIX_SUM_OF_SUMS_FOR_Y:
+            commandEncoder.setComputePipelineState(ps_PrefixSum)
+            commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                                threadsPerThreadgroup: self.threadsPerThreadgroup)
+            
+        case .ADJUST_AND_SCATTER       , .DEBUG     :
+            commandEncoder.setComputePipelineState(ps_AdjustAndScatter)
+            commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                                threadsPerThreadgroup: self.threadsPerThreadgroup)
+
+            
             break
         }
     }
@@ -164,14 +275,66 @@ class StreamCompactor<T> {
     private func setBuffers(for stage: CompactionStage, using commandEncoder: MTLComputeCommandEncoder) {
         switch (stage) {
         case .APPLY_PREDICATE:
-            commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 1)
+            // The buffer we will fill up with the applied predicate
+            commandEncoder.setBuffer(validation_buffer!.data, offset: 0, index: 1)
             // Only set items if they have not been set in the shader
             if (!self.buffersSet) {
-                commandEncoder.setBytes(&items.count, length: MemoryLayout<Int>.size, index: 0)
-                commandEncoder.setBuffer(items.data,  offset: 0, index: 2)
+                // Count of items we will run apply predicate & prefix sum on
+                var count = (self.size.x * self.size.y)
+                commandEncoder.setBytes(&count, length: MemoryLayout<Int>.size, index: 0)
+                // The items to use to apply predicate
+                commandEncoder.setBuffer(items,  offset: 0, index: 2)
             }
+        // Adds the "block_sums" buffer AS OUTPUT to the prefix sum scan
         case .PREFIX_SUM:
-            // TODO: Set buffers for prefix sum only if they have not been set before.
+            commandEncoder.setBuffer(scan_result_buffer!.data, offset: 0, index: 3)
+            commandEncoder.setBuffer(block_sums.data, offset: 0, index: 4)
+            
+            // Write Stage: 1 - Overwrite Buffer
+            var write_y : UInt32 = 1
+            commandEncoder.setBytes(&write_y, length: MemoryLayout<UInt32>.size, index: 5)
+            commandEncoder.setBuffer(sums_y.data, offset: 0, index: 6)
+            
+        // Adds the "block_sums" buffer AS INPUT to the prefix m scan
+        case .PREFIX_SUM_OF_SUMS:
+            // How may block_sums you should run a prefix scan on
+            commandEncoder.setBytes(&block_sums.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBuffer(block_sums.data,  offset: 0, index: 1)
+            commandEncoder.setBuffer(block_sums.data,  offset: 0, index: 3)
+            
+            // Write Stage: 2 - Add To Buffer
+            var write_y : UInt32 = 2
+            commandEncoder.setBytes(&write_y, length: MemoryLayout<UInt32>.size, index: 5)
+            break
+        case .PREFIX_SUM_FOR_Y:
+            commandEncoder.setBytes(&sums_y.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBuffer(sums_y.data,  offset: 0, index: 1)
+            commandEncoder.setBuffer(sums_y.data,  offset: 0, index: 3)
+            commandEncoder.setBuffer(block_sums_y.data, offset: 0, index: 4)
+            
+            // Write Stage: 0 - Don't Write
+            var write_y : UInt32 = 0
+            commandEncoder.setBytes(&write_y, length: MemoryLayout<UInt32>.size, index: 5)
+            break
+        case .PREFIX_SUM_OF_SUMS_FOR_Y:
+            // Set Buffers to block sums of Y
+            commandEncoder.setBytes(&block_sums_y.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBuffer(block_sums_y.data,  offset: 0, index: 1)
+            commandEncoder.setBuffer(block_sums_y.data,  offset: 0, index: 3)
+            break
+        case .ADJUST_AND_SCATTER:
+            var count = (self.size.x * self.size.y)
+            commandEncoder.setBytes(&count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBuffer( validation_buffer!.data,  offset: 0, index: 1)
+            commandEncoder.setBuffer(                   items,  offset: 0, index: 2)
+            commandEncoder.setBuffer(scan_result_buffer!.data,  offset: 0, index: 3)
+            commandEncoder.setBuffer(         block_sums.data,  offset: 0, index: 4)
+            commandEncoder.setBuffer(       device_items.data,  offset: 0, index: 5)
+            commandEncoder.setBuffer(             sums_y.data,  offset: 0, index: 6)
+            commandEncoder.setBuffer(       block_sums_y.data,  offset: 0, index: 7)
+            break
+        case .DEBUG:
+            commandEncoder.setBuffer(self.count_buffer.data, offset: 0, index: 10)
             break
         }
     }
@@ -180,79 +343,39 @@ class StreamCompactor<T> {
         switch (stage) {
         case .APPLY_PREDICATE:
             let warp_size = ps_ApplyPredicate.threadExecutionWidth
-            self.threadsPerThreadgroup = MTLSize(width: warp_size,height:1,depth:1)
-            self.threadgroupsPerGrid   = MTLSize(width: self.validation_buffer.count / warp_size, height:1, depth:1)
+            self.threadsPerThreadgroup = MTLSize(width: warp_size ,height:1,depth:1)
+            self.threadgroupsPerGrid   = MTLSize(width: self.validation_buffer!.count / warp_size, height:1, depth:1)
         case .PREFIX_SUM:
-            // TODO: Update Threadgroup count for prefix sum stage
+            self.threadsPerThreadgroup = MTLSize(width: TG_SIZE,height:1,depth:1)
+            let gridWidth              = self.validation_buffer!.count / (TG_SIZE*Int(self.size.y))
+            self.threadgroupsPerGrid   = MTLSize(width: gridWidth, height:Int(self.size.y), depth:1)
+            break
+        case .PREFIX_SUM_OF_SUMS:
+            let threadgroupWidth       = Int(self.size.x)      / TG_SIZE
+            let gridWidth              = self.block_sums.count / (threadgroupWidth*Int(self.size.y))
+
+            self.threadsPerThreadgroup = MTLSize(width: threadgroupWidth , height: 1, depth:1)
+            self.threadgroupsPerGrid   = MTLSize(width: gridWidth, height: Int(self.size.y), depth:1)
+            break
+            
+        case .PREFIX_SUM_FOR_Y:
+            // 1D, so no height
+            self.threadsPerThreadgroup = MTLSize(width: TG_SIZE,height:1,depth:1)
+            self.threadgroupsPerGrid   = MTLSize(width: (Int(self.size.y) / TG_SIZE) + 1, height: 1, depth:1)
+            break
+    
+        case .PREFIX_SUM_OF_SUMS_FOR_Y:
+            // TODO: Set Threadgroup count for S of S
+            let threadgroupWidth       = min(self.block_sums_y.count, TG_SIZE)
+            self.threadsPerThreadgroup = MTLSize(width: threadgroupWidth,height:1,depth:1)
+            self.threadgroupsPerGrid   = MTLSize(width: 1, height: 1, depth:1)
+            break
+        
+        case .ADJUST_AND_SCATTER     ,.DEBUG         :
+            self.threadsPerThreadgroup = MTLSize(width: TG_SIZE,height:1,depth:1)
+            let gridWidth              = self.validation_buffer!.count / (TG_SIZE*Int(self.size.y))
+            self.threadgroupsPerGrid   = MTLSize(width: gridWidth, height:Int(self.size.y), depth:1)
             break
         }
     }
-    
-//    static func setUpBuffers(count: Int, with device: MTLDevice) {
-//        let twoPowerCeiling = ceilf(log2f(Float(count)))
-//        validationBufferSize = Int(powf(2.0, twoPowerCeiling))
-//        validation_buffer = SharedBuffer(count: Int(validationBufferSize), with: device)
-//        let numberOfSums = (validationBufferSize + kernEvaluateRaysPipelineState.threadExecutionWidth * 2 - 1) / (kernEvaluateRaysPipelineState.threadExecutionWidth * 2)
-//        scanThreadSums_buffer = SharedBuffer(count: numberOfSums, with: device)
-//    }
-    
-//    private static func dispatchPipelineStage (for stage: CompactionStage, using commandEncoder: MTLComputeCommandEncoder) {
-//        
-//    }
-    
-//    static func encodeCompactCommands(inRays: SharedBuffer<Ray>, outRays: SharedBuffer<Ray>, using commandEncoder: MTLComputeCommandEncoder) {
-//        var numberOfRays = UInt32(inRays.count)
-//
-//        // Set buffers and encode command to evaluate rays for termination
-//        commandEncoder.setBuffer(inRays.data, offset: 0, index: 0)
-//        commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 1)
-//        commandEncoder.setBytes(&numberOfRays, length: MemoryLayout<UInt32>.stride, index: 2)
-//        commandEncoder.setComputePipelineState(kernEvaluateRaysPipelineState)
-//        var threadsPerGroup = MTLSize(width: kernEvaluateRaysPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//        var threadGroupsDispatched = MTLSize(width: (validationBufferSize + kernEvaluateRaysPipelineState.threadExecutionWidth - 1) / kernEvaluateRaysPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-//
-//        //Set buffers for Prefix Sum Scan
-//        commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 0)
-//        commandEncoder.setBuffer(scanThreadSums_buffer.data, offset: 0, index: 1)
-//        //Dispatch kernels for Prefix Sum Scan
-//        commandEncoder.setComputePipelineState(kernPrefixSumScanPipelineState)
-//        threadsPerGroup = MTLSize(width: kernEvaluateRaysPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//        threadGroupsDispatched = MTLSize(width: (validationBufferSize / 2 + kernEvaluateRaysPipelineState.threadExecutionWidth - 1) / kernEvaluateRaysPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-//
-//        //Second pass if buffer size exceeds a single threadgroup
-//        if (validationBufferSize > kernPrefixPostSumAdditionPipelineState.threadExecutionWidth * 2) {
-//            commandEncoder.setBuffer(scanThreadSums_buffer.data, offset: 0, index: 0)
-//            threadGroupsDispatched = MTLSize(width: 1, height: 1, depth: 1)
-//            commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-//
-//            commandEncoder.setComputePipelineState(kernPrefixPostSumAdditionPipelineState)
-//            commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 0)
-//            threadGroupsDispatched = MTLSize(width: (validationBufferSize / 2 - 1) / kernPrefixPostSumAdditionPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//            commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-//        }
-//
-//        //Set buffers for scatter
-//        commandEncoder.setBuffer(inRays.data, offset: 0, index: 0)
-//        commandEncoder.setBuffer(outRays.data, offset: 0, index: 1)
-//        commandEncoder.setBuffer(validation_buffer.data, offset: 0, index: 2)
-//        commandEncoder.setComputePipelineState(kernScatterPipelineState)
-//        //Dispatch scatter kernel
-//        threadsPerGroup = MTLSize(width: kernScatterPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//        threadGroupsDispatched = MTLSize(width: (inRays.count + kernScatterPipelineState.threadExecutionWidth - 1) / kernScatterPipelineState.threadExecutionWidth, height: 1, depth: 1)
-//        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-//
-//        //Naively copy back wanted Rays
-//        var rayCount: UInt32 = UInt32(inRays.count)
-//        commandEncoder.setBytes(&rayCount, length: MemoryLayout<UInt32>.stride, index: 3)
-//        commandEncoder.setComputePipelineState(kernCopyBackPipelineState)
-//        commandEncoder.dispatchThreadgroups(threadGroupsDispatched, threadsPerThreadgroup: threadsPerGroup)
-//
-//    }
-    // For debugging TODO: Remove this function
-//    static func inspectBuffers() {
-//        validation_buffer.inspectData()
-//    }
-    
 }

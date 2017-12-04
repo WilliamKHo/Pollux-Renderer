@@ -62,6 +62,9 @@ typedef struct {
     
     // Ray's Pixel Index x, y, and Remaining Bounces
     vector_uint3 idx_bounces;
+    
+    // TODO: Get rid of this,
+    // it's useless but I don't wanna break stuff:
     // Ray's Pixel Index in uv
     vector_uint2 uv;
 } Ray;

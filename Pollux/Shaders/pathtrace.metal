@@ -67,7 +67,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
     
     if (position >= ray_count){ return;}
     
-    thread Ray ray = rays[position];
+    device Ray& ray = rays[position];
     
     float t;
     float3 intersect_point;
@@ -142,7 +142,8 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     
     //Naive Early Ray Termination
     // TODO: Stream Compact and remove this line
-    if (ray.idx_bounces[2] <= 0) {return;}
+//    if (ray.idx_bounces[2] <= 0) {return;}
+    // DEBUG CHECK THIS NOT BAD
     
     if (intersection.t > 0.0f) { // if the intersection exists...
         Material m = materials[intersection.materialId];
@@ -169,32 +170,46 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
 kernel void kern_EvaluateRays(constant      uint& ray_count         [[  buffer(0)  ]],
                               device        uint* validation_buffer [[  buffer(1)  ]],
                               const device  Ray *rays               [[  buffer(2)  ]],
-                              uint id [[thread_position_in_grid]]) {
+                              const uint id [[thread_position_in_grid]]) {
     // Quicker and clean.
-    validation_buffer[id] = (id >= ray_count) ? 0 : int(rays[id].idx_bounces[2] > 0);
+    validation_buffer[id] = (id < ray_count && rays[id].idx_bounces[2] > 0) ? 1 : 0;
 }
 
 
 /// Final Gather
 kernel void kern_FinalGather(constant   uint& ray_count                   [[  buffer(0) ]],
                              constant   uint& iteration                   [[  buffer(1) ]],
+                             // DEBUG:
+//                             device     uint* validation_buffer           [[  buffer(1) ]],
                              device     Ray* rays                         [[  buffer(2) ]],
                              device     float4* accumulated               [[  buffer(3) ]],
+                             // DEBUG
+                             device     uint* block_sums                  [[  buffer(4) ]],
+                             const uint threadGroupId  [[threadgroup_position_in_grid]],
+                             const uint threadGroups   [[threadgroups_per_grid]],
+                             // DEBUG
                              texture2d<float, access::write> drawable     [[ texture(4) ]],
                              const uint position [[thread_position_in_grid]]) {
+    // DEBUG: UNCOMMENT THIS TO FIX STUFF:
     if (position >= ray_count) {return;}
-    
     device Ray& ray = rays[position];
+    if (ray.idx_bounces[2] == 0) {return;}
+
+    // DEBUG: UNCOMMENT THIS TO FIX STUFF
+    float4 ray_col     = float4(ray.color, 1.f);
+//    //float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
+    accumulated[position] += ray_col;
     
-//    float4 ray_col     = float4(ray.color, 1.f);
-//    float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
-//    accumulated[position] += float4(ray.color, 1.f);
+    float4 normalized = accumulated[position] / (iteration + 1.0);
+    drawable.write(normalized, ray.idx_bounces.xy);
     
-//    float4 normalized = accumulated[position] / (iteration + 1.0);
-    
-    float3 debug_color = float3(min(ray.idx_bounces[2], unsigned(1)));
-    
-    drawable.write(float4(debug_color,1), ray.idx_bounces.xy);
+    // DEBUG: COMMENT THIS OUT:
+//    float3 debug_color = float3(min(ray.idx_bounces[2], unsigned(1)));
+//    Loki rng = Loki(threadGroupId);
+//    float3 color = float3(block_sums[threadGroupId/4] / 1280.0);
+//    float3 color = float3(validation_buffer[position] / 64.0);
+//    color = color.x > 1 ? float3(color.x / 100000,0,0) : color;
+//    drawable.write(float4(0,0,0,1), ray.idx_bounces.xy);
 }
 
 
