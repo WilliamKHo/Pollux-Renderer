@@ -21,7 +21,7 @@ float3 sampleCube(device Geom& light,
     
     wi = normalize(shapeSample.xyz - ref);
     
-    float cosT = fabs(dot(-wi, float3(0, -1, 0))); //TODO: Why is this value what it is? 
+    float cosT = fabs(dot(-wi, float3(0, -1, 0))); //TODO: Why is this value what it is?
     float sampleDistance = length(shapeSample.xyz - ref);
     float solid_angle = ((sampleDistance * sampleDistance) / cosT);
     

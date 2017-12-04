@@ -99,7 +99,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         /*
          * Light Importance Sampling
          */
-        int lightId = 0; // TODO: Make useful for multiple lights
+        int lightId = 0; // TODO: Assumption is one light in scene (obviously needs to be fixed)
         device Geom& light = geoms[lightId];
         device Material& light_m = materials[light.materialid];
         thread float pdf_li;
@@ -110,7 +110,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         
         thread Intersection lightIntersection = intersection;
         
-        getIntersection(lightRay, geoms, lightIntersection, 7); //TODO: replace with light count
+        getIntersection(lightRay, geoms, lightIntersection, 7); //TODO: replace with true geom_count
         
         if (lightIntersection.t > 0.f && lightIntersection.materialId != light.materialid) lightContribution = float3(0);
         
@@ -143,7 +143,8 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         float bsdfWeight = (pdf_bsdf * pdf_bsdf) / totalPowerProbability;
         
         //Ray for next iteration
-        ray.color = lightContribution * dlWeight + bsdfRay.color * bsdfWeight;// * pdf_bsdf * 10.0f;
+        ray.color = lightContribution * dlWeight + bsdfRay.color * bsdfWeight;
+        // TODO: updateThroughPut? learn dampening procedure
         ray.idx_bounces[2] = 0;
         //scatterRay(ray, intersection, m, rng, pdf);
     }
