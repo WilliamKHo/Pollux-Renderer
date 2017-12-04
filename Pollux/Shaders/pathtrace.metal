@@ -142,7 +142,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     
     //Naive Early Ray Termination
     // TODO: Stream Compact and remove this line
-//    if (ray.idx_bounces[2] <= 0) {return;}
+    if (ray.idx_bounces[2] <= 0) {return;}
     // DEBUG CHECK THIS NOT BAD
     
     if (intersection.t > 0.0f) { // if the intersection exists...
@@ -154,8 +154,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         // Seed a random number from the position and iteration number
         Loki rng = Loki(position, iteration + 1, ray.idx_bounces[2] + 1);
         
-        // TODO: Once I fix Loki's `next_rng()` function, we won't need `random`
-        //       as a parameter
+        
         shadeAndScatter(ray, intersection, m, rng, pdf);
     }
     else { // If there was no intersection, color the ray black.
@@ -170,6 +169,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
 kernel void kern_EvaluateRays(constant      uint& ray_count         [[  buffer(0)  ]],
                               device        uint* validation_buffer [[  buffer(1)  ]],
                               const device  Ray *rays               [[  buffer(2)  ]],
+                              const device  bool *reversed          [[  buffer(9)  ]],
                               const uint id [[thread_position_in_grid]]) {
     // Quicker and clean.
     validation_buffer[id] = (id < ray_count && rays[id].idx_bounces[2] > 0) ? 1 : 0;
@@ -193,7 +193,6 @@ kernel void kern_FinalGather(constant   uint& ray_count                   [[  bu
     // DEBUG: UNCOMMENT THIS TO FIX STUFF:
     if (position >= ray_count) {return;}
     device Ray& ray = rays[position];
-    if (ray.idx_bounces[2] == 0) {return;}
 
     // DEBUG: UNCOMMENT THIS TO FIX STUFF
     float4 ray_col     = float4(ray.color, 1.f);
@@ -201,6 +200,7 @@ kernel void kern_FinalGather(constant   uint& ray_count                   [[  bu
     accumulated[position] += ray_col;
     
     float4 normalized = accumulated[position] / (iteration + 1.0);
+    
     drawable.write(normalized, ray.idx_bounces.xy);
     
     // DEBUG: COMMENT THIS OUT:

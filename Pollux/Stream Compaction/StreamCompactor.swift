@@ -8,10 +8,9 @@
 
 
 // General TODO's:
-// - Update Buffers for SC stages
-// - Update kernel to write to sums_y
-// - Run over block_sums
-// - Scatter
+// - Make a new command buffer or something
+//   so you can make a command blit encoder and
+//   be done with this shit
 
 import Cocoa
 
@@ -48,8 +47,6 @@ class StreamCompactor2D<T> {
         // Computes a standard prefix sum on the block_sums
         // buffer
         case ADJUST_AND_SCATTER
-        
-        case DEBUG
     }
     
     // *********************
@@ -99,9 +96,14 @@ class StreamCompactor2D<T> {
     private var ps_AdjustAndScatter         : MTLComputePipelineState!
     
     //Buffers
-    private var validation_buffer  : DeviceBuffer<uint>?
-    private var scan_result_buffer : DeviceBuffer<uint>?
-    private var count_buffer       : SharedBuffer<uint>
+    private var validation_buffer    : DeviceBuffer<uint>?
+    private var scan_result_buffer   : DeviceBuffer<uint>?
+    
+    private var count_buffer         : SharedBuffer<uint>
+    
+    
+    // Whether or not to reverse the predicate evaluation
+    private var reverse_predicate    = false
 
     
     // Initializes a `StreamCompactor` with the following params:
@@ -133,6 +135,7 @@ class StreamCompactor2D<T> {
         self.block_sums          = DeviceBuffer(count: (Int(self.size.x * self.size.y) / TG_SIZE) + 1, with: device)
         self.sums_y              = DeviceBuffer(count: (Int(self.size.y)          ) + 0, with: device)
         self.block_sums_y        = DeviceBuffer(count: (Int(self.size.y) / TG_SIZE) + 1, with: device)
+        
         self.count_buffer        = SharedBuffer<uint>(count: 1, with: device,
                                                       containing: [uint(self.device_items.count)])
         
@@ -150,62 +153,80 @@ class StreamCompactor2D<T> {
     }
     
     // An all encompassing function that handles the entire stream compaction phase
-    func compact(_ buffer: MTLBuffer, of size: uint2, using commandEncoder: MTLComputeCommandEncoder, buffersSet : Bool = false, commandBuffer: MTLCommandBuffer?) -> Int {
+    func compact(_ buffer: MTLBuffer, of size: uint2, using commandEncoder: MTLComputeCommandEncoder, buffersSet : Bool = false, commandQueue: MTLCommandQueue) -> Int {
+        //DEBUG
+        sc_iter+=1
+        
+        self.reverse_predicate   = false
         self.items               = buffer
-        self.size               = size
+        self.size                = size
         
         self.buffersSet = buffersSet
         
         // Ignore call if we still haven't initialized the buffers
         if self.validation_buffer == nil { fatalError("invalid compact call"); }
         
-        // Apply the predicate
-        self.dispatchPipelineStage(for: .APPLY_PREDICATE, using: commandEncoder)
-        
-        // Compute the prefix sum of validation buffer
-        self.dispatchPipelineStage(for: .PREFIX_SUM, using: commandEncoder)
-        
-        // Compute the prefix sum of block_sums
-        self.dispatchPipelineStage(for: .PREFIX_SUM_OF_SUMS, using: commandEncoder)
-        
-        // TODO: UNCOMMENT THESE TWO STAGES
-        // Compute the prefix sum of validation buffer
-        self.dispatchPipelineStage(for: .PREFIX_SUM_FOR_Y, using: commandEncoder)
-        
-        // Compute the prefix sum of block_sums
-        self.dispatchPipelineStage(for: .PREFIX_SUM_OF_SUMS_FOR_Y, using: commandEncoder)
-        
-        // Scatter the valid items to a new temporary array
-        self.dispatchPipelineStage(for: .ADJUST_AND_SCATTER, using: commandEncoder)
-        
-        // Copy from buffer to buffer
-        self.copyBack(using: commandBuffer)
-        
+        for _ in 0..<2 {
+            // Apply the predicate
+            self.dispatchPipelineStage(for: .APPLY_PREDICATE, using: commandEncoder)
+            
+            // Compute the prefix sum of validation buffer
+            self.dispatchPipelineStage(for: .PREFIX_SUM, using: commandEncoder)
+            
+            // Compute the prefix sum of block_sums
+            self.dispatchPipelineStage(for: .PREFIX_SUM_OF_SUMS, using: commandEncoder)
+            
+            // Compute the prefix sum of validation buffer
+            self.dispatchPipelineStage(for: .PREFIX_SUM_FOR_Y, using: commandEncoder)
+            
+            // Compute the prefix sum of block_sums
+            self.dispatchPipelineStage(for: .PREFIX_SUM_OF_SUMS_FOR_Y, using: commandEncoder)
+            
+            // Scatter the valid items to a new temporary array
+            self.dispatchPipelineStage(for: .ADJUST_AND_SCATTER, using: commandEncoder)
+            
+            // Copy from buffer to buffer
+            self.copyBack(using: commandQueue.makeCommandBuffer())
+            
+            // Reverses predicate and loops again
+            self.reverse_predicate = true
+            self.buffersSet = false
+            // Skip second round if there's nothing to be done
+            if (self.device_items.count == Int(self.size.x * self.size.y)) {
+                self.copyBack(using: commandQueue.makeCommandBuffer())
+                break;
+            }
+        }
+    
 //        self.dispatchPipelineStage(for: .DEBUG, using: commandEncoder)
         return self.device_items.count
     }
     
     private func copyBack(using commandBuffer : MTLCommandBuffer?) {
         let blitCommandEncoder = commandBuffer?.makeBlitCommandEncoder()!
-        // Copy new rays to old buff
-        blitCommandEncoder?.copy(from: self.device_items.data!,
-                                 sourceOffset: 0,
-                                 to: self.items,
-                                 destinationOffset: 0,
-                                 size: self.device_items.count * MemoryLayout<T>.size)
-        blitCommandEncoder?.copy(from: self.scan_result_buffer!.data!,
+        
+        if !reverse_predicate {
+            blitCommandEncoder?.copy(from: self.scan_result_buffer!.data!,
                                  sourceOffset: (self.device_items.count - 1) * MemoryLayout<uint>.size,
                                  to: self.count_buffer.data!,
                                  destinationOffset: 0,
                                  size: MemoryLayout<uint>.size)
+        } else {
+            // Copy new rays to old buff
+            blitCommandEncoder?.copy(from: self.device_items.data!,
+                                     sourceOffset: 0,
+                                     to: self.items,
+                                     destinationOffset: 0,
+                                     size: self.device_items.count * MemoryLayout<T>.size)
+        }
         blitCommandEncoder?.endEncoding()
-        commandBuffer?.addCompletedHandler({ _ in
-            let nc = Int(self.count_buffer[0])
-            self.device_items.count = nc == 0 ? self.device_items.count : nc
-        })
         commandBuffer?.commit()
         commandBuffer?.waitUntilCompleted()
-  
+        if reverse_predicate {
+            let nc = Int(self.count_buffer[0])
+            self.device_items.count = nc == 0 ? self.device_items.count : nc
+            print("Setting Count to: \(self.device_items.count)")
+        }
     }
     
     // Resize the buffers
@@ -262,12 +283,10 @@ class StreamCompactor2D<T> {
             commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
                                                 threadsPerThreadgroup: self.threadsPerThreadgroup)
             
-        case .ADJUST_AND_SCATTER       , .DEBUG     :
+        case .ADJUST_AND_SCATTER      /* , .DEBUG   */  :
             commandEncoder.setComputePipelineState(ps_AdjustAndScatter)
             commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
                                                 threadsPerThreadgroup: self.threadsPerThreadgroup)
-
-            
             break
         }
     }
@@ -277,6 +296,7 @@ class StreamCompactor2D<T> {
         case .APPLY_PREDICATE:
             // The buffer we will fill up with the applied predicate
             commandEncoder.setBuffer(validation_buffer!.data, offset: 0, index: 1)
+            commandEncoder.setBytes(&self.reverse_predicate, length: MemoryLayout<Bool>.size, index: 9)
             // Only set items if they have not been set in the shader
             if (!self.buffersSet) {
                 // Count of items we will run apply predicate & prefix sum on
@@ -329,13 +349,17 @@ class StreamCompactor2D<T> {
             commandEncoder.setBuffer(                   items,  offset: 0, index: 2)
             commandEncoder.setBuffer(scan_result_buffer!.data,  offset: 0, index: 3)
             commandEncoder.setBuffer(         block_sums.data,  offset: 0, index: 4)
-            commandEncoder.setBuffer(       device_items.data,  offset: 0, index: 5)
+            
+            // Offset the invalids if we are in the reverse predicate round
+            let device_offset = reverse_predicate ? (device_items.count) * MemoryLayout<T>.size : 0
+        
+            commandEncoder.setBuffer(       device_items.data,  offset: device_offset, index: 5)
             commandEncoder.setBuffer(             sums_y.data,  offset: 0, index: 6)
             commandEncoder.setBuffer(       block_sums_y.data,  offset: 0, index: 7)
             break
-        case .DEBUG:
-            commandEncoder.setBuffer(self.count_buffer.data, offset: 0, index: 10)
-            break
+//        case .DEBUG:
+//            commandEncoder.setBuffer(self.count_buffer.data, offset: 0, index: 10)
+//            break
         }
     }
     
@@ -371,7 +395,7 @@ class StreamCompactor2D<T> {
             self.threadgroupsPerGrid   = MTLSize(width: 1, height: 1, depth:1)
             break
         
-        case .ADJUST_AND_SCATTER     ,.DEBUG         :
+        case .ADJUST_AND_SCATTER     /*,.DEBUG   */      :
             self.threadsPerThreadgroup = MTLSize(width: TG_SIZE,height:1,depth:1)
             let gridWidth              = self.validation_buffer!.count / (TG_SIZE*Int(self.size.y))
             self.threadgroupsPerGrid   = MTLSize(width: gridWidth, height:Int(self.size.y), depth:1)
