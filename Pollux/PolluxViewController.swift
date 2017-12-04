@@ -6,25 +6,17 @@
 //  Copyright © 2017 Youssef Victor. All rights reserved.
 //
 
-import Cocoa
+
 import Metal
 import MetalKit
-
-
-// Defines what a ViewController is called because it differs from
-//
-#if os(iOS) || os(watchOS) || os(tvOS)
-  import UIKit
-  typealias PlatformViewController = UIViewController
-#else
-  import AppKit
-  typealias PlatformViewController = NSViewController
-#endif
 
 class PolluxViewController: PlatformViewController {
 
     var metalView : MTKView?
     var renderer  : PolluxRenderer?
+    
+    // Gesture recognizors for Camera Movement
+    var panGestureRecognizer = PlatformPanGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +45,11 @@ class PolluxViewController: PlatformViewController {
         
         self.metalView!.delegate = self.renderer;
         
+        // Set up the pan gesture recognizer and it's action
+        // This pans the camera if the user does a pan gesture
+        self.panGestureRecognizer = PlatformPanGestureRecognizer(target: self, action: #selector(PolluxViewController.handlePan(_:)))
+        self.metalView!.addGestureRecognizer(self.panGestureRecognizer)
+        
         // Indicate that we would like the view to call our -[AAPLRender drawInMTKView:] 60 times per
         //   second.  This rate is not guaranteed: the view will pick a closest framerate that the
         //   display is capable of refreshing (usually 30 or 60 times per second).  Also if our renderer
@@ -63,4 +60,10 @@ class PolluxViewController: PlatformViewController {
         self.metalView!.preferredFramesPerSecond = 60;
     }
     
+    
+    @objc func handlePan(_ panGestureRecognizer : PlatformPanGestureRecognizer) {
+        let dt = panGestureRecognizer.translation(in: myview!)
+        self.panGestureRecognizer.setTranslation(PlatformPoint(x: 0, y: 0), in: myview!)
+        self.renderer?.panCamera(by: dt)
+    }
 }

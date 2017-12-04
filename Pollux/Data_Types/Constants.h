@@ -23,5 +23,7 @@
 #define Sqrt2             1.41421356237309504880f
 #define OneMinusEpsilon   0.99999994f
 
+#define gestureDampening  25.f
+
 
 #endif /* Constants_h */

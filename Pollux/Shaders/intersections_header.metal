@@ -23,7 +23,7 @@ float3 getPointOnRay(thread Ray* r,
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */
 float computeSphereIntersection(device Geom   *sphere,
-                                thread Ray    &r,
+                                device Ray    &r,
                                 thread float3 &intersectionPoint,
                                 thread float3 &normal,
                                 thread bool   &outside);
@@ -33,7 +33,7 @@ float computeSphereIntersection(device Geom   *sphere,
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */
 float computeCubeIntersection(device Geom   *cube,
-                              thread Ray    &r,
+                              device Ray    &r,
                               thread float3 &intersectionPoint,
                               thread float3 &normal,
                               thread bool   &outside);

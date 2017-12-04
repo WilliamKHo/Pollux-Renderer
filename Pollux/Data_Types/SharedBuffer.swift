@@ -36,7 +36,7 @@ class SharedBuffer <T>  {
     init (count: Int, with device: MTLDevice, containing contents : [T] = []) {
         self.count = count
         
-        var memoryByteSize  = count * MemoryLayout<Ray>.size.self
+        var memoryByteSize  = count * MemoryLayout<T>.size.self
         let remainder = memoryByteSize % self.alignment
         memoryByteSize  = memoryByteSize + self.alignment - remainder
         
@@ -51,7 +51,7 @@ class SharedBuffer <T>  {
         self.startPtr    = UnsafeMutablePointer<T>(voidPtr)
         self.bufferPtr   = UnsafeMutableBufferPointer(start: startPtr, count: self.count)
         
-        // Actually Create The Ray Buffer
+        // Actually Create The Buffer
         self.data = device.makeBuffer(bytesNoCopy: memory!,
                                                  length: memoryByteSize,
                                                  options: .storageModeShared,
@@ -85,7 +85,7 @@ class SharedBuffer <T>  {
         //print("We need: \(count), but are getting:")
     
         // Realign MemoryByteSize (Round up to neares multiple)
-        var memoryByteSize = count * MemoryLayout<Ray>.size.self
+        var memoryByteSize = count * MemoryLayout<T>.size.self
         let remainder      = memoryByteSize % self.alignment
         memoryByteSize     = memoryByteSize + self.alignment - remainder
     
@@ -96,16 +96,16 @@ class SharedBuffer <T>  {
         }
         
         
-        // Setup The Ray Buffer Again
+        // Setup The Buffer Again
         self.voidPtr     = OpaquePointer(memory)
         self.startPtr    = UnsafeMutablePointer<T>(voidPtr)
         self.bufferPtr   = UnsafeMutableBufferPointer(start: startPtr, count: self.count)
         
-        // Actually Create The Ray Buffer
+        // Actually Create The Buffer
         self.data = device.makeBuffer(bytesNoCopy: memory!,
-                                            length: memoryByteSize,
-                                            options: .storageModeShared,
-                                            deallocator: nil)
+                                      length: memoryByteSize,
+                                      options: .storageModeShared,
+                                      deallocator: nil)
     }
     // For debugging TODO: Remove this function
     public func inspectData() {
