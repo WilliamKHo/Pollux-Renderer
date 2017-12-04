@@ -20,7 +20,17 @@ float3 sampleCube(device Geom& light,
     shapeSample = light.transform * shapeSample;
     
     wi = normalize(shapeSample.xyz - ref);
-    pdf_li = 0.2f; // TODO: Actually calculate pdf
+    
+    float cosT = fabs(dot(-wi, float3(0, -1, 0))); //TODO: Why is this value what it is? 
+    float sampleDistance = length(shapeSample.xyz - ref);
+    float solid_angle = ((sampleDistance * sampleDistance) / cosT);
+    
+    pdf_li = solid_angle / (2 * (light.scale.x * light.scale.y
+                               + light.scale.x * light.scale.z
+                               + light.scale.y * light.scale.z));
+    
+    //Check if dividing by 0.f
+    pdf_li = isnan(pdf_li) ? 0.f : pdf_li;
     return m.color * m.emittance;
 }
 
@@ -33,6 +43,20 @@ float powerHeuristic(thread float& nf,
                      thread float& fpdf,
                      thread float& ng,
                      thread float& gpdf) {
-    float f = nf * fpdf, g = ng * gpdf;
+    float f = nf * fpdf;
+    float g = ng * gpdf;
     return (f * f) / (f*f + g*g);
+}
+
+float calculatePDF(thread int& bsdf,
+                   thread float3& n,
+                   thread float3& wo) {
+    if (bsdf == 0) {
+        float dotWo = dot(n, wo);
+        float cosTheta = fabs(dotWo) * InvPi;
+        float pdf = cosTheta;
+        return pdf;
+    } else {
+        return 0;
+    }
 }

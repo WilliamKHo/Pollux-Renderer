@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B2232B11FD5AEC60005E630 /* mis.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0B2232B01FD5AEC60005E630 /* mis.metal */; };
+		0B2232B21FD5AEC60005E630 /* mis.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0B2232B01FD5AEC60005E630 /* mis.metal */; };
 		0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */; };
 		0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */; };
 		0BB13F7F1FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */; };
@@ -47,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B2232B01FD5AEC60005E630 /* mis.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis.metal; sourceTree = "<group>"; };
 		0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper_header.metal; sourceTree = "<group>"; };
 		0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper.metal; sourceTree = "<group>"; };
 		0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cornellReflectionRefraction.json; sourceTree = "<group>"; };
@@ -188,6 +191,7 @@
 				D884B9761FC51B3B006A14CF /* Loki */,
 				0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */,
 				0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */,
+				0B2232B01FD5AEC60005E630 /* mis.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -370,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B2232B21FD5AEC60005E630 /* mis.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +393,7 @@
 				0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
+				0B2232B11FD5AEC60005E630 /* mis.metal in Sources */,
 				0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */,
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */,

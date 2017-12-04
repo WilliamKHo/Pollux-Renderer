@@ -30,3 +30,7 @@ float powerHeuristic(thread float& nf,
                      thread float& fpdf,
                      thread float& gf,
                      thread float& gpdf);
+
+float calculatePDF(thread int& bsdf,
+                   thread float3& n,
+                   thread float3& wo);

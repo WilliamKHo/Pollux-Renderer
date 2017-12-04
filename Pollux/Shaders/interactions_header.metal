@@ -37,6 +37,8 @@ void shadeAndScatter(device Ray& ray,
                      thread Loki& rng,
                      thread float& pdf);
 
+// TODO: Add comment headers
+
 void scatterRay(device Ray& ray,
                 thread Intersection& isect,
                 thread Material &m,

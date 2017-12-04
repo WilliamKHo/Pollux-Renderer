@@ -44,6 +44,12 @@ void scatterRay(device Ray& ray,
         case -1:
             break;
         case 0:
+            //PDF Calculation
+            pdf = fabs(dot(isect.normal, -ray.direction)) * InvPi;
+            if (abs(pdf) < ZeroEpsilon) {
+                ray.idx_bounces[2] = 0;
+                break;
+            }
             ray.origin = isect.point + isect.normal*EPSILON;
             ray.direction = cosRandomDirection(isect.normal, rng);
             ray.idx_bounces[2]--;
@@ -68,6 +74,10 @@ void scatterRay(thread Ray& ray,
         case 0:
             //PDF Calculation
             pdf = fabs(dot(isect.normal, -ray.direction)) * InvPi;
+            if (abs(pdf) < ZeroEpsilon) {
+                ray.idx_bounces[2] = 0;
+                break;
+            }
             ray.origin = isect.point + isect.normal*EPSILON;
             ray.direction = cosRandomDirection(isect.normal, rng);
             ray.idx_bounces[2]--;

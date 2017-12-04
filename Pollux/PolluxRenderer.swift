@@ -11,10 +11,15 @@ import Metal
 import MetalKit
 import simd
 
+
 // TODO: Remove This Render Debug Value
 var myview: MTKView?
 
 class PolluxRenderer: NSObject {
+    
+    // "Macros" for MIS
+    let MIS = true;
+    
     // Data Alignment
     private let alignment  : Int = 0x4000
     // Reference to the GPU essentially
@@ -167,9 +172,15 @@ class PolluxRenderer: NSObject {
     
     private func setupComputePipeline() {
         // Create Pipeline State for RayGenereration from Camera
-        self.kern_GenerateRaysFromCamera = defaultLibrary.makeFunction(name: "kern_GenerateRaysFromCamera")
-        do    { try ps_GenerateRaysFromCamera = device.makeComputePipelineState(function: kern_GenerateRaysFromCamera)}
-        catch { fatalError("generateRaysFromCamera computePipelineState failed")}
+        if (MIS) {
+            self.kern_GenerateRaysFromCamera = defaultLibrary.makeFunction(name: "kern_GenerateRaysFromCameraMIS")
+            do    { try ps_GenerateRaysFromCamera = device.makeComputePipelineState(function: kern_GenerateRaysFromCamera)}
+            catch { fatalError("generateRaysFromCamera computePipelineState failed")}
+        } else {
+            self.kern_GenerateRaysFromCamera = defaultLibrary.makeFunction(name: "kern_GenerateRaysFromCamera")
+            do    { try ps_GenerateRaysFromCamera = device.makeComputePipelineState(function: kern_GenerateRaysFromCamera)}
+            catch { fatalError("generateRaysFromCamera computePipelineState failed")}
+        }
         
         // Create Pipeline State for ComputeIntersection
         self.kern_ComputeIntersections = defaultLibrary.makeFunction(name: "kern_ComputeIntersections")
@@ -177,9 +188,15 @@ class PolluxRenderer: NSObject {
         catch { fatalError("ComputeIntersections computePipelineState failed") }
         
         // Create Pipeline State for ShadeMaterials
-        self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterials")
-        do    { try ps_ShadeMaterials = device.makeComputePipelineState(function: kern_ShadeMaterials)}
-        catch { fatalError("ShadeMaterials computePipelineState failed") }
+        if (MIS) {
+            self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterialsMIS")
+            do    { try ps_ShadeMaterials = device.makeComputePipelineState(function: kern_ShadeMaterials)}
+            catch { fatalError("ShadeMaterials computePipelineState failed") }
+        } else {
+            self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterials")
+            do    { try ps_ShadeMaterials = device.makeComputePipelineState(function: kern_ShadeMaterials)}
+            catch { fatalError("ShadeMaterials computePipelineState failed") }
+        }
         
         // Create Pipeline State for Final Gather
         self.kern_FinalGather = defaultLibrary.makeFunction(name: "kern_FinalGather")

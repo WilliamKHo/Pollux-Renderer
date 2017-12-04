@@ -10,6 +10,7 @@
 #include "../Data_Types/PolluxTypes.h"
 #include "../Data_Types/Constants.h"
 #include "Loki/loki_header.metal"
+#include "mis_helper_header.metal"
 
 // TODO: Add comments describing what this file does
 
