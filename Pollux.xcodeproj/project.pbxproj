@@ -7,26 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B2232B11FD5AEC60005E630 /* mis.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0B2232B01FD5AEC60005E630 /* mis.metal */; };
-		0B2232B21FD5AEC60005E630 /* mis.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0B2232B01FD5AEC60005E630 /* mis.metal */; };
-		0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */; };
-		0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */; };
-		0BB13F7F1FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */; };
-		0BB13F801FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */; };
-		0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE731FC88B8700865F35 /* RayCompaction.swift */; };
-		0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8FE771FC8939C00865F35 /* ray_compaction.metal */; };
+		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */; };
 		D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CD1FBD056E00385DA6 /* Scene.swift */; };
 		D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */; };
+		D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */; };
+		D826C08B1FC88E0C00BD8A3E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826C08A1FC88E0C00BD8A3E /* AppDelegate.swift */; };
+		D826C0901FC88E0C00BD8A3E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D826C08E1FC88E0C00BD8A3E /* Main.storyboard */; };
+		D826C0921FC88E0C00BD8A3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D826C0911FC88E0C00BD8A3E /* Assets.xcassets */; };
+		D826C0951FC88E0C00BD8A3E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D826C0931FC88E0C00BD8A3E /* LaunchScreen.storyboard */; };
+		D826C09A1FC88E8300BD8A3E /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BF31FB3A54900653E5D /* Metal.framework */; };
+		D826C09B1FC88E8300BD8A3E /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BF41FB3A54900653E5D /* MetalKit.framework */; };
+		D826C0AF1FC892A000BD8A3E /* PolluxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */; };
+		D826C0B01FC892A000BD8A3E /* SceneParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884B96D1FC4A284006A14CF /* SceneParser.swift */; };
+		D826C0B41FC892A000BD8A3E /* pathtrace.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8718BE11FB2BFFF00260B81 /* pathtrace.metal */; };
+		D826C0B51FC892A000BD8A3E /* intersections_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F211FC483320001CF76 /* intersections_header.metal */; };
+		D826C0B61FC892A000BD8A3E /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
+		D826C0B71FC892A000BD8A3E /* interactions_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56781FC5DF9900375BC2 /* interactions_header.metal */; };
+		D826C0B81FC892A000BD8A3E /* interactions.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567A1FC5E50B00375BC2 /* interactions.metal */; };
+		D826C0B91FC892A000BD8A3E /* bsdf_shading_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */; };
+		D826C0BA1FC892A000BD8A3E /* bsdf_shading.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */; };
+		D826C0BB1FC892A000BD8A3E /* loki_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D884B9741FC51A27006A14CF /* loki_header.metal */; };
+		D826C0BC1FC892A000BD8A3E /* loki.metal in Sources */ = {isa = PBXBuildFile; fileRef = D884B9721FC51624006A14CF /* loki.metal */; };
+		D826C0BF1FC892A000BD8A3E /* simd_la.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F1F1FC4682E0001CF76 /* simd_la.swift */; };
+		D826C0C01FC892A000BD8A3E /* SharedBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */; };
+		D826C0C11FC892A000BD8A3E /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */; };
+		D826C0C21FC892A000BD8A3E /* Pollux-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */; };
+		D826C0C31FC8930800BD8A3E /* Pollux-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */; };
+		D826C0C41FC8952B00BD8A3E /* cornell.json in Resources */ = {isa = PBXBuildFile; fileRef = D8BD56831FC5FDEA00375BC2 /* cornell.json */; };
+		D826C0C51FC8952B00BD8A3E /* sphere.json in Resources */ = {isa = PBXBuildFile; fileRef = D884B9701FC4EEC5006A14CF /* sphere.json */; };
+		D826EE001FCA4E750078118A /* StreamCompactor.metal in Sources */ = {isa = PBXBuildFile; fileRef = D826EDFE1FCA4E750078118A /* StreamCompactor.metal */; };
+		D826EE011FCA4E750078118A /* StreamCompactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826EDFF1FCA4E750078118A /* StreamCompactor.swift */; };
+		D826EE021FCA4E9A0078118A /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
 		D8388BD61FB3973600653E5D /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BD51FB3972E00653E5D /* Metal.framework */; };
 		D8388BD71FB3973600653E5D /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BD41FB3972E00653E5D /* MetalKit.framework */; };
 		D8388BDB1FB3A2F000653E5D /* PolluxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */; };
-		D8388BE91FB3A53800653E5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8388BE71FB3A53800653E5D /* Main.storyboard */; };
-		D8388BEB1FB3A53800653E5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8388BEA1FB3A53800653E5D /* Assets.xcassets */; };
-		D8388BEE1FB3A53800653E5D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8388BEC1FB3A53800653E5D /* LaunchScreen.storyboard */; };
-		D8388BF51FB3A55000653E5D /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BF31FB3A54900653E5D /* Metal.framework */; };
-		D8388BF61FB3A55000653E5D /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8388BF41FB3A54900653E5D /* MetalKit.framework */; };
 		D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
 		D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F1F1FC4682E0001CF76 /* simd_la.swift */; };
 		D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F211FC483320001CF76 /* intersections_header.metal */; };
@@ -49,24 +65,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0B2232B01FD5AEC60005E630 /* mis.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis.metal; sourceTree = "<group>"; };
-		0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper_header.metal; sourceTree = "<group>"; };
-		0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mis_helper.metal; sourceTree = "<group>"; };
-		0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cornellReflectionRefraction.json; sourceTree = "<group>"; };
-		0BC8FE731FC88B8700865F35 /* RayCompaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayCompaction.swift; sourceTree = "<group>"; };
-		0BC8FE771FC8939C00865F35 /* ray_compaction.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ray_compaction.metal; sourceTree = "<group>"; };
+		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D82563CD1FBD056E00385DA6 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedBuffer.swift; sourceTree = "<group>"; };
+		D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformTypes.swift; sourceTree = "<group>"; };
+		D826C0881FC88E0C00BD8A3E /* Pollux-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D826C08A1FC88E0C00BD8A3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D826C08F1FC88E0C00BD8A3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D826C0911FC88E0C00BD8A3E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D826C0941FC88E0C00BD8A3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D826C0961FC88E0C00BD8A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D826EDFE1FCA4E750078118A /* StreamCompactor.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = StreamCompactor.metal; sourceTree = "<group>"; };
+		D826EDFF1FCA4E750078118A /* StreamCompactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamCompactor.swift; sourceTree = "<group>"; };
 		D8388BD41FB3972E00653E5D /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		D8388BD51FB3972E00653E5D /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolluxViewController.swift; sourceTree = "<group>"; };
-		D8388BE11FB3A53700653E5D /* Pollux-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8388BE81FB3A53800653E5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D8388BEA1FB3A53800653E5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D8388BED1FB3A53800653E5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D8388BEF1FB3A53800653E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8388BF31FB3A54900653E5D /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		D8388BF41FB3A54900653E5D /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
 		D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolluxRenderer.swift; sourceTree = "<group>"; };
@@ -75,7 +90,7 @@
 		D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = renderBuffer.metal; sourceTree = "<group>"; };
 		D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolluxTypes.h; sourceTree = "<group>"; };
 		D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pollux-Bridging-Header.h"; sourceTree = "<group>"; };
-		D8718BCC1FB2BE7B00260B81 /* Pollux.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pollux.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8718BD31FB2BE7B00260B81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8718BD61FB2BE7B00260B81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -97,12 +112,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D8388BDE1FB3A53700653E5D /* Frameworks */ = {
+		D826C0851FC88E0C00BD8A3E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8388BF51FB3A55000653E5D /* Metal.framework in Frameworks */,
-				D8388BF61FB3A55000653E5D /* MetalKit.framework in Frameworks */,
+				D826C09A1FC88E8300BD8A3E /* Metal.framework in Frameworks */,
+				D826C09B1FC88E8300BD8A3E /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,21 +133,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0BC8FE721FC88B1A00865F35 /* Ray_Compaction */ = {
+		D826C0891FC88E0C00BD8A3E /* Pollux-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0BC8FE761FC8937B00865F35 /* Ray_Compaction_Shaders */,
-				0BC8FE731FC88B8700865F35 /* RayCompaction.swift */,
+				D826C08A1FC88E0C00BD8A3E /* AppDelegate.swift */,
+				D826C08E1FC88E0C00BD8A3E /* Main.storyboard */,
+				D826C0911FC88E0C00BD8A3E /* Assets.xcassets */,
+				D826C0931FC88E0C00BD8A3E /* LaunchScreen.storyboard */,
+				D826C0961FC88E0C00BD8A3E /* Info.plist */,
 			);
-			path = Ray_Compaction;
+			path = "Pollux-iOS";
 			sourceTree = "<group>";
 		};
-		0BC8FE761FC8937B00865F35 /* Ray_Compaction_Shaders */ = {
+		D826EDFD1FCA4E750078118A /* Stream Compaction */ = {
 			isa = PBXGroup;
 			children = (
-				0BC8FE771FC8939C00865F35 /* ray_compaction.metal */,
+				D826EDFF1FCA4E750078118A /* StreamCompactor.swift */,
+				D826EDFE1FCA4E750078118A /* StreamCompactor.metal */,
 			);
-			path = Ray_Compaction_Shaders;
+			path = "Stream Compaction";
 			sourceTree = "<group>";
 		};
 		D8388BD31FB3972E00653E5D /* Frameworks */ = {
@@ -149,22 +168,12 @@
 		D8388BDC1FB3A51900653E5D /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */,
 				D8718BD81FB2BE7B00260B81 /* Info.plist */,
 				D8718BD31FB2BE7B00260B81 /* Assets.xcassets */,
 				D8718BD51FB2BE7B00260B81 /* Main.storyboard */,
 			);
 			path = macOS;
-			sourceTree = "<group>";
-		};
-		D8388BE21FB3A53700653E5D /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				D8388BE71FB3A53800653E5D /* Main.storyboard */,
-				D8388BEA1FB3A53800653E5D /* Assets.xcassets */,
-				D8388BEC1FB3A53800653E5D /* LaunchScreen.storyboard */,
-				D8388BEF1FB3A53800653E5D /* Info.plist */,
-			);
-			path = iOS;
 			sourceTree = "<group>";
 		};
 		D85A88DD1FC4940E00E5F6A2 /* Data_Types */ = {
@@ -174,6 +183,8 @@
 				D8BD567E1FC5ED3700375BC2 /* Constants.h */,
 				D84F8F1F1FC4682E0001CF76 /* simd_la.swift */,
 				D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */,
+				D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */,
+				D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */,
 			);
 			path = Data_Types;
 			sourceTree = "<group>";
@@ -189,9 +200,6 @@
 				D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */,
 				D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */,
 				D884B9761FC51B3B006A14CF /* Loki */,
-				0BB13F7A1FD22F0B00E01871 /* mis_helper_header.metal */,
-				0BB13F7C1FD22F1E00E01871 /* mis_helper.metal */,
-				0B2232B01FD5AEC60005E630 /* mis.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -208,8 +216,8 @@
 		D8718BCD1FB2BE7B00260B81 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8718BCC1FB2BE7B00260B81 /* Pollux.app */,
-				D8388BE11FB3A53700653E5D /* Pollux-iOS.app */,
+				D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */,
+				D826C0881FC88E0C00BD8A3E /* Pollux-iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -217,16 +225,15 @@
 		D8718BCE1FB2BE7B00260B81 /* Pollux */ = {
 			isa = PBXGroup;
 			children = (
-				0BC8FE721FC88B1A00865F35 /* Ray_Compaction */,
-				D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */,
 				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
 				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
 				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
+				D826EDFD1FCA4E750078118A /* Stream Compaction */,
 				D884B96F1FC4AA98006A14CF /* Scenes */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
 				D85A88DD1FC4940E00E5F6A2 /* Data_Types */,
 				D8B81AC91FBE56D500E2AE82 /* Dregs */,
-				D8388BE21FB3A53700653E5D /* iOS */,
+				D826C0891FC88E0C00BD8A3E /* Pollux-iOS */,
 				D8388BDC1FB3A51900653E5D /* macOS */,
 				D8718BD91FB2BE7B00260B81 /* Pollux.entitlements */,
 				D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */,
@@ -239,7 +246,6 @@
 			children = (
 				D8BD56831FC5FDEA00375BC2 /* cornell.json */,
 				D884B9701FC4EEC5006A14CF /* sphere.json */,
-				0BB13F7E1FD3E73600E01871 /* cornellReflectionRefraction.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -268,13 +274,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D8388BE01FB3A53700653E5D /* Pollux-iOS */ = {
+		D826C0871FC88E0C00BD8A3E /* Pollux-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8388BF01FB3A53800653E5D /* Build configuration list for PBXNativeTarget "Pollux-iOS" */;
+			buildConfigurationList = D826C0971FC88E0C00BD8A3E /* Build configuration list for PBXNativeTarget "Pollux-iOS" */;
 			buildPhases = (
-				D8388BDD1FB3A53700653E5D /* Sources */,
-				D8388BDE1FB3A53700653E5D /* Frameworks */,
-				D8388BDF1FB3A53700653E5D /* Resources */,
+				D826C0841FC88E0C00BD8A3E /* Sources */,
+				D826C0851FC88E0C00BD8A3E /* Frameworks */,
+				D826C0861FC88E0C00BD8A3E /* Resources */,
 			);
 			buildRules = (
 			);
@@ -282,12 +288,12 @@
 			);
 			name = "Pollux-iOS";
 			productName = "Pollux-iOS";
-			productReference = D8388BE11FB3A53700653E5D /* Pollux-iOS.app */;
+			productReference = D826C0881FC88E0C00BD8A3E /* Pollux-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D8718BCB1FB2BE7B00260B81 /* Pollux */ = {
+		D8718BCB1FB2BE7B00260B81 /* Pollux-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux" */;
+			buildConfigurationList = D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux-macOS" */;
 			buildPhases = (
 				D8718BC81FB2BE7B00260B81 /* Sources */,
 				D8718BC91FB2BE7B00260B81 /* Frameworks */,
@@ -297,9 +303,9 @@
 			);
 			dependencies = (
 			);
-			name = Pollux;
+			name = "Pollux-macOS";
 			productName = Pollux;
-			productReference = D8718BCC1FB2BE7B00260B81 /* Pollux.app */;
+			productReference = D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -312,7 +318,7 @@
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Youssef Victor";
 				TargetAttributes = {
-					D8388BE01FB3A53700653E5D = {
+					D826C0871FC88E0C00BD8A3E = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
 					};
@@ -336,21 +342,22 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8718BCB1FB2BE7B00260B81 /* Pollux */,
-				D8388BE01FB3A53700653E5D /* Pollux-iOS */,
+				D8718BCB1FB2BE7B00260B81 /* Pollux-macOS */,
+				D826C0871FC88E0C00BD8A3E /* Pollux-iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D8388BDF1FB3A53700653E5D /* Resources */ = {
+		D826C0861FC88E0C00BD8A3E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8388BEE1FB3A53800653E5D /* LaunchScreen.storyboard in Resources */,
-				D8388BEB1FB3A53800653E5D /* Assets.xcassets in Resources */,
-				0BB13F801FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */,
-				D8388BE91FB3A53800653E5D /* Main.storyboard in Resources */,
+				D826C0C41FC8952B00BD8A3E /* cornell.json in Resources */,
+				D826C0C51FC8952B00BD8A3E /* sphere.json in Resources */,
+				D826C0951FC88E0C00BD8A3E /* LaunchScreen.storyboard in Resources */,
+				D826C0921FC88E0C00BD8A3E /* Assets.xcassets in Resources */,
+				D826C0901FC88E0C00BD8A3E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,7 +367,6 @@
 			files = (
 				D8718BE01FB2BED300260B81 /* draggo.jpg in Resources */,
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
-				0BB13F7F1FD3E73600E01871 /* cornellReflectionRefraction.json in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
@@ -370,11 +376,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D8388BDD1FB3A53700653E5D /* Sources */ = {
+		D826C0841FC88E0C00BD8A3E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2232B21FD5AEC60005E630 /* mis.metal in Sources */,
+				D826C0AF1FC892A000BD8A3E /* PolluxViewController.swift in Sources */,
+				D826C0B01FC892A000BD8A3E /* SceneParser.swift in Sources */,
+				D826C0B41FC892A000BD8A3E /* pathtrace.metal in Sources */,
+				D826C0B51FC892A000BD8A3E /* intersections_header.metal in Sources */,
+				D826C0B61FC892A000BD8A3E /* intersections.metal in Sources */,
+				D826C0B71FC892A000BD8A3E /* interactions_header.metal in Sources */,
+				D826C0B81FC892A000BD8A3E /* interactions.metal in Sources */,
+				D826EE021FCA4E9A0078118A /* PolluxRenderer.swift in Sources */,
+				D826C0B91FC892A000BD8A3E /* bsdf_shading_header.metal in Sources */,
+				D826C0BA1FC892A000BD8A3E /* bsdf_shading.metal in Sources */,
+				D826C0BB1FC892A000BD8A3E /* loki_header.metal in Sources */,
+				D826C0BC1FC892A000BD8A3E /* loki.metal in Sources */,
+				D826C0BF1FC892A000BD8A3E /* simd_la.swift in Sources */,
+				D826C0C01FC892A000BD8A3E /* SharedBuffer.swift in Sources */,
+				D826C0C11FC892A000BD8A3E /* PlatformTypes.swift in Sources */,
+				D826C0C21FC892A000BD8A3E /* Pollux-Bridging-Header.h in Sources */,
+				D826C08B1FC88E0C00BD8A3E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,48 +404,48 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D826EE011FCA4E750078118A /* StreamCompactor.swift in Sources */,
+				D826C0C31FC8930800BD8A3E /* Pollux-Bridging-Header.h in Sources */,
 				D81110601FC455E80059C01B /* intersections.metal in Sources */,
 				D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */,
 				D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */,
 				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
-				0BC8FE741FC88B8700865F35 /* RayCompaction.swift in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
-				0BB13F7D1FD22F1E00E01871 /* mis_helper.metal in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
-				0B2232B11FD5AEC60005E630 /* mis.metal in Sources */,
-				0BC8FE781FC8939C00865F35 /* ray_compaction.metal in Sources */,
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
-				0BB13F7B1FD22F0B00E01871 /* mis_helper_header.metal in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
+				D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */,
 				D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */,
 				D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */,
 				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
 				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
 				D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */,
+				D826EE001FCA4E750078118A /* StreamCompactor.metal in Sources */,
 				D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */,
 				D8388BDB1FB3A2F000653E5D /* PolluxViewController.swift in Sources */,
+				D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D8388BE71FB3A53800653E5D /* Main.storyboard */ = {
+		D826C08E1FC88E0C00BD8A3E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D8388BE81FB3A53800653E5D /* Base */,
+				D826C08F1FC88E0C00BD8A3E /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		D8388BEC1FB3A53800653E5D /* LaunchScreen.storyboard */ = {
+		D826C0931FC88E0C00BD8A3E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D8388BED1FB3A53800653E5D /* Base */,
+				D826C0941FC88E0C00BD8A3E /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -439,41 +461,41 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		D8388BF11FB3A53800653E5D /* Debug */ = {
+		D826C0981FC88E0C00BD8A3E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
-				INFOPLIST_FILE = "$(SRCROOT)/Pollux/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				DEVELOPMENT_TEAM = F866ZHAR49;
+				HEADER_SEARCH_PATHS = "$(CONFIGURATION_BUILD_DIR)";
+				INFOPLIST_FILE = "$(SRCROOT)/Pollux/Pollux-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D8388BF21FB3A53800653E5D /* Release */ = {
+		D826C0991FC88E0C00BD8A3E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
-				INFOPLIST_FILE = "$(SRCROOT)/Pollux/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				DEVELOPMENT_TEAM = F866ZHAR49;
+				HEADER_SEARCH_PATHS = "$(CONFIGURATION_BUILD_DIR)";
+				INFOPLIST_FILE = "$(SRCROOT)/Pollux/Pollux-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -530,9 +552,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_HEADER_SEARCH_PATHS = ../Pollux;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pollux-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -581,7 +606,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_HEADER_SEARCH_PATHS = ../Pollux;
 				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pollux-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
@@ -594,11 +622,12 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
+				DEVELOPMENT_TEAM = F866ZHAR49;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -613,11 +642,12 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
+				DEVELOPMENT_TEAM = F866ZHAR49;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
@@ -626,11 +656,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D8388BF01FB3A53800653E5D /* Build configuration list for PBXNativeTarget "Pollux-iOS" */ = {
+		D826C0971FC88E0C00BD8A3E /* Build configuration list for PBXNativeTarget "Pollux-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D8388BF11FB3A53800653E5D /* Debug */,
-				D8388BF21FB3A53800653E5D /* Release */,
+				D826C0981FC88E0C00BD8A3E /* Debug */,
+				D826C0991FC88E0C00BD8A3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -644,7 +674,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux" */ = {
+		D8718BDC1FB2BE7B00260B81 /* Build configuration list for PBXNativeTarget "Pollux-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8718BDD1FB2BE7B00260B81 /* Debug */,
