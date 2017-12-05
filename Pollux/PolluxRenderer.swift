@@ -6,7 +6,6 @@
 //  Copyright © 2017 Youssef Victor. All rights reserved.
 //
 
-import Cocoa
 import Metal
 import MetalKit
 import simd
@@ -17,7 +16,7 @@ var myview: MTKView?
 
 class PolluxRenderer: NSObject {
     
-    // "Macros" for MIS
+    // "Macro" for MIS
     let MIS = true;
     
     // Data Alignment
@@ -31,11 +30,11 @@ class PolluxRenderer: NSObject {
     
     // Clear Color
     private let bytesPerRow : Int
-    private let region : MTLRegion
+    private var region : MTLRegion
     private let blankBitmapRawData : [UInt8]
     
     // The iteration the renderer is on
-    private var iteration : Int = 0
+    var iteration : Int = 0
     
     /****
     **
@@ -52,11 +51,14 @@ class PolluxRenderer: NSObject {
     private var ps_ComputeIntersections: MTLComputePipelineState!;
     private var kern_ComputeIntersections: MTLFunction!
     
+//    private var rayCompactor : StreamCompactor2D<Ray>!
+    
     private var ps_ShadeMaterials: MTLComputePipelineState!;
     private var kern_ShadeMaterials: MTLFunction!
     
     private var ps_FinalGather: MTLComputePipelineState!;
     private var kern_FinalGather: MTLFunction!
+    
     
     /*****
     **
@@ -64,8 +66,8 @@ class PolluxRenderer: NSObject {
     **  These buffers are ping-ponged at every bounce calculation
     **
     ******/
-    var rays1 : SharedBuffer<Ray>
-    var rays2 : SharedBuffer<Ray>
+    let rays : SharedBuffer<Ray>
+//    var frame_ray_count : Int
     
     /*****
      **
@@ -152,17 +154,16 @@ class PolluxRenderer: NSObject {
         self.camera = scene.0
         camera.data.x = width
         camera.data.y = height
-        self.max_depth = UInt(camera.data[2])
+        self.max_depth = UInt(camera.data[3])
         
-        self.rays1          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
-        self.rays2          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
+        self.rays          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
         self.geoms         = SharedBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1)
         self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
-        self.frame         = SharedBuffer<float4>(count: self.rays1.count, with: self.device)
-        self.intersections = SharedBuffer<Intersection>(count: self.rays1.count, with: self.device)
+        self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
+        self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
         
-        RayCompaction.setUpOnDevice(self.device, library: defaultLibrary)
-        RayCompaction.setUpBuffers(count: Int(mtkView.frame.size.width * mtkView.frame.size.height))
+        
+//        self.frame_ray_count = self.rays.count
         
         super.init()
         
@@ -198,6 +199,11 @@ class PolluxRenderer: NSObject {
             catch { fatalError("ShadeMaterials computePipelineState failed") }
         }
         
+        // Create Pipeline State for Ray Stream Compaction
+//        self.rayCompactor = StreamCompactor2D<Ray>(on: device,
+//                                                 with: defaultLibrary,
+//                                                 applying: "kern_EvaluateRays")
+        
         // Create Pipeline State for Final Gather
         self.kern_FinalGather = defaultLibrary.makeFunction(name: "kern_FinalGather")
         do    { try ps_FinalGather = device.makeComputePipelineState(function: kern_FinalGather)}
@@ -225,13 +231,13 @@ extension PolluxRenderer {
         // Set up the threadgroups to go over all available rays (1D)
         else if stage == COMPUTE_INTERSECTIONS || stage == SHADE || stage == FINAL_GATHER {
             let warp_size = ps_ComputeIntersections.threadExecutionWidth
-            self.threadsPerThreadgroup = MTLSize(width: warp_size,height:1,depth:1)
-            self.threadgroupsPerGrid   = MTLSize(width: self.rays1.count / warp_size, height:1, depth:1)
+            self.threadsPerThreadgroup = MTLSize(width: min(self.rays.count, warp_size),height:1,depth:1)
+            self.threadgroupsPerGrid   = MTLSize(width: max(self.rays.count / warp_size,1), height:1, depth:1)
         }
     }
     
     fileprivate func setBuffers(for stage: PipelineStage, using commandEncoder: MTLComputeCommandEncoder, at depth: Int) {
-        let rays = (depth % 2 == 0) ? self.rays1 : self.rays2
+        //let rays = (depth % 2 == 0) ? self.rays1 : self.rays2
         //let rays = self.rays1
         switch (stage) {
         case GENERATE_RAYS:
@@ -240,36 +246,25 @@ extension PolluxRenderer {
             commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
         case COMPUTE_INTERSECTIONS:
             // TODO: Setup buffer for intersections shader
-            commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
+            commandEncoder.setBytes(&self.rays.count, length: MemoryLayout<Int>.size, index: 0)
             commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 1)
-            commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
+            //commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
             commandEncoder.setBuffer(self.intersections.data, offset: 0, index: 3)
             commandEncoder.setBuffer(self.geoms.data        , offset: 0, index: 4)
             break;
         case SHADE:
-           // TODO: Setup buffer for shading shader
             // Buffer (0) is already set
             commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
             // Buffer (2) is already set
             // Buffer (3) is already set
-            commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 4)
+            // Buffer (4) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 5)
-            
-            
-            //Temporary code for this stage only
-            // TODO: Remove this code
-            
-//            commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 5)
-//            var image = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
-//            commandEncoder.setBytes(&image, length: MemoryLayout<Camera>.size, index: 6)
-//            // TODO: End Remove
             break;
-        case COMPACT_RAYS:
-            break;
+            
         case FINAL_GATHER:
-            commandEncoder.setBytes(&self.rays1.count, length: MemoryLayout<Int>.size, index: 0)
-            commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 1)
-            commandEncoder.setBuffer(rays.data, offset: 0, index: 2)
+//            commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
+//            commandEncoder.setBytes(&self.iteration, length: MemoryLayout<UInt>.size, index: 1)
+//            commandEncoder.setBuffer(self.rays.data, offset: 0, index: 2)
             commandEncoder.setBuffer(self.frame.data, offset: 0, index: 3)
             commandEncoder.setTexture(myview!.currentDrawable?.texture , index: 4)
             break;
@@ -295,11 +290,7 @@ extension PolluxRenderer {
                 commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
                                                     threadsPerThreadgroup: self.threadsPerThreadgroup)
             case COMPACT_RAYS:
-                if (depth % 2 == 0) {
-                    RayCompaction.encodeCompactCommands(inRays: self.rays1, outRays: self.rays2, using: commandEncoder)
-                } else {
-                    RayCompaction.encodeCompactCommands(inRays: self.rays2, outRays: self.rays1, using: commandEncoder)
-                }
+                break;
             case FINAL_GATHER:
                 commandEncoder.setComputePipelineState(ps_FinalGather)
                 commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
@@ -307,19 +298,43 @@ extension PolluxRenderer {
             default:
                 fatalError("Undefined Pipeline Stage Passed to DispatchPipelineState")
         }
+        commandEncoder.dispatchThreadgroups(self.threadgroupsPerGrid,
+                                            threadsPerThreadgroup: self.threadsPerThreadgroup)
     }
     
     fileprivate func pathtrace(in view: MTKView) {
+//        self.frame_ray_count = self.rays.count
+        
         let commandBuffer = self.commandQueue.makeCommandBuffer()
         commandBuffer?.label = "Iteration: \(iteration)"
         
         // MARK: SEMAPHORE CODE - Completion Handler
-        // This triggers the CPU that the GPU has finished work
-        // this function is run when the GPU ends an iteration
-        // Needed for CPU/GPU Synchronization
-        commandBuffer?.addCompletedHandler({ _ in //unused parameter
-            print(self.iteration)
-        })
+//        commandBuffer?.addCompletedHandler({ _ in //unused parameter
+            // This triggers the CPU that the GPU has finished work
+            // this function is run when the GPU ends an iteration
+            // Needed for CPU/GPU Synchronization
+            // TODO: Semaphores
+//        self.iterationSemaphore.signal()
+//            print(self.iteration)
+//        })
+        
+        
+        // If drawable is not ready, skip this iteration
+        guard let drawable = view.currentDrawable
+            else { // If drawable
+                print("Drawable not ready for iteration #\(self.iteration)")
+                return;
+        }
+        
+        // Clear the drawable on the first iteration
+        if (self.iteration == 0) {
+            let blitCommandEnconder = commandBuffer?.makeBlitCommandEncoder()
+            let frameRange = Range(0 ..< MemoryLayout<float4>.stride * self.frame.count)
+            blitCommandEnconder?.fill(buffer: self.frame.data!, range: frameRange, value: 0)
+            blitCommandEnconder?.endEncoding()
+            
+            drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
+        }
         
         let commandEncoder = commandBuffer?.makeComputeCommandEncoder()
         
@@ -332,33 +347,19 @@ extension PolluxRenderer {
         
         
         // Repeat Shading Steps `depth` number of times
-        for i in 0 ..< 4 {
-        //for _ in 0 ..< Int(self.camera.data[3]) {
-            self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!, at: i)
-            
-            self.dispatchPipelineState(for: SHADE, using: commandEncoder!, at: i)
-            
-            self.dispatchPipelineState(for: COMPACT_RAYS, using: commandEncoder!, at: i)
-        }
-        
-        // If drawable is not ready, don't draw
-        guard let drawable = view.currentDrawable
-        else { // If drawable
-            print("Drawable not ready for iteration #\(self.iteration)")
-            commandEncoder!.endEncoding()
-            commandBuffer!.commit()
-            return;
-        }
-        
-        // Clear the drawable on the first iteration
-        if (self.iteration == 0) {
-            drawable.texture.replace(region: self.region, mipmapLevel: 0, withBytes: blankBitmapRawData, bytesPerRow: bytesPerRow)
-        }
-        
-        //self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!, at: Int(self.camera.data[3]))
-        self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!, at: 8)
-        self.iteration += 1
+        for _ in 0 ..< Int(self.camera.data[3]) {
+            self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!, at: 0)
 
+            self.dispatchPipelineState(for: SHADE, using: commandEncoder!, at: 0)
+
+            // Stream Compaction for Terminated Rays
+//            let size = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
+//            self.frame_ray_count = self.rayCompactor.compact(self.rays.data!, of: size, using: commandEncoder!, buffersSet: true, commandQueue: commandQueue)
+        }
+    
+        self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!, at: 0)
+        self.iteration += 1
+        
         commandEncoder!.endEncoding()
         commandBuffer!.present(drawable)
         commandBuffer!.commit()
@@ -366,7 +367,6 @@ extension PolluxRenderer {
          commandBuffer!.waitUntilCompleted()
          //RayCompaction.inspectBuffers()
     }
-    
 }
 
 extension PolluxRenderer : MTKViewDelegate {
@@ -391,8 +391,37 @@ extension PolluxRenderer : MTKViewDelegate {
         print(size)
         
         // Resize Rays Buffer
-        self.rays1.resize(count: Int(size.width*size.height), with: self.device)
+
+        self.region = MTLRegionMake2D(0, 0, Int(view.frame.size.width), Int(view.frame.size.height))
+        self.rays.resize(count: Int(size.width*size.height), with: self.device)
         self.intersections.resize(count: Int(size.width*size.height), with: self.device)
         self.frame.resize(count: Int(size.width*size.height), with: self.device)
+//        self.rayCompactor.resize(size: uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y)))
+        self.iteration = 0
     }
 }
+
+// MARK: Handles User Gestures
+extension PolluxRenderer {
+    
+    // Pans the camera along it's right and up vectors by dt.x and -dt.y respectively
+    func panCamera(by dt: PlatformPoint) {
+        // Change pos values
+        self.camera.pos += self.camera.right * Float(dt.x) / gestureDampening
+        self.camera.pos -= self.camera.up    * Float(dt.y) / gestureDampening
+        
+        // Change the lookAt as well
+        self.camera.lookAt += self.camera.right * Float(dt.x) / gestureDampening
+        self.camera.lookAt -= self.camera.up    * Float(dt.y) / gestureDampening
+        
+        // Clear buffer by setting iteration = 0
+        self.iteration = 0
+    }
+    
+    // Zooms the camera along it's view vector by dz
+    func zoomCamera(by dz: Float) {
+        // Clear buffer by setting iteration = 0
+        self.iteration = 0
+    }
+}
+
