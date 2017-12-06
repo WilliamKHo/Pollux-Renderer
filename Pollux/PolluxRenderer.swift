@@ -111,6 +111,13 @@ class PolluxRenderer: NSObject {
      ******/
     var max_depth : UInt;
     
+    /******
+     **
+     **  Number of lights
+     **
+     ******/
+    var light_count : UInt32;
+    
     /*****
      **
      **  CPU/GPU Synchronization Stuff
@@ -161,6 +168,7 @@ class PolluxRenderer: NSObject {
         self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
         self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
+        self.light_count   = 1;
         
         
 //        self.frame_ray_count = self.rays.count
@@ -259,6 +267,10 @@ extension PolluxRenderer {
             // Buffer (3) is already set
             // Buffer (4) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 5)
+            if (MIS) {
+                commandEncoder.setBytes(&self.geoms.count, length: MemoryLayout<Int>.size, index: 6);
+                commandEncoder.setBytes(&self.light_count, length: MemoryLayout<Int>.size, index: 7);
+            }
             break;
             
         case FINAL_GATHER:

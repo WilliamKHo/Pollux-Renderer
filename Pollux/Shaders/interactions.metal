@@ -45,44 +45,6 @@ void shadeAndScatter(thread Ray& ray,
     }
 }
 
-void scatterRay(device Ray& ray,
-                thread Intersection& isect,
-                thread Material &m,
-                thread Loki& rng,
-                thread float& pdf) {
-    thread Ray r = ray;
-    scatterRay(r, isect, m, rng, pdf);
-    ray = r;
-}
-
-void scatterRay(thread Ray& ray,
-                thread Intersection& isect,
-                thread Material &m,
-                thread Loki& rng,
-                thread float& pdf) {
-    switch (m.bsdf) {
-        case -1:
-            break;
-        case 0:
-            //PDF Calculation
-            pdf = fabs(dot(isect.normal, -ray.direction)) * InvPi;
-            if (abs(pdf) < ZeroEpsilon) {
-                ray.idx_bounces[2] = 0;
-                break;
-            }
-            ray.origin = isect.point + isect.normal*EPSILON;
-            ray.direction = cosRandomDirection(isect.normal, rng);
-            ray.idx_bounces[2]--;
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        default:
-            break;
-    }
-}
-
 float3 sample_li(device Geom& light,
                  device Material& m,
                  thread float3& ref,

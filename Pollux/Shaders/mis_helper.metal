@@ -60,3 +60,19 @@ float calculatePDF(thread int& bsdf,
         return 0;
     }
 }
+
+float3 sampleBSDF(const thread Material& m,
+                  const thread float3& wi,
+                  const thread float3& wo) {
+    switch (m.bsdf) {
+        case 0:
+            return m.color * InvPi;
+        case 1:
+            break;
+        case 2:
+            break;
+        default:
+            break;
+    }
+    return float3(0);
+}

@@ -65,11 +65,12 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
                                    constant   uint& iteration             [[ buffer(1) ]],
                                    device     Ray* rays                   [[ buffer(2) ]],
                                    device     Intersection* intersections [[ buffer(3) ]],
-                                   device     Geom*         geoms         [[ buffer(4)]],
+                                   device     Geom*         geoms         [[ buffer(4) ]],
                                    device     Material*     materials     [[ buffer(5) ]],
+                                   constant   uint&         geom_count    [[ buffer(6) ]],
+                                   constant   uint&         light_count   [[ buffer(7) ]],
                                    // TODO: Delete buffers 5 & 6 for later stages
                                    texture2d<float, access::write> outTexture [[texture(5)]],
-                                   constant uint2& imageDeets  [[ buffer(6) ]],
                                    // TODO: END DELETE
                                    const uint position [[thread_position_in_grid]]) {
     
@@ -107,22 +108,23 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         /*
          * Light Importance Sampling
          */
-        int lightId = 0; // TODO: Assumption is one light in scene (obviously needs to be fixed)
+        int lightId = rng.rand() * light_count; // TODO: Assumption is one light in scene (obviously needs to be fixed)
         device Geom& light = geoms[lightId];
         device Material& light_m = materials[light.materialid];
         thread float pdf_li;
         thread Ray lightRay = ray;
+        thread float3 wo = -ray.direction;
         
         lightRay.origin = intersection.point + intersection.normal * EPSILON;
         float3 lightContribution = sample_li(light, light_m, intersection.point, rng, lightRay.direction, pdf_li);
         
         thread Intersection lightIntersection = intersection;
         
-        getIntersection(lightRay, geoms, lightIntersection, 7); //TODO: replace with true geom_count
+        getIntersection(lightRay, geoms, lightIntersection, geom_count); //TODO: replace with true geom_count
         
         if (lightIntersection.t > 0.f && lightIntersection.materialId != light.materialid) lightContribution = float3(0);
         
-        float3 f_x = dot(intersection.normal, lightRay.direction) * m.color; //TODO: actual color function
+        float3 f_x = sampleBSDF(m, lightRay.direction, wo);
         
         lightContribution *= (f_x * ray.throughput) / pdf_li;
         lightContribution = float3(max(0.f,lightContribution.x), max(0.f,lightContribution.y), max(0.f,lightContribution.z));

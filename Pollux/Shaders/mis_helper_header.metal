@@ -34,3 +34,7 @@ float powerHeuristic(thread float& nf,
 float calculatePDF(thread int& bsdf,
                    thread float3& n,
                    thread float3& wo);
+
+float3 sampleBSDF(const thread Material& m,
+                  const thread float3& wi,
+                  const thread float3& wo);
