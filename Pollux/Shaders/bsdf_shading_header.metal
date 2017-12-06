@@ -23,13 +23,13 @@ void SnS_diffuse(device Ray& ray,
                  thread Loki& rng,
                  thread float& pdf);
 
-void SnS_specular(device Ray& ray,
+void SnS_reflect(device Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
                   thread Loki& rng,
                   thread float& pdf);
 
-void SnS_fresnel(device Ray& ray,
+void SnS_refract(device Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,

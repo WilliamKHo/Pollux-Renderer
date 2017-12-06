@@ -9,7 +9,7 @@
 import Foundation
 import Metal
 
-
+// TODO: Documentation for Device Buffer
 class DeviceBuffer <T>  {
     // Buffer Size
     var count  : Int
@@ -20,16 +20,23 @@ class DeviceBuffer <T>  {
 //    let memory  : UnsafeMutableRawPointer?
     
     
-    init (count: Int, with device: MTLDevice, containing contents : [T] = []) {
+    init (count: Int, with device: MTLDevice, containing contents : [T] = [], blitOn commandQueue: MTLCommandQueue? = nil) {
         self.count = count
         self.data = device.makeBuffer(length: count * MemoryLayout<T>.size.self, options: .storageModePrivate)
         
-        // TODO: Implement `containing` argument
-//      let sharedBuffer = createTemporarySharedBuffer()
-//      --- create command buffer ---
-//      --- create blitcommandencoder--
-//      copy from sharedBuffer to self.data
-//      -- freeSharedBuffer?*
+        // Create a temporary shared buffer to move data to/from
+        if contents.count > 0 {
+            let sharedBuffer = SharedBuffer<T>(count: self.count, with: device, containing: contents)
+            
+            let commandBuffer = commandQueue!.makeCommandBuffer()
+            let blitCommandEncoder = commandBuffer?.makeBlitCommandEncoder()
+            blitCommandEncoder?.copy(from: sharedBuffer.data!, sourceOffset: 0,
+                                     to: self.data!, destinationOffset: 0,
+                                     size: count * MemoryLayout<T>.size.self)
+            blitCommandEncoder?.endEncoding()
+            commandBuffer?.commit()
+            commandBuffer?.waitUntilCompleted()
+        }
     }
     
       // TODO: Implement Subscript operator

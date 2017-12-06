@@ -52,22 +52,20 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
         ray.idx_bounces.x = x;
         ray.idx_bounces.y = y;
         ray.idx_bounces[2] = traceDepth;
-        ray.uv.x = x / width;
-        ray.uv.y = y / height;
     }
 }
 
 /// Compute Intersections
 kernel void kern_ComputeIntersections(constant uint& ray_count             [[ buffer(0) ]],
                                       constant uint& geom_count            [[ buffer(1) ]],
-                                      device   Ray* rays                   [[ buffer(2) ]],
+                                      constant Ray* rays                   [[ buffer(2) ]],
                                       device   Intersection* intersections [[ buffer(3) ]],
-                                      device   Geom* geoms                 [[ buffer(4) ]],
+                                      constant Geom* geoms                 [[ buffer(4) ]],
                                       const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count){ return;}
     
-    device Ray& ray = rays[position];
+    constant Ray& ray = rays[position];
     
     float t;
     float3 intersect_point;
@@ -82,7 +80,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
     // naive parse through global geoms
     for (uint i = 0; i < geom_count; i++)
     {
-        device Geom& geom = geoms[i];
+        constant Geom& geom = geoms[i];
         
         if (geom.type == CUBE)
         {
@@ -119,6 +117,7 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
         intersection.materialId = geoms[hit_geom_index].materialid;
         intersection.normal = normal;
         intersection.point = intersect_point;
+        intersection.outside = outside;
     }
 }
 
@@ -128,10 +127,10 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
                                 constant   uint& iteration             [[ buffer(1) ]],
                                 device     Ray* rays                   [[ buffer(2) ]],
                                 device     Intersection* intersections [[ buffer(3) ]],
-                                device     Material*     materials     [[ buffer(4) ]],
+                                constant     Material*     materials     [[ buffer(4) ]],
                                 // TODO: Delete buffers 5 & 6 for later stages
-                                texture2d<float, access::write> outTexture [[texture(5)]],
-                                constant uint2& imageDeets  [[ buffer(6) ]],
+//                                texture2d<float, access::write> outTexture [[texture(5)]],
+//                                constant uint2& imageDeets  [[ buffer(6) ]],
                                 // TODO: END DELETE
                                 const uint position [[thread_position_in_grid]]) {
     
@@ -154,7 +153,6 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         // Seed a random number from the position and iteration number
         Loki rng = Loki(position, iteration + 1, ray.idx_bounces[2] + 1);
         
-        
         shadeAndScatter(ray, intersection, m, rng, pdf);
     }
     else { // If there was no intersection, color the ray black.
@@ -165,29 +163,22 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     }
 }
 
-// Evaluate rays for early termination using stream compaction
-kernel void kern_EvaluateRays(constant      uint& ray_count         [[  buffer(0)  ]],
-                              device        uint* validation_buffer [[  buffer(1)  ]],
-                              const device  Ray *rays               [[  buffer(2)  ]],
-                              const device  bool *reversed          [[  buffer(9)  ]],
-                              const uint id [[thread_position_in_grid]]) {
-    // Quicker and clean.
-    validation_buffer[id] = (id < ray_count && rays[id].idx_bounces[2] > 0) ? 1 : 0;
-}
+//// Evaluate rays for early termination using stream compaction
+//kernel void kern_EvaluateRays(constant      uint& ray_count         [[  buffer(0)  ]],
+//                              device        uint* validation_buffer [[  buffer(1)  ]],
+//                              const device  Ray *rays               [[  buffer(2)  ]],
+//                              const device  bool *reversed          [[  buffer(9)  ]],
+//                              const uint id [[thread_position_in_grid]]) {
+//    // Quicker and clean.
+//    validation_buffer[id] = (id < ray_count && rays[id].idx_bounces[2] > 0) ? 1 : 0;
+//}
 
 
 /// Final Gather
 kernel void kern_FinalGather(constant   uint& ray_count                   [[  buffer(0) ]],
                              constant   uint& iteration                   [[  buffer(1) ]],
-                             // DEBUG:
-//                             device     uint* validation_buffer           [[  buffer(1) ]],
                              device     Ray* rays                         [[  buffer(2) ]],
                              device     float4* accumulated               [[  buffer(3) ]],
-                             // DEBUG
-                             device     uint* block_sums                  [[  buffer(4) ]],
-                             const uint threadGroupId  [[threadgroup_position_in_grid]],
-                             const uint threadGroups   [[threadgroups_per_grid]],
-                             // DEBUG
                              texture2d<float, access::write> drawable     [[ texture(4) ]],
                              const uint position [[thread_position_in_grid]]) {
     // DEBUG: UNCOMMENT THIS TO FIX STUFF:

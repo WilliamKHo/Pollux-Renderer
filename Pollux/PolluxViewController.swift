@@ -17,6 +17,7 @@ class PolluxViewController: PlatformViewController {
     
     // Gesture recognizors for Camera Movement
     var panGestureRecognizer = PlatformPanGestureRecognizer()
+    var zoomGestureRecognizer = PlatformZoomGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +33,7 @@ class PolluxViewController: PlatformViewController {
         }
         
         // TODO: Improve Scene parsing
-        let scene = SceneParser.parseScene(from: "cornell")
+        let scene = SceneParser.parseScene(from: "cornell-refract")
         
         //Initializes the Renderer
         renderer = PolluxRenderer(in: metalView!, with: scene)
@@ -50,6 +51,11 @@ class PolluxViewController: PlatformViewController {
         self.panGestureRecognizer = PlatformPanGestureRecognizer(target: self, action: #selector(PolluxViewController.handlePan(_:)))
         self.metalView!.addGestureRecognizer(self.panGestureRecognizer)
         
+        // Set up the pan gesture recognizer and it's action
+        // This pans the camera if the user does a pan gesture
+        self.zoomGestureRecognizer = PlatformZoomGestureRecognizer(target: self, action: #selector(PolluxViewController.handleZoom(_:)))
+        self.metalView!.addGestureRecognizer(self.zoomGestureRecognizer)
+        
         // Indicate that we would like the view to call our -[AAPLRender drawInMTKView:] 60 times per
         //   second.  This rate is not guaranteed: the view will pick a closest framerate that the
         //   display is capable of refreshing (usually 30 or 60 times per second).  Also if our renderer
@@ -62,8 +68,22 @@ class PolluxViewController: PlatformViewController {
     
     
     @objc func handlePan(_ panGestureRecognizer : PlatformPanGestureRecognizer) {
-        let dt = panGestureRecognizer.translation(in: myview!)
+        var dt = panGestureRecognizer.translation(in: myview!)
         self.panGestureRecognizer.setTranslation(PlatformPoint(x: 0, y: 0), in: myview!)
+        #if os(iOS) || os(watchOS) || os(tvOS)
+           dt.y = -dt.y
+        #endif
         self.renderer?.panCamera(by: dt)
+    }
+    
+    @objc func handleZoom(_ zoomGestureRecognizer : PlatformZoomGestureRecognizer) {
+        #if os(iOS) || os(watchOS) || os(tvOS)
+            let dz =  zoomGestureRecognizer.velocity
+        #else
+            let dz = zoomGestureRecognizer.magnification
+            zoomGestureRecognizer.magnification = 0
+        #endif
+//        print(dz)
+        self.renderer?.zoomCamera(by: Float(dz))
     }
 }

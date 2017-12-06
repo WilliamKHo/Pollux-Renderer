@@ -5,6 +5,7 @@
 //  Created by Youssef Kamal Victor on 11/8/17.
 //  Copyright © 2017 Youssef Victor. All rights reserved.
 //
+//  TODO: FixedBuffer
 
 import Metal
 import MetalKit
@@ -60,7 +61,7 @@ class PolluxRenderer: NSObject {
     **  Rays Shared Buffer
     **
     ******/
-    let rays : SharedBuffer<Ray>
+    let rays : DeviceBuffer<Ray>
 //    var frame_ray_count : Int
     
     /*****
@@ -68,21 +69,21 @@ class PolluxRenderer: NSObject {
      **  Geoms Shared Buffer
      **
      ******/
-    let geoms      : SharedBuffer<Geom>
+    let geoms      : DeviceBuffer<Geom>
     
     /*****
      **
      **  Materials Shared Buffer
      **
      ******/
-    let materials      : SharedBuffer<Material>
+    let materials      : DeviceBuffer<Material>
     
     /*****
      **
      **  Intersections Shared Buffer
      **
      ******/
-    let intersections : SharedBuffer<Intersection>
+    let intersections : DeviceBuffer<Intersection>
     
     /*****
      **
@@ -96,7 +97,7 @@ class PolluxRenderer: NSObject {
      **  Frame Shared Buffer
      **
      ******/
-    let frame : SharedBuffer<float4>
+    let frame : DeviceBuffer<float4>
     
     /*****
      **
@@ -130,6 +131,7 @@ class PolluxRenderer: NSObject {
         // (needed for displaying from our own texture)
         mtkView.framebufferOnly = false
         
+        
         // Indicate we would like to use the RGBAPisle format.
         mtkView.colorPixelFormat = .bgra8Unorm
         
@@ -137,24 +139,26 @@ class PolluxRenderer: NSObject {
         mtkView.sampleCount = 1
         mtkView.preferredFramesPerSecond = 60
 
+        let width  = Float(mtkView.drawableSize.width)
+        let height = Float(mtkView.drawableSize.height)
+        let ray_count = width * height
+        
         // For Clearing the Frame Buffer
-        self.bytesPerRow = Int(4 * mtkView.frame.size.width)
-        self.region = MTLRegionMake2D(0, 0, Int(mtkView.frame.size.width), Int(mtkView.frame.size.height))
-        self.blankBitmapRawData = [UInt8](repeating: 0, count: Int(mtkView.frame.size.width * mtkView.frame.size.height * 4))
+        self.bytesPerRow = Int(4 * width)
+        self.region = MTLRegionMake2D(0, 0, Int(width), Int(height))
+        self.blankBitmapRawData = [UInt8](repeating: 0, count: Int(ray_count * 4))
         
         // Initialize Camera:
-        let width  = Float(mtkView.frame.size.width)
-        let height = Float(mtkView.frame.size.height)
         self.camera = scene.0
         camera.data.x = width
         camera.data.y = height
         self.max_depth = UInt(camera.data[3])
         
-        self.rays          = SharedBuffer<Ray>(count: Int(mtkView.frame.size.width * mtkView.frame.size.height), with: device)
-        self.geoms         = SharedBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1)
-        self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
-        self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
-        self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
+        self.rays          = DeviceBuffer<Ray>(count: Int(ray_count), with: device)
+        self.geoms         = DeviceBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1, blitOn: self.commandQueue)
+        self.materials     = DeviceBuffer<Material>(count: scene.2.count, with: device, containing: scene.2, blitOn: self.commandQueue)
+        self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
+        self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
         
 //        self.frame_ray_count = self.rays.count
         
@@ -385,6 +389,15 @@ extension PolluxRenderer {
     
     // Zooms the camera along it's view vector by dz
     func zoomCamera(by dz: Float) {
+        // Avoiding the isNaN
+        if dz.isNaN { return }
+            
+        // Change pos values
+        self.camera.pos += self.camera.view * dz
+        
+        // Change the lookAt as well
+        self.camera.lookAt += self.camera.view * dz
+        
         // Clear buffer by setting iteration = 0
         self.iteration = 0
     }
