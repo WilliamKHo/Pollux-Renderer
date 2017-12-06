@@ -18,19 +18,19 @@
 using namespace metal;
 
 
-void SnS_diffuse(device Ray& ray,
+void SnS_diffuse(thread Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,
                  thread float& pdf);
 
-void SnS_specular(device Ray& ray,
+void SnS_specular(thread Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
                   thread Loki& rng,
                   thread float& pdf);
 
-void SnS_fresnel(device Ray& ray,
+void SnS_fresnel(thread Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,

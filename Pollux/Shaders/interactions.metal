@@ -11,8 +11,18 @@
 
 using namespace metal;
 
-
 void shadeAndScatter(device Ray& ray,
+                     thread Intersection& isect,
+                     thread Material &m,
+                     thread Loki& rng,
+                     thread float& pdf) {
+    thread Ray r = ray;
+    shadeAndScatter(r, isect, m, rng, pdf);
+    ray = r;
+}
+
+
+void shadeAndScatter(thread Ray& ray,
                      thread Intersection& isect,
                      thread Material &m,
                      thread Loki& rng,

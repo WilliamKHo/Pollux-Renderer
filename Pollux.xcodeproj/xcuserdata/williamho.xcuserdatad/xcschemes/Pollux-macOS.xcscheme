@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D8718BCB1FB2BE7B00260B81"
-               BuildableName = "Pollux.app"
-               BlueprintName = "Pollux"
+               BuildableName = "Pollux-macOS.app"
+               BlueprintName = "Pollux-macOS"
                ReferencedContainer = "container:Pollux.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8718BCB1FB2BE7B00260B81"
-            BuildableName = "Pollux.app"
-            BlueprintName = "Pollux"
+            BuildableName = "Pollux-macOS.app"
+            BlueprintName = "Pollux-macOS"
             ReferencedContainer = "container:Pollux.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -58,8 +58,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8718BCB1FB2BE7B00260B81"
-            BuildableName = "Pollux.app"
-            BlueprintName = "Pollux"
+            BuildableName = "Pollux-macOS.app"
+            BlueprintName = "Pollux-macOS"
             ReferencedContainer = "container:Pollux.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -77,8 +77,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8718BCB1FB2BE7B00260B81"
-            BuildableName = "Pollux.app"
-            BlueprintName = "Pollux"
+            BuildableName = "Pollux-macOS.app"
+            BlueprintName = "Pollux-macOS"
             ReferencedContainer = "container:Pollux.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

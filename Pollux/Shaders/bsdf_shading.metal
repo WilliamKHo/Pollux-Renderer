@@ -12,7 +12,7 @@
 using namespace metal;
 
 
-void SnS_diffuse(device Ray& ray,
+void SnS_diffuse(thread Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,
@@ -48,7 +48,7 @@ void SnS_diffuse(device Ray& ray,
     ray.idx_bounces[2]--;
 }
 
-void SnS_specular(device Ray& ray,
+void SnS_specular(thread Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
                   thread Loki& rng,
@@ -56,7 +56,7 @@ void SnS_specular(device Ray& ray,
     // TODO: Add Specular BSDF Interaction
 }
 
-void SnS_fresnel(device Ray& ray,
+void SnS_fresnel(thread Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,

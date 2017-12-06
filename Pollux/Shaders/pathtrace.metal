@@ -55,6 +55,7 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
         ray.idx_bounces[2] = traceDepth;
         ray.uv.x = x / width;
         ray.uv.y = y / height;
+        ray.throughput = float3(1);
     }
 }
 
