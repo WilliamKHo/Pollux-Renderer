@@ -15,14 +15,6 @@
      "rotate": [0,0,0],
      "scale": [3,0.3,3]
    },
-               {
-               "name": "Ceiling Light 2",
-               "type": 1,
-               "material": 0,
-               "translate": [0,0,0],
-               "rotate": [0,0,0],
-               "scale": [3,0.3,3]
-               },
    {
      "name": "Floor Plane",
      "type": 1,
@@ -70,7 +62,23 @@
      "translate": [-1,4, -1],
      "rotate": [0, 0, 0],
      "scale": [3, 3, 3]
-   }
+   },
+               {
+               "name": "Sphere 2",
+               "type": 0,
+               "material": 3,
+               "translate": [3,2, 1],
+               "rotate": [0, 0, 0],
+               "scale": [3, 3, 3]
+               },
+               {
+               "name": "Sphere 2",
+               "type": 0,
+               "material": 2,
+               "translate": [2, 8, 3],
+               "rotate": [0, 0, 0],
+               "scale": [2, 2, 2]
+               },
   ],  
   "materials": [
     {

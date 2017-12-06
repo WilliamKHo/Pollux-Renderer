@@ -87,7 +87,6 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         Material m = materials[intersection.materialId];
         
         // If the material indicates that the object was a light, "light" the ray
-        thread float pdf;
         if (m.bsdf == -1) {
             //light the ray
             ray.color += (m.color * m.emittance);

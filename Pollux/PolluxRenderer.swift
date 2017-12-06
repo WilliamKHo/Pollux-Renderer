@@ -168,7 +168,7 @@ class PolluxRenderer: NSObject {
         self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
         self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
-        self.light_count   = 2; // TODO: Parse in from scene
+        self.light_count   = 1; // TODO: Parse in from scene
         
         
 //        self.frame_ray_count = self.rays.count
