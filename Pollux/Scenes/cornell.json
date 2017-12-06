@@ -15,6 +15,14 @@
      "rotate": [0,0,0],
      "scale": [3,0.3,3]
    },
+               {
+               "name": "Ceiling Light 2",
+               "type": 1,
+               "material": 0,
+               "translate": [0,0,0],
+               "rotate": [0,0,0],
+               "scale": [3,0.3,3]
+               },
    {
      "name": "Floor Plane",
      "type": 1,

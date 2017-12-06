@@ -108,7 +108,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         /*
          * Light Importance Sampling
          */
-        int lightId = rng.rand() * light_count; // TODO: Assumption is one light in scene (obviously needs to be fixed)
+        int lightId = rng.rand() * light_count;
         device Geom& light = geoms[lightId];
         device Material& light_m = materials[light.materialid];
         thread float pdf_li;
@@ -120,7 +120,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         
         thread Intersection lightIntersection = intersection;
         
-        getIntersection(lightRay, geoms, lightIntersection, geom_count); //TODO: replace with true geom_count
+        getIntersection(lightRay, geoms, lightIntersection, geom_count);
         
         if (lightIntersection.t > 0.f && lightIntersection.materialId != light.materialid) lightContribution = float3(0);
         
@@ -141,15 +141,16 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
         thread Intersection bsdfIntersection = intersection;
         getIntersection(bsdfRay, geoms, bsdfIntersection, 7);
         float3 bsdfContribution = float3(0);
-        bsdfContribution = bsdfRay.color * ray.throughput;
+        if (bsdfIntersection.t > 0.f && bsdfIntersection.materialId == light.materialid) {
+            bsdfContribution = f_y * bsdfRay.color * ray.throughput;
+        }
         
         float nf = 1.f, gf = 1.f;
-        float totalPowerProbability = (pdf_li * pdf_li) + (pdf_bsdf * pdf_bsdf);
         float dlWeight = powerHeuristic(nf, pdf_li, gf, pdf_bsdf);
         float bsdfWeight = powerHeuristic(nf, pdf_bsdf, gf, pdf_li);
         
         //Ray for next iteration
-        ray.color +=  lightContribution * dlWeight + bsdfContribution * bsdfWeight;
+        ray.color +=  (lightContribution * dlWeight + bsdfContribution * bsdfWeight) * light_count;
         ray.throughput *= gi_Component.color;
         ray.origin = gi_Component.origin;
         ray.direction = gi_Component.direction;

@@ -124,7 +124,7 @@ class PolluxRenderer: NSObject {
      **
      ******/
     // MARK: SEMAPHORE CODE - Initialization
-//    let iterationSemaphore : DispatchSemaphore = DispatchSemaphore(value: Int(MaxBuffers))
+    let iterationSemaphore : DispatchSemaphore = DispatchSemaphore(value: Int(MaxBuffers))
     
     
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
@@ -168,7 +168,7 @@ class PolluxRenderer: NSObject {
         self.materials     = SharedBuffer<Material>(count: scene.2.count, with: device, containing: scene.2)
         self.frame         = SharedBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = SharedBuffer<Intersection>(count: self.rays.count, with: self.device)
-        self.light_count   = 1;
+        self.light_count   = 2; // TODO: Parse in from scene
         
         
 //        self.frame_ray_count = self.rays.count
@@ -321,14 +321,14 @@ extension PolluxRenderer {
         commandBuffer?.label = "Iteration: \(iteration)"
         
         // MARK: SEMAPHORE CODE - Completion Handler
-//        commandBuffer?.addCompletedHandler({ _ in //unused parameter
-            // This triggers the CPU that the GPU has finished work
-            // this function is run when the GPU ends an iteration
-            // Needed for CPU/GPU Synchronization
-            // TODO: Semaphores
-//        self.iterationSemaphore.signal()
-//            print(self.iteration)
-//        })
+        commandBuffer?.addCompletedHandler({ _ in //unused parameter
+//             This triggers the CPU that the GPU has finished work
+//             this function is run when the GPU ends an iteration
+//             Needed for CPU/GPU Synchronization
+//             TODO: Semaphores
+        self.iterationSemaphore.signal()
+            print(self.iteration)
+        })
         
         
         // If drawable is not ready, skip this iteration
@@ -387,7 +387,7 @@ extension PolluxRenderer : MTKViewDelegate {
     func draw(in view: MTKView) {
         // MARK: SEMAPHORE CODE - Wait
         // Wait until the last iteration is finished
-//        _ = self.iterationSemaphore.wait(timeout: DispatchTime.distantFuture)
+        _ = self.iterationSemaphore.wait(timeout: DispatchTime.distantFuture)
         
         self.pathtrace(in: view)
     }
