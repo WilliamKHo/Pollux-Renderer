@@ -359,7 +359,7 @@ extension PolluxRenderer {
         
         
         // Repeat Shading Steps `depth` number of times
-        for _ in 0 ..< 8 { //Int(self.camera.data[3]) {
+        for _ in 0 ..< Int(self.camera.data[3]) {
             self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!, at: 0)
 
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!, at: 0)
