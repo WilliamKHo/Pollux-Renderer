@@ -66,7 +66,13 @@ class SceneParser {
     }
     
     static func parseScene(from file: String) -> (Camera, [Geom], [Material]){
-        if let file = Bundle.main.url(forResource: file, withExtension: "json") {
+        #if os(iOS) || os(watchOS) || os(tvOS)
+            let platform_file = "\(file)-ios"
+        #else
+            let platform_file = file
+        #endif
+
+        if let file = Bundle.main.url(forResource: platform_file, withExtension: "json") {
             do {
                 let data      = try Data(contentsOf: file, options: [])
                 let jsonFile  = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]

@@ -22,18 +22,18 @@ float3 getPointOnRay(thread Ray* r,
  * Compute the intersection of a ray `r` with a sphere geometry
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */
-float computeSphereIntersection(device Geom   *sphere,
-                                device Ray    &r,
-                                thread float3 &intersectionPoint,
-                                thread float3 &normal,
-                                thread bool   &outside);
+float computeSphereIntersection(constant Geom   *sphere,
+                                constant Ray    &r,
+                                thread   float3 &intersectionPoint,
+                                thread   float3 &normal,
+                                thread   bool   &outside);
 
 /**
  * Compute the intersection of a ray `r` with a cube geometry
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */
-float computeCubeIntersection(device Geom   *cube,
-                              device Ray    &r,
-                              thread float3 &intersectionPoint,
-                              thread float3 &normal,
-                              thread bool   &outside);
+float computeCubeIntersection(constant Geom   *cube,
+                              constant Ray    &r,
+                              thread   float3 &intersectionPoint,
+                              thread   float3 &normal,
+                              thread   bool   &outside);

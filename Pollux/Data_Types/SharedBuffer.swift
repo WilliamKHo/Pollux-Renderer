@@ -47,7 +47,7 @@ class SharedBuffer <T>  {
         }
         
         // Setup Pointers
-        self.voidPtr = OpaquePointer(memory)
+        self.voidPtr     = OpaquePointer(memory)
         self.startPtr    = UnsafeMutablePointer<T>(voidPtr)
         self.bufferPtr   = UnsafeMutableBufferPointer(start: startPtr, count: self.count)
         

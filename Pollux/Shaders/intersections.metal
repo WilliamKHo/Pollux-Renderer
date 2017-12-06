@@ -19,11 +19,11 @@ float3 getPointOnRay(thread Ray* r,
     return r->origin + (t - .0001f) * normalize(r->direction);
 }
 
-float computeSphereIntersection(device Geom   *sphere,
-                                device Ray    &r,
-                                thread float3 &intersectionPoint,
-                                thread float3 &normal,
-                                thread bool   &outside) {
+float computeSphereIntersection(constant Geom   *sphere,
+                                constant Ray    &r,
+                                thread   float3 &intersectionPoint,
+                                thread   float3 &normal,
+                                thread   bool   &outside) {
     float radius = .5f;
     
     thread Ray rt;
@@ -63,11 +63,11 @@ float computeSphereIntersection(device Geom   *sphere,
     return length(r.origin - intersectionPoint);
 }
 
-float computeCubeIntersection(device Geom   *box,
-                              device Ray    &r,
-                              thread float3 &intersectionPoint,
-                              thread float3 &normal,
-                              thread bool   &outside) {
+float computeCubeIntersection(constant Geom   *box,
+                              constant Ray    &r,
+                              thread   float3 &intersectionPoint,
+                              thread   float3 &normal,
+                              thread   bool   &outside) {
     thread Ray rt;
     rt.origin    =           float3(box->inverseTransform * float4(r.origin, 1.0f));
     rt.direction = normalize(float3(box->inverseTransform * float4(r.direction, 0.0f)));

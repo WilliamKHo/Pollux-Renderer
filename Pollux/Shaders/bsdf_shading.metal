@@ -21,7 +21,6 @@ void SnS_diffuse(device Ray& ray,
     const float3 n  = isect.normal;
     const float3 wo = -ray.direction;
     
-    
     // Material's color divided `R` which in this case is InvPi
     float3 f = m.color * InvPi;
     
@@ -48,20 +47,45 @@ void SnS_diffuse(device Ray& ray,
     ray.idx_bounces[2]--;
 }
 
-void SnS_specular(device Ray& ray,
+void SnS_reflect(device Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
                   thread Loki& rng,
                   thread float& pdf) {
-    // TODO: Add Specular BSDF Interaction
+
+    ray.origin = isect.point + isect.normal * EPSILON;
+    ray.color *= m.color;
+    ray.direction = reflect(ray.direction, isect.normal);
+    ray.idx_bounces[2]--;
+    pdf = 1;
 }
 
-void SnS_fresnel(device Ray& ray,
+void SnS_refract(device Ray& ray,
                  thread Intersection& isect,
                  thread Material &m,
                  thread Loki& rng,
                  thread float& pdf) {
-    // TODO: Add Fresnel BSDF Interaction
+    //Figure out which n is incident and which is transmitted
+//    const float  cosTheta = dot(isect.normal, -ray.direction);
+    const float3 wo = -ray.direction;
+    
+    const bool    entering = isect.outside;
+    const float        eta = entering ? m.index_of_refraction : 1.0 / m.index_of_refraction;
+    
+    float3 refracted = refract(-ray.direction, isect.normal, eta);
+    
+    if (abs(refracted.x) < ZeroEpsilon &&
+        abs(refracted.y) < ZeroEpsilon &&
+        abs(refracted.z) < ZeroEpsilon) {
+        ray.color = float3(0);
+    } else {
+        ray.color *= m.color;
+    }
+
+    ray.origin = isect.point;
+    ray.direction = refracted;
+    ray.idx_bounces[2]--;
+    pdf = 1.f;
 }
 
 /**************************
