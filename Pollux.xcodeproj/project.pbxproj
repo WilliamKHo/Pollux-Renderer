@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B0641FF1FD8B4A200EECC64 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0641FE1FD8B4A200EECC64 /* Texture.swift */; };
-		0B0642001FD8B4A200EECC64 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0641FE1FD8B4A200EECC64 /* Texture.swift */; };
+		0B0641FF1FD8B4A200EECC64 /* DeviceTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0641FE1FD8B4A200EECC64 /* DeviceTexture.swift */; };
+		0B0642001FD8B4A200EECC64 /* DeviceTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0641FE1FD8B4A200EECC64 /* DeviceTexture.swift */; };
 		0B0642021FD8BA0900EECC64 /* environment1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642011FD8BA0900EECC64 /* environment1.png */; };
 		0B0642031FD8BA0900EECC64 /* environment1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642011FD8BA0900EECC64 /* environment1.png */; };
 		0B0642081FD8C23D00EECC64 /* environment.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642071FD8C23D00EECC64 /* environment.json */; };
 		0B0642091FD8C23D00EECC64 /* environment.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642071FD8C23D00EECC64 /* environment.json */; };
+		0B06420B1FD8CAFE00EECC64 /* environment2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0B06420A1FD8CAFD00EECC64 /* environment2.jpg */; };
+		0B06420C1FD8CAFE00EECC64 /* environment2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0B06420A1FD8CAFD00EECC64 /* environment2.jpg */; };
+		0B06420E1FD8CEC700EECC64 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B06420D1FD8CEC700EECC64 /* Environment.swift */; };
+		0B06420F1FD8CEC700EECC64 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B06420D1FD8CEC700EECC64 /* Environment.swift */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
@@ -82,9 +86,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0B0641FE1FD8B4A200EECC64 /* Texture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
+		0B0641FE1FD8B4A200EECC64 /* DeviceTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTexture.swift; sourceTree = "<group>"; };
 		0B0642011FD8BA0900EECC64 /* environment1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = environment1.png; sourceTree = "<group>"; };
 		0B0642071FD8C23D00EECC64 /* environment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = environment.json; sourceTree = "<group>"; };
+		0B06420A1FD8CAFD00EECC64 /* environment2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = environment2.jpg; sourceTree = "<group>"; };
+		0B06420D1FD8CEC700EECC64 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D822E22E1FD70F38009CF57D /* cornell-reflect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect.json"; sourceTree = "<group>"; };
@@ -210,7 +216,8 @@
 				D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */,
 				D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */,
 				D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */,
-				0B0641FE1FD8B4A200EECC64 /* Texture.swift */,
+				0B0641FE1FD8B4A200EECC64 /* DeviceTexture.swift */,
+				0B06420D1FD8CEC700EECC64 /* Environment.swift */,
 			);
 			path = Data_Types;
 			sourceTree = "<group>";
@@ -270,6 +277,7 @@
 		D884B96F1FC4AA98006A14CF /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0B06420A1FD8CAFD00EECC64 /* environment2.jpg */,
 				0B0642011FD8BA0900EECC64 /* environment1.png */,
 				D8E60DCA1FD7A3AA00755A06 /* cornell-refract-ios.json */,
 				D8E60DC91FD7A3A900755A06 /* cornell-refract.json */,
@@ -396,6 +404,7 @@
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
 				D8D1E70A1FD5D562005A6757 /* cornell-ios.json in Resources */,
+				0B06420B1FD8CAFE00EECC64 /* environment2.jpg in Resources */,
 				D8E60DCB1FD7A3AA00755A06 /* cornell-refract.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D1E70B1FD5D565005A6757 /* cornell-ios.json in Resources */,
+				0B06420C1FD8CAFE00EECC64 /* environment2.jpg in Resources */,
 				D8D1E7071FD5D48D005A6757 /* cornell.json in Resources */,
 				D8D1E7081FD5D48D005A6757 /* sphere.json in Resources */,
 				D8D1E7041FD5D3C3005A6757 /* Main.storyboard in Resources */,
@@ -430,7 +440,7 @@
 				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
-				0B0641FF1FD8B4A200EECC64 /* Texture.swift in Sources */,
+				0B0641FF1FD8B4A200EECC64 /* DeviceTexture.swift in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
@@ -443,6 +453,7 @@
 				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
 				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
 				D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */,
+				0B06420E1FD8CEC700EECC64 /* Environment.swift in Sources */,
 				D826EE001FCA4E750078118A /* StreamCompactor.metal in Sources */,
 				D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */,
 				D8388BDB1FB3A2F000653E5D /* PolluxViewController.swift in Sources */,
@@ -469,10 +480,11 @@
 				D8D1E6F61FD5D332005A6757 /* loki_header.metal in Sources */,
 				D8D1E6F71FD5D332005A6757 /* loki.metal in Sources */,
 				D8D1E6F81FD5D332005A6757 /* PolluxTypes.h in Sources */,
-				0B0642001FD8B4A200EECC64 /* Texture.swift in Sources */,
+				0B0642001FD8B4A200EECC64 /* DeviceTexture.swift in Sources */,
 				D8D1E6F91FD5D332005A6757 /* Constants.h in Sources */,
 				D8D1E6FA1FD5D332005A6757 /* simd_la.swift in Sources */,
 				D8D1E6FB1FD5D332005A6757 /* SharedBuffer.swift in Sources */,
+				0B06420F1FD8CEC700EECC64 /* Environment.swift in Sources */,
 				D8D1E6FC1FD5D332005A6757 /* DeviceBuffer.swift in Sources */,
 				D8D1E6FD1FD5D332005A6757 /* PlatformTypes.swift in Sources */,
 				D8D1E6FE1FD5D332005A6757 /* AppDelegate.swift in Sources */,

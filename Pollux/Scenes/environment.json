@@ -19,8 +19,12 @@
     "materials": [
                   {
                   "name": "White Light",
-                  "bsdf": 2,
+                  "bsdf": 1,
                   "color": [0.98, 0.98, 0.98],
                   }
-                  ]
+                  ],
+    "environment": {
+        "filepath" : "environment2.jpg",
+        "emittance" : [2,2,2]
+    }
 }

@@ -111,7 +111,9 @@ class PolluxRenderer: NSObject {
      ** Environment
      **
      *****/
-    var environment : Texture
+    var environment : DeviceTexture?
+    var envEmittance : float3
+    var environmentFlag : Bool
     
     /*****
      **
@@ -125,7 +127,7 @@ class PolluxRenderer: NSObject {
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
     /// mtkView object to set the pixelformat and other properties of our drawable
     // TODO: Parse Scene
-    init(in mtkView: MTKView, with scene: (Camera, [Geom], [Material])) {
+    init(in mtkView: MTKView, with scene: (Camera, [Geom], [Material], Environment?)) {
         self.device = mtkView.device!;
         self.commandQueue = device.makeCommandQueue();
         self.defaultLibrary = device.makeDefaultLibrary()!
@@ -166,7 +168,14 @@ class PolluxRenderer: NSObject {
         self.materials     = DeviceBuffer<Material>(count: scene.2.count, with: device, containing: scene.2, blitOn: self.commandQueue)
         self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
-        self.environment   = Texture(with: device)
+        if let val = scene.3 {
+            self.environment   = DeviceTexture(from: val.filename, with: device)
+            self.envEmittance  = val.emittance
+            self.environmentFlag = true;
+        } else {
+            self.envEmittance  = float3(0, 0, 0)
+            self.environmentFlag = false;
+        }
         
 //        self.frame_ray_count = self.rays.count
         
@@ -249,7 +258,13 @@ extension PolluxRenderer {
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
-            commandEncoder.setTexture(self.environment.data, index: 5)
+            if (self.environmentFlag) {
+                commandEncoder.setTexture(self.environment?.data, index: 5)
+            } else {
+                commandEncoder.setTexture(myview!.currentDrawable?.texture, index: 5)
+            }
+            commandEncoder.setBytes(&self.envEmittance, length: MemoryLayout<float3>.size, index: 6)
+            commandEncoder.setBytes(&self.environmentFlag, length: MemoryLayout<Bool>.size, index: 7)
             break;
             
         case FINAL_GATHER:

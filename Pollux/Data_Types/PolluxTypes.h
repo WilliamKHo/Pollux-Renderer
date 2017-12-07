@@ -99,5 +99,4 @@ typedef struct {
     int outside;
 } Intersection;
 
-
 #endif /* PolluxTypes_h */

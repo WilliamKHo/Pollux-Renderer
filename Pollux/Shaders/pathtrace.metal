@@ -132,7 +132,9 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
 //                                texture2d<float, access::write> outTexture [[texture(5)]],
 //                                constant uint2& imageDeets  [[ buffer(6) ]],
                                 // TODO: END DELETE
-                                texture2d<float, access::sample> environment [[texture(5)]],
+                                texture2d<float, access::sample> environment [[ texture(5) ]],
+                                constant    float3& envEmittance        [[ buffer(6) ]],
+                                constant    bool& envMapFlag            [[ buffer(7) ]],
                                 const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count) {return;}
@@ -160,7 +162,8 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         // TODO: Environment Map Code goes here
         //       something like: ray.color = getEnvMapColor(ray.direction);
         
-        ray.color *= getEnvironmentColor(environment, ray);
+        if (envMapFlag) { ray.color *= getEnvironmentColor(environment, ray) * envEmittance; }
+        else { ray.color = float3(0); }
         ray.idx_bounces[2] = 0;
     }
 }

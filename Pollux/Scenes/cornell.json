@@ -57,7 +57,7 @@
    },
    {
      "name": "Sphere",
-     "type": 1,
+     "type": 0,
      "material": 4,
      "translate": [-1,4, -1],
      "rotate": [0, 0, 0],
@@ -91,5 +91,10 @@
       "name": "Diffuse Yellow",
       "color": [0.85, 0.85, 0.35]
     }
-  ]
+                ],
+    "environment": {
+        "filepath" : "environment2.jpg",
+        "emittance" : [2,2,2]
+    }
+
 }

@@ -11,6 +11,13 @@ import simd
 
 class SceneParser {
     
+    private static func parseEnvironment(_ environmentJSON : [String: Any]) -> Environment  {
+        let filepath = String(environmentJSON["filepath"] as! String)
+        let emittance = float3(environmentJSON["emittance"] as! Array<Float>)
+        let env = Environment(from : filepath, with : emittance)
+        return env
+    }
+    
     private static func parseCamera(_ cameraJSON : [String : Any]) -> Camera {
         var camera = Camera();
         camera.pos    = float3(cameraJSON["pos"] as! Array<Float>)
@@ -65,7 +72,7 @@ class SceneParser {
         return materials
     }
     
-    static func parseScene(from file: String) -> (Camera, [Geom], [Material]){
+    static func parseScene(from file: String) -> (Camera, [Geom], [Material], Environment?){
         #if os(iOS) || os(watchOS) || os(tvOS)
             let platform_file = "\(file)-ios"
         #else
@@ -79,8 +86,13 @@ class SceneParser {
                 let camera    = parseCamera(jsonFile["camera"] as! [String : Any])
                 let geometry  = parseGeometry(jsonFile["geometry"] as! [[String : Any]])
                 let materials = parseMaterials(jsonFile["materials"] as! [[String : Any]])
+                
+                var environment : Environment?
+                if let val = jsonFile["environment"] {
+                    environment = parseEnvironment(val as! [String : Any])
+                }
         
-                return (camera, geometry, materials)
+                return (camera, geometry, materials, environment)
             } catch let error {
                 fatalError(error.localizedDescription)
             }
