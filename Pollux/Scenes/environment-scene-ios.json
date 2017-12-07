@@ -2,7 +2,7 @@
 {
     "camera": {
         "fov":   45,
-        "depth":  8,
+        "depth":  4,
         "pos":  [0, 5, 10.5],
         "lookAt": [0, 5, 0],
         "up":     [0, 1, 0]
@@ -14,7 +14,7 @@
                  "material": 0,
                  "translate": [0,0,0],
                  "rotate": [0,0,0],
-                 "scale": [16,0.01,10]
+                 "scale": [8,0.01,10]
                  },
                  {
                  "name": "Sphere",
@@ -68,5 +68,4 @@
         "filepath" : "environment2.jpg",
         "emittance" : [5,5,5]
     }
-    
 }

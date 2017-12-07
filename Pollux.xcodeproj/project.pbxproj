@@ -19,6 +19,8 @@
 		0B06420F1FD8CEC700EECC64 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B06420D1FD8CEC700EECC64 /* Environment.swift */; };
 		0B0642111FD8E3FF00EECC64 /* environment-scene.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642101FD8E3FF00EECC64 /* environment-scene.json */; };
 		0B0642121FD8E3FF00EECC64 /* environment-scene.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642101FD8E3FF00EECC64 /* environment-scene.json */; };
+		0B0642141FD8EA8200EECC64 /* environment-scene-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642131FD8EA8200EECC64 /* environment-scene-ios.json */; };
+		0B0642151FD8EA8200EECC64 /* environment-scene-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642131FD8EA8200EECC64 /* environment-scene-ios.json */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
@@ -94,6 +96,7 @@
 		0B06420A1FD8CAFD00EECC64 /* environment2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = environment2.jpg; sourceTree = "<group>"; };
 		0B06420D1FD8CEC700EECC64 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		0B0642101FD8E3FF00EECC64 /* environment-scene.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "environment-scene.json"; sourceTree = "<group>"; };
+		0B0642131FD8EA8200EECC64 /* environment-scene-ios.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "environment-scene-ios.json"; sourceTree = "<group>"; };
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D822E22E1FD70F38009CF57D /* cornell-reflect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect.json"; sourceTree = "<group>"; };
@@ -291,6 +294,7 @@
 				D884B9701FC4EEC5006A14CF /* sphere.json */,
 				0B0642071FD8C23D00EECC64 /* environment.json */,
 				0B0642101FD8E3FF00EECC64 /* environment-scene.json */,
+				0B0642131FD8EA8200EECC64 /* environment-scene-ios.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -404,6 +408,7 @@
 				0B0642021FD8BA0900EECC64 /* environment1.png in Resources */,
 				D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */,
 				0B0642111FD8E3FF00EECC64 /* environment-scene.json in Resources */,
+				0B0642141FD8EA8200EECC64 /* environment-scene-ios.json in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
 				0B0642081FD8C23D00EECC64 /* environment.json in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
@@ -419,6 +424,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D1E70B1FD5D565005A6757 /* cornell-ios.json in Resources */,
+				0B0642151FD8EA8200EECC64 /* environment-scene-ios.json in Resources */,
 				0B06420C1FD8CAFE00EECC64 /* environment2.jpg in Resources */,
 				D8D1E7071FD5D48D005A6757 /* cornell.json in Resources */,
 				D8D1E7081FD5D48D005A6757 /* sphere.json in Resources */,
@@ -686,11 +692,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS-willho";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
@@ -705,11 +711,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS-willho";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";

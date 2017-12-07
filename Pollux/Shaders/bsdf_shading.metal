@@ -70,9 +70,9 @@ void SnS_refract(device Ray& ray,
     const float3 wo = -ray.direction;
     
     const bool    entering = isect.outside;
-    const float        eta = entering ? m.index_of_refraction : 1.0 / m.index_of_refraction;
+    const float        eta = !entering ? m.index_of_refraction : 1.0 / m.index_of_refraction;
     
-    float3 refracted = refract(-ray.direction, isect.normal, eta);
+    float3 refracted = refract(ray.direction, isect.normal, eta);
     
     if (abs(refracted.x) < ZeroEpsilon &&
         abs(refracted.y) < ZeroEpsilon &&
@@ -82,7 +82,7 @@ void SnS_refract(device Ray& ray,
         ray.color *= m.color;
     }
 
-    ray.origin = isect.point;
+    ray.origin = isect.point - isect.normal * 0.1;
     ray.direction = refracted;
     ray.idx_bounces[2]--;
     pdf = 1.f;
