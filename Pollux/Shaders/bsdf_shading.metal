@@ -66,8 +66,8 @@ void SnS_refract(device Ray& ray,
                  thread Loki& rng,
                  thread float& pdf) {
     //Figure out which n is incident and which is transmitted
-    thread bool    entering = isect.outside;
-    thread float        eta = entering ? 1.0 / m.index_of_refraction : m.index_of_refraction;
+    const bool    entering = isect.outside;
+    const float        eta = entering ? 1.0 / m.index_of_refraction : m.index_of_refraction;
     
     float3 refracted = normalize(refract(ray.direction, isect.normal, eta));
     
