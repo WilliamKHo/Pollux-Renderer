@@ -47,7 +47,7 @@ void SnS_diffuse(device Ray& ray,
     ray.idx_bounces[2]--;
 }
 
-void SnS_reflect(device Ray& ray,
+void  SnS_reflect(device Ray& ray,
                   thread Intersection& isect,
                   thread Material &m,
                   thread Loki& rng,
@@ -66,9 +66,6 @@ void SnS_refract(device Ray& ray,
                  thread Loki& rng,
                  thread float& pdf) {
     //Figure out which n is incident and which is transmitted
-//    const float  cosTheta = dot(isect.normal, -ray.direction);
-    const float3 wo = -ray.direction;
-    
     const bool    entering = isect.outside;
     const float        eta = entering ? m.index_of_refraction : 1.0 / m.index_of_refraction;
     
@@ -126,3 +123,86 @@ float3 cosRandomDirection(const float3 normal,
     + cos(around) * over * perpendicularDirection1
     + sin(around) * over * perpendicularDirection2;
 }
+
+
+/********************************************************
+ ********************************************************
+ **************** FUNCTION OVERLOADS ********************
+ *** Overloaded in order to not compromise efficiency ***
+ ********************************************************
+ ********************************************************/
+
+void SnS_diffuse(thread Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf) {
+    
+    const float3 n  = isect.normal;
+    const float3 wo = -ray.direction;
+    
+    // Material's color divided `R` which in this case is InvPi
+    float3 f = m.color * InvPi;
+    
+    //This is lambert factor for light attenuation
+    float lambert_factor = fabs(dot(n, wo));
+    
+    //PDF Calculation
+    float dotWo = dot(n, wo);
+    float cosTheta = fabs(dotWo) * InvPi;
+    pdf = cosTheta;
+    
+    if (abs(pdf) < ZeroEpsilon) {
+        ray.idx_bounces[2] = 0;
+        return;
+    }
+    
+    float3 integral = (f * lambert_factor)
+    / pdf;
+    ray.color *= integral;
+    
+    //Scatter the Ray
+    ray.origin = isect.point + n*EPSILON;
+    ray.direction = cosRandomDirection(n, rng);
+    ray.idx_bounces[2]--;
+}
+
+void  SnS_reflect(thread Ray& ray,
+                  thread Intersection& isect,
+                  thread Material &m,
+                  thread Loki& rng,
+                  thread float& pdf) {
+    
+    ray.origin = isect.point + isect.normal * EPSILON;
+    ray.color *= m.color;
+    ray.direction = reflect(ray.direction, isect.normal);
+    ray.idx_bounces[2]--;
+    pdf = 1;
+}
+
+void SnS_refract(thread Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf) {
+    //Figure out which n is incident and which is transmitted
+    const bool    entering = isect.outside;
+    const float        eta = entering ? m.index_of_refraction : 1.0 / m.index_of_refraction;
+    
+    float3 refracted = refract(-ray.direction, isect.normal, eta);
+    
+    if (abs(refracted.x) < ZeroEpsilon &&
+        abs(refracted.y) < ZeroEpsilon &&
+        abs(refracted.z) < ZeroEpsilon) {
+        ray.color = float3(0);
+    } else {
+        ray.color *= m.color;
+    }
+    
+    ray.origin = isect.point;
+    ray.direction = refracted;
+    ray.idx_bounces[2]--;
+    pdf = 1.f;
+}
+
+

@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
+		D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */; };
+		D81373B11FD86B51001A7EAC /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */; };
+		D81373B21FD86B51001A7EAC /* mis.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AE1FD86B51001A7EAC /* mis.metal */; };
+		D81373B31FD86B51001A7EAC /* mis.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AE1FD86B51001A7EAC /* mis.metal */; };
+		D81373B41FD86B51001A7EAC /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AF1FD86B51001A7EAC /* mis_helper.metal */; };
+		D81373B51FD86B51001A7EAC /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AF1FD86B51001A7EAC /* mis_helper.metal */; };
 		D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
 		D822E2311FD70F38009CF57D /* cornell-reflect-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */; };
 		D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */; };
@@ -78,6 +84,10 @@
 /* Begin PBXFileReference section */
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
+		D81373AC1FD8682A001A7EAC /* SceneParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneParameters.h; sourceTree = "<group>"; };
+		D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = mis_helper_header.metal; sourceTree = "<group>"; };
+		D81373AE1FD86B51001A7EAC /* mis.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = mis.metal; sourceTree = "<group>"; };
+		D81373AF1FD86B51001A7EAC /* mis_helper.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = mis_helper.metal; sourceTree = "<group>"; };
 		D822E22E1FD70F38009CF57D /* cornell-reflect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect.json"; sourceTree = "<group>"; };
 		D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect-ios.json"; sourceTree = "<group>"; };
 		D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -208,6 +218,9 @@
 		D85A88DE1FC4942000E5F6A2 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */,
+				D81373AF1FD86B51001A7EAC /* mis_helper.metal */,
+				D81373AE1FD86B51001A7EAC /* mis.metal */,
 				D8718BE11FB2BFFF00260B81 /* pathtrace.metal */,
 				D84F8F211FC483320001CF76 /* intersections_header.metal */,
 				D811105F1FC455E80059C01B /* intersections.metal */,
@@ -242,8 +255,9 @@
 			isa = PBXGroup;
 			children = (
 				D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */,
-				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
 				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
+				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
+				D81373AC1FD8682A001A7EAC /* SceneParameters.h */,
 				D826EDFD1FCA4E750078118A /* Stream Compaction */,
 				D884B96F1FC4AA98006A14CF /* Scenes */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
@@ -408,6 +422,7 @@
 			files = (
 				D826EE011FCA4E750078118A /* StreamCompactor.swift in Sources */,
 				D826C0C31FC8930800BD8A3E /* Pollux-Bridging-Header.h in Sources */,
+				D81373B41FD86B51001A7EAC /* mis_helper.metal in Sources */,
 				D81110601FC455E80059C01B /* intersections.metal in Sources */,
 				D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */,
 				D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */,
@@ -420,6 +435,7 @@
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
+				D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */,
 				D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */,
 				D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */,
 				D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */,
@@ -430,6 +446,7 @@
 				D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */,
 				D8388BDB1FB3A2F000653E5D /* PolluxViewController.swift in Sources */,
 				D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */,
+				D81373B21FD86B51001A7EAC /* mis.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +457,7 @@
 				D8D1E6EA1FD5D332005A6757 /* PolluxViewController.swift in Sources */,
 				D8D1E6EB1FD5D332005A6757 /* SceneParser.swift in Sources */,
 				D8D1E6EC1FD5D332005A6757 /* PolluxRenderer.swift in Sources */,
+				D81373B51FD86B51001A7EAC /* mis_helper.metal in Sources */,
 				D8D1E6ED1FD5D332005A6757 /* StreamCompactor.swift in Sources */,
 				D8D1E6EE1FD5D332005A6757 /* StreamCompactor.metal in Sources */,
 				D8D1E6EF1FD5D332005A6757 /* pathtrace.metal in Sources */,
@@ -452,7 +470,9 @@
 				D8D1E6F61FD5D332005A6757 /* loki_header.metal in Sources */,
 				D8D1E6F71FD5D332005A6757 /* loki.metal in Sources */,
 				D8D1E6F81FD5D332005A6757 /* PolluxTypes.h in Sources */,
+				D81373B31FD86B51001A7EAC /* mis.metal in Sources */,
 				D8D1E6F91FD5D332005A6757 /* Constants.h in Sources */,
+				D81373B11FD86B51001A7EAC /* mis_helper_header.metal in Sources */,
 				D8D1E6FA1FD5D332005A6757 /* simd_la.swift in Sources */,
 				D8D1E6FB1FD5D332005A6757 /* SharedBuffer.swift in Sources */,
 				D8D1E6FC1FD5D332005A6757 /* DeviceBuffer.swift in Sources */,
