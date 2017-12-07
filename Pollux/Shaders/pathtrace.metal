@@ -132,6 +132,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
 //                                texture2d<float, access::write> outTexture [[texture(5)]],
 //                                constant uint2& imageDeets  [[ buffer(6) ]],
                                 // TODO: END DELETE
+                                texture2d<float, access::sample> environment [[texture(5)]],
                                 const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count) {return;}
@@ -158,7 +159,8 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here
         //       something like: ray.color = getEnvMapColor(ray.direction);
-        ray.color = float3(0);
+        
+        ray.color *= getEnvironmentColor(environment, ray);
         ray.idx_bounces[2] = 0;
     }
 }

@@ -45,4 +45,20 @@ float3 sample_li(constant Geom& light,
     return float3(0);
 }
 
+float3 getEnvironmentColor(texture2d<float, access::sample> environment,
+                           device Ray& ray) {
+    constexpr sampler textureSampler(coord::normalized,
+                                     address::repeat,
+                                     min_filter::linear,
+                                     mag_filter::linear,
+                                     mip_filter::linear);
+    float x = ray.direction.x, y = ray.direction.y, z = ray.direction.z;
+    float u = atan2(x, z) / (2 * PI) + 0.5f;
+    float v = y * 0.5f + 0.5f;
+    
+    v = 1-v;
+    float4 color = environment.sample(textureSampler, float2(u, v));
+    return color.xyz;
+}
+
 

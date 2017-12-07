@@ -108,6 +108,13 @@ class PolluxRenderer: NSObject {
     
     /*****
      **
+     ** Environment
+     **
+     *****/
+    var environment : Texture
+    
+    /*****
+     **
      **  CPU/GPU Synchronization Stuff
      **
      ******/
@@ -159,6 +166,7 @@ class PolluxRenderer: NSObject {
         self.materials     = DeviceBuffer<Material>(count: scene.2.count, with: device, containing: scene.2, blitOn: self.commandQueue)
         self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
+        self.environment   = Texture(with: device)
         
 //        self.frame_ray_count = self.rays.count
         
@@ -241,6 +249,7 @@ extension PolluxRenderer {
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
+            commandEncoder.setTexture(self.environment.data, index: 5)
             break;
             
         case FINAL_GATHER:

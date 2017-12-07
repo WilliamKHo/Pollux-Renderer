@@ -57,3 +57,6 @@ float3 sample_li(device Geom& light,
                  thread float3 *wi,
                  thread float* pdf_li);
 
+float3 getEnvironmentColor(texture2d<float, access::sample> environment,
+                           device Ray& ray);
+

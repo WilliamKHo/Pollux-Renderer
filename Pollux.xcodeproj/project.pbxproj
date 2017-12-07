@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0641FF1FD8B4A200EECC64 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0641FE1FD8B4A200EECC64 /* Texture.swift */; };
+		0B0642001FD8B4A200EECC64 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0641FE1FD8B4A200EECC64 /* Texture.swift */; };
+		0B0642021FD8BA0900EECC64 /* environment1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642011FD8BA0900EECC64 /* environment1.png */; };
+		0B0642031FD8BA0900EECC64 /* environment1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642011FD8BA0900EECC64 /* environment1.png */; };
+		0B0642081FD8C23D00EECC64 /* environment.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642071FD8C23D00EECC64 /* environment.json */; };
+		0B0642091FD8C23D00EECC64 /* environment.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642071FD8C23D00EECC64 /* environment.json */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
@@ -76,6 +82,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B0641FE1FD8B4A200EECC64 /* Texture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
+		0B0642011FD8BA0900EECC64 /* environment1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = environment1.png; sourceTree = "<group>"; };
+		0B0642071FD8C23D00EECC64 /* environment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = environment.json; sourceTree = "<group>"; };
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D822E22E1FD70F38009CF57D /* cornell-reflect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect.json"; sourceTree = "<group>"; };
@@ -201,6 +210,7 @@
 				D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */,
 				D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */,
 				D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */,
+				0B0641FE1FD8B4A200EECC64 /* Texture.swift */,
 			);
 			path = Data_Types;
 			sourceTree = "<group>";
@@ -260,6 +270,7 @@
 		D884B96F1FC4AA98006A14CF /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0B0642011FD8BA0900EECC64 /* environment1.png */,
 				D8E60DCA1FD7A3AA00755A06 /* cornell-refract-ios.json */,
 				D8E60DC91FD7A3A900755A06 /* cornell-refract.json */,
 				D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */,
@@ -267,6 +278,7 @@
 				D8D1E7091FD5D562005A6757 /* cornell-ios.json */,
 				D8BD56831FC5FDEA00375BC2 /* cornell.json */,
 				D884B9701FC4EEC5006A14CF /* sphere.json */,
+				0B0642071FD8C23D00EECC64 /* environment.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -377,8 +389,10 @@
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
 				D822E2311FD70F38009CF57D /* cornell-reflect-ios.json in Resources */,
 				D8E60DCC1FD7A3AA00755A06 /* cornell-refract-ios.json in Resources */,
+				0B0642021FD8BA0900EECC64 /* environment1.png in Resources */,
 				D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
+				0B0642081FD8C23D00EECC64 /* environment.json in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
 				D8D1E70A1FD5D562005A6757 /* cornell-ios.json in Resources */,
@@ -394,6 +408,8 @@
 				D8D1E7071FD5D48D005A6757 /* cornell.json in Resources */,
 				D8D1E7081FD5D48D005A6757 /* sphere.json in Resources */,
 				D8D1E7041FD5D3C3005A6757 /* Main.storyboard in Resources */,
+				0B0642031FD8BA0900EECC64 /* environment1.png in Resources */,
+				0B0642091FD8C23D00EECC64 /* environment.json in Resources */,
 				D8D1E7051FD5D3C3005A6757 /* Assets.xcassets in Resources */,
 				D8D1E7061FD5D3C3005A6757 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -414,6 +430,7 @@
 				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
+				0B0641FF1FD8B4A200EECC64 /* Texture.swift in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
@@ -452,6 +469,7 @@
 				D8D1E6F61FD5D332005A6757 /* loki_header.metal in Sources */,
 				D8D1E6F71FD5D332005A6757 /* loki.metal in Sources */,
 				D8D1E6F81FD5D332005A6757 /* PolluxTypes.h in Sources */,
+				0B0642001FD8B4A200EECC64 /* Texture.swift in Sources */,
 				D8D1E6F91FD5D332005A6757 /* Constants.h in Sources */,
 				D8D1E6FA1FD5D332005A6757 /* simd_la.swift in Sources */,
 				D8D1E6FB1FD5D332005A6757 /* SharedBuffer.swift in Sources */,
@@ -613,7 +631,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
@@ -633,7 +651,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;

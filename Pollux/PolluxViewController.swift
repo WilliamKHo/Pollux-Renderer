@@ -33,7 +33,7 @@ class PolluxViewController: PlatformViewController {
         }
         
         // TODO: Improve Scene parsing
-        let scene = SceneParser.parseScene(from: "cornell-refract")
+        let scene = SceneParser.parseScene(from: "environment")
         
         //Initializes the Renderer
         renderer = PolluxRenderer(in: metalView!, with: scene)
