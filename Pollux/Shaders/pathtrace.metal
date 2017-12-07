@@ -162,7 +162,7 @@ kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer
         // TODO: Environment Map Code goes here
         //       something like: ray.color = getEnvMapColor(ray.direction);
         
-        if (envMapFlag) { ray.color *= getEnvironmentColor(environment, ray) * envEmittance; }
+        if (envMapFlag && ray.idx_bounces[2] > 1) { ray.color *= getEnvironmentColor(environment, ray) * envEmittance; }
         else { ray.color = float3(0); }
         ray.idx_bounces[2] = 0;
     }
