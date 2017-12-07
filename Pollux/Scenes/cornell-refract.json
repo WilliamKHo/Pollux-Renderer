@@ -57,7 +57,7 @@
    },
    {
      "name": "Sphere",
-     "type": 1,
+     "type": 0,
      "material": 4,
      "translate": [-1,2.5, -1],
      "rotate": [0, 0, 0],
