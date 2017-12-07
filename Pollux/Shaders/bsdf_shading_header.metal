@@ -49,3 +49,30 @@ void SnS_refract(device Ray& ray,
  */
 float3 cosRandomDirection(const  float3 normal,
                           thread Loki& rng);
+
+
+
+/********************************************************
+ ********************************************************
+ **************** FUNCTION OVERLOADS ********************
+ *** Overloaded in order to not compromise efficiency ***
+ ********************************************************
+ ********************************************************/
+void SnS_diffuse(thread Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf);
+
+void SnS_reflect(thread Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf);
+
+void SnS_refract(thread Ray& ray,
+                 thread Intersection& isect,
+                 thread Material &m,
+                 thread Loki& rng,
+                 thread float& pdf);
+

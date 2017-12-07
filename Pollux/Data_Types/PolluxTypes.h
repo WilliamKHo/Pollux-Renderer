@@ -65,9 +65,11 @@ typedef struct {
     vector_float3 origin;
     vector_float3 direction;
     vector_float3 color;
+    vector_float3 throughput;
     
     // Ray's Pixel Index x, y, and Remaining Bounces
     vector_uint3 idx_bounces;
+    unsigned int specularBounce;
 } Ray;
 
 typedef struct {

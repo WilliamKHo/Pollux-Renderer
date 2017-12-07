@@ -11,6 +11,9 @@ import simd
 
 class SceneParser {
     
+    // Counts the types of lights (i.e. bsdfs < 0)
+    private static var light_types = 0
+    
     private static func parseCamera(_ cameraJSON : [String : Any]) -> Camera {
         var camera = Camera();
         camera.pos    = float3(cameraJSON["pos"] as! Array<Float>)
@@ -25,7 +28,8 @@ class SceneParser {
         return camera
     }
     
-    private static func parseGeometry(_ geomsJSON : [[String : Any]]) -> [Geom] {
+    private static func parseGeometry(_ geomsJSON : [[String : Any]]) -> ([Geom], UInt32) {
+        var light_count : UInt32 = 0
         var geoms : [Geom] = [Geom]()
         for geomJSON in geomsJSON {
             var geom = Geom();
@@ -40,10 +44,12 @@ class SceneParser {
             geom.transform = s_tr * s_rt * s_sc;
             geom.inverseTransform = simd_inverse(geom.transform)
             geom.invTranspose     = simd_transpose(geom.inverseTransform)
+            
+            light_count += (geom.materialid < light_types) ? 1 : 0;
             geoms.append(geom)
         }
         
-        return geoms
+        return (geoms, light_count)
     }
     
     private static func parseMaterials(_ materialsJSON : [[String : Any]]) -> [Material] {
@@ -59,13 +65,15 @@ class SceneParser {
             material.specular_color      = float3(materialJSON["specular_color"] as? Array<Float> ?? [0, 0, 0])
             material.specular_exponent   = materialJSON["specular_exponent"] as? Float ?? 0.0
             
+            self.light_types += (material.bsdf < 0) ? 1 : 0;
+            
             materials.append(material)
         }
         
         return materials
     }
     
-    static func parseScene(from file: String) -> (Camera, [Geom], [Material]){
+    static func parseScene(from file: String) -> (Camera, [Geom], UInt32, [Material]){
         #if os(iOS) || os(watchOS) || os(tvOS)
             let platform_file = "\(file)-ios"
         #else
@@ -77,10 +85,10 @@ class SceneParser {
                 let data      = try Data(contentsOf: file, options: [])
                 let jsonFile  = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 let camera    = parseCamera(jsonFile["camera"] as! [String : Any])
-                let geometry  = parseGeometry(jsonFile["geometry"] as! [[String : Any]])
                 let materials = parseMaterials(jsonFile["materials"] as! [[String : Any]])
+                let (geometry, light_count)  = parseGeometry(jsonFile["geometry"] as! [[String : Any]])
         
-                return (camera, geometry, materials)
+                return (camera, geometry, light_count, materials)
             } catch let error {
                 fatalError(error.localizedDescription)
             }

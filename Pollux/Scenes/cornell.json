@@ -56,11 +56,11 @@
      "scale": [0.01,10,10]
    },
    {
-     "name": "Sphere",
-     "type": 0,
+     "name": "Cube",
+     "type": 1,
      "material": 4,
      "translate": [-1,4, -1],
-     "rotate": [0, 0, 0],
+     "rotate": [21, 35, 60],
      "scale": [3, 3, 3]
    }
   ],  

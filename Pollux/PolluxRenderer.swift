@@ -69,7 +69,8 @@ class PolluxRenderer: NSObject {
      **  Geoms Shared Buffer
      **
      ******/
-    let geoms      : DeviceBuffer<Geom>
+    let geoms         : DeviceBuffer<Geom>
+    var light_count   : UInt32
     
     /*****
      **
@@ -118,7 +119,7 @@ class PolluxRenderer: NSObject {
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
     /// mtkView object to set the pixelformat and other properties of our drawable
     // TODO: Parse Scene
-    init(in mtkView: MTKView, with scene: (Camera, [Geom], [Material])) {
+    init(in mtkView: MTKView, with scene: (Camera, [Geom], UInt32, [Material])) {
         self.device = mtkView.device!;
         self.commandQueue = device.makeCommandQueue();
         self.defaultLibrary = device.makeDefaultLibrary()!
@@ -156,11 +157,10 @@ class PolluxRenderer: NSObject {
         
         self.rays          = DeviceBuffer<Ray>(count: Int(ray_count), with: device)
         self.geoms         = DeviceBuffer<Geom>(count: scene.1.count, with: device, containing: scene.1, blitOn: self.commandQueue)
-        self.materials     = DeviceBuffer<Material>(count: scene.2.count, with: device, containing: scene.2, blitOn: self.commandQueue)
+        self.materials     = DeviceBuffer<Material>(count: scene.3.count, with: device, containing: scene.3, blitOn: self.commandQueue)
         self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
-        
-//        self.frame_ray_count = self.rays.count
+        self.light_count   = scene.2
         
         super.init()
         
@@ -180,7 +180,7 @@ class PolluxRenderer: NSObject {
         catch { fatalError("ComputeIntersections computePipelineState failed") }
         
         // Create Pipeline State for ShadeMaterials
-        self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterials")
+        self.kern_ShadeMaterials = defaultLibrary.makeFunction(name: "kern_ShadeMaterials" + integrator)
         do    { try ps_ShadeMaterials = device.makeComputePipelineState(function: kern_ShadeMaterials)}
         catch { fatalError("ShadeMaterials computePipelineState failed") }
         
@@ -241,6 +241,11 @@ extension PolluxRenderer {
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
+            if (integrator == "MIS" || integrator == "Direct") {
+                commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 5)
+                commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 6)
+                commandEncoder.setBytes(&self.light_count,  length: MemoryLayout<UInt32>.size, index: 7)
+            }
             break;
             
         case FINAL_GATHER:
