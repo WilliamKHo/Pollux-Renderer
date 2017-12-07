@@ -17,10 +17,6 @@ class DeviceTexture {
         let filenameArr = file.split(separator: ".", maxSplits: 2, omittingEmptySubsequences: false)
         let path = Bundle.main.path(forResource: String(filenameArr[0]), ofType: String(filenameArr[1]))
         let textureLoader = MTKTextureLoader(device: device)
-        do {
-            self.data = try! textureLoader.newTexture(URL: URL(fileURLWithPath: path!), options: [MTKTextureLoader.Option.textureStorageMode : (2 as NSNumber)]) // private storage mode
-        } catch let error {
-            fatalError("Could not find specified environment map")
-        }
+        self.data = try! textureLoader.newTexture(URL: URL(fileURLWithPath: path!), options: [MTKTextureLoader.Option.textureStorageMode : (2 as NSNumber)]) // private storage mode
     }
 }

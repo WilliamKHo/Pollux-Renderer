@@ -7,8 +7,9 @@
 //
 
 #include <metal_stdlib>
+#include "../SceneParameters.h"
 #include "../Data_Types/PolluxTypes.h"
-#import  "Loki/loki_header.metal"
+#include "Loki/loki_header.metal"
 #include "intersections_header.metal"
 #include "interactions_header.metal"
 
@@ -34,7 +35,13 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
         device Ray& ray = rays[index];
         
         ray.origin = cam.pos;
-        ray.color = float3(1.0f, 1.0f, 1.0f);
+        
+        if (integrator == "MIS") {
+            ray.color = float3(0.f);
+            ray.throughput = float3(1.f);
+        } else {
+            ray.color = float3(1.f);
+        }
         
         // Calculations for ray cast:
         const float yscaled = tan(fov * (3.14159 / 180));
@@ -52,6 +59,7 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
         ray.idx_bounces.x = x;
         ray.idx_bounces.y = y;
         ray.idx_bounces[2] = traceDepth;
+        ray.specularBounce = 0;
     }
 }
 
@@ -65,73 +73,19 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
     
     if (position >= ray_count){ return;}
     
-    constant Ray& ray = rays[position];
+    const Ray ray = rays[position];
     
-    float t;
-    float3 intersect_point;
-    float3 normal;
-    float t_min = FLT_MAX;
-    int hit_geom_index = -1;
-    bool outside = true;
-    
-    float3 tmp_intersect;
-    float3 tmp_normal;
-    
-    // naive parse through global geoms
-    for (uint i = 0; i < geom_count; i++)
-    {
-        constant Geom& geom = geoms[i];
-        
-        if (geom.type == CUBE)
-        {
-            t = computeCubeIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
-        }
-        else if (geom.type == SPHERE)
-        {
-            t = computeSphereIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
-        }
-        // TODO: add more intersection tests here... triangle? metaball? CSG?
-        
-        // Compute the minimum t from the intersection tests to determine what
-        // scene geometry object was hit first.
-        if (t > 0.0f && t_min > t)
-        {
-            t_min = t;
-            hit_geom_index = i;
-            intersect_point = tmp_intersect;
-            normal = tmp_normal;
-        }
-    }
-    
-    device Intersection& intersection = intersections[position];
-    
-    if (hit_geom_index == -1)
-    {
-        // The ray doesn't hit something (index == -1)
-        intersection.t = -1.0f;
-    }
-    else
-    {
-        //The ray hits something
-        intersection.t = t_min;
-        intersection.materialId = geoms[hit_geom_index].materialid;
-        intersection.normal = normal;
-        intersection.point = intersect_point;
-        intersection.outside = outside;
-    }
+    // Get the Intersection
+    intersections[position] = getIntersection(ray, geoms, geom_count);
 }
 
 
 /// Shade
-kernel void kern_ShadeMaterials(constant   uint& ray_count             [[ buffer(0) ]],
+kernel void kern_ShadeMaterialsNaive(constant   uint& ray_count             [[ buffer(0) ]],
                                 constant   uint& iteration             [[ buffer(1) ]],
                                 device     Ray* rays                   [[ buffer(2) ]],
                                 device     Intersection* intersections [[ buffer(3) ]],
                                 constant     Material*     materials     [[ buffer(4) ]],
-                                // TODO: Delete buffers 5 & 6 for later stages
-//                                texture2d<float, access::write> outTexture [[texture(5)]],
-//                                constant uint2& imageDeets  [[ buffer(6) ]],
-                                // TODO: END DELETE
                                 texture2d<float, access::sample> environment [[ texture(5) ]],
                                 constant    float3& envEmittance        [[ buffer(6) ]],
                                 constant    bool& envMapFlag            [[ buffer(7) ]],

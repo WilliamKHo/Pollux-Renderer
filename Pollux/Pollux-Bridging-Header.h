@@ -3,4 +3,5 @@
 //
 
 #import "PolluxTypes.h"
+#import "SceneParameters.h"
 #import "Data_Types/Constants.h"

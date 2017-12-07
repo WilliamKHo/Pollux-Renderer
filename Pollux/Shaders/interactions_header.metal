@@ -11,6 +11,8 @@
 #include "../Data_Types/Constants.h"
 #include "bsdf_shading_header.metal"
 
+// TODO: Add more Documentation here
+
 using namespace metal;
 
 /**
@@ -36,6 +38,28 @@ void shadeAndScatter(device Ray& ray,
                      thread Material &m,
                      thread Loki& rng,
                      thread float& pdf);
+
+/**
+ * Sample a point on a cube.
+ * - Used in MIS for picking a random point on a Cube Lights
+ */
+float3 sampleCube(constant Geom&         light,
+                  const thread float3&     ref,
+                  thread Loki&             rng,
+                  thread float3&            wi,
+                  thread float&         pdf_li);
+
+/**
+ * Sample a point on a sphere.
+ * - Used in MIS for picking a random point on a Spherical Lights
+ */
+float3 sampleSphere(constant Geom&       light,
+                    const thread float3&   ref,
+                    thread Loki&           rng,
+                    thread float3&          wi,
+                    thread float&       pdf_li);
+
+
 /**
  * Sample a random point `shape_sample` on a scene light.
  *
@@ -50,12 +74,26 @@ void shadeAndScatter(device Ray& ray,
  *
  * RETURNS:     the color of the light at `shape_sample`
  */
-float3 sample_li(device Geom& light,
-                 device Material& m,
-                 constant float3& ref,
-                 thread Loki& rng,
-                 thread float3 *wi,
-                 thread float* pdf_li);
+float3 sample_li(constant Geom&         light,
+                 const constant Material&   m,
+                 const thread float3&     ref,
+                 thread Loki&             rng,
+                 thread float3&            wi,
+                 thread float&         pdf_li);
+
+
+
+/********************************************************
+ ********************************************************
+ **************** FUNCTION OVERLOADS ********************
+ *** Overloaded in order to not compromise efficiency ***
+ ********************************************************
+ ********************************************************/
+void shadeAndScatter(thread Ray& ray,
+                     thread Intersection& isect,
+                     thread Material &m,
+                     thread Loki& rng,
+                     thread float& pdf);
 
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
                            device Ray& ray);

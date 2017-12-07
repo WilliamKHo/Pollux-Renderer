@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B06421F1FD9177E00EECC64 /* environment-scene-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421A1FD9177D00EECC64 /* environment-scene-ios.json */; };
+		0B0642201FD9177E00EECC64 /* environment-scene.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421B1FD9177D00EECC64 /* environment-scene.json */; };
+		0B0642211FD9177E00EECC64 /* environment1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421C1FD9177D00EECC64 /* environment1.png */; };
+		0B0642221FD9177E00EECC64 /* environment2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421D1FD9177D00EECC64 /* environment2.jpg */; };
+		0B0642231FD9177E00EECC64 /* environment.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421E1FD9177E00EECC64 /* environment.json */; };
+		0B0642261FD9188400EECC64 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0642241FD9188300EECC64 /* Environment.swift */; };
+		0B0642271FD9188400EECC64 /* DeviceTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0642251FD9188300EECC64 /* DeviceTexture.swift */; };
+		0B0642281FD9193800EECC64 /* DeviceTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0642251FD9188300EECC64 /* DeviceTexture.swift */; };
+		0B0642291FD9193A00EECC64 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0642241FD9188300EECC64 /* Environment.swift */; };
+		0B06422A1FD9247000EECC64 /* environment-scene-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421A1FD9177D00EECC64 /* environment-scene-ios.json */; };
+		0B06422B1FD9247300EECC64 /* environment-scene.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421B1FD9177D00EECC64 /* environment-scene.json */; };
+		0B06422C1FD9247700EECC64 /* environment.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421E1FD9177E00EECC64 /* environment.json */; };
+		0B06422D1FD9247C00EECC64 /* environment2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421D1FD9177D00EECC64 /* environment2.jpg */; };
+		0B06422E1FD9247E00EECC64 /* environment1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B06421C1FD9177D00EECC64 /* environment1.png */; };
+		0B06422F1FD9248400EECC64 /* cornell-refract-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E60DCA1FD7A3AA00755A06 /* cornell-refract-ios.json */; };
+		0B0642301FD9248600EECC64 /* cornell-refract.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E60DC91FD7A3A900755A06 /* cornell-refract.json */; };
+		0B0642311FD9248800EECC64 /* cornell-reflect-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */; };
+		0B0642321FD9248A00EECC64 /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */; };
@@ -82,6 +100,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B06421A1FD9177D00EECC64 /* environment-scene-ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "environment-scene-ios.json"; sourceTree = "<group>"; };
+		0B06421B1FD9177D00EECC64 /* environment-scene.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "environment-scene.json"; sourceTree = "<group>"; };
+		0B06421C1FD9177D00EECC64 /* environment1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = environment1.png; sourceTree = "<group>"; };
+		0B06421D1FD9177D00EECC64 /* environment2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = environment2.jpg; sourceTree = "<group>"; };
+		0B06421E1FD9177E00EECC64 /* environment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = environment.json; sourceTree = "<group>"; };
+		0B0642241FD9188300EECC64 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		0B0642251FD9188300EECC64 /* DeviceTexture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTexture.swift; sourceTree = "<group>"; };
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D81373AC1FD8682A001A7EAC /* SceneParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneParameters.h; sourceTree = "<group>"; };
@@ -205,6 +230,8 @@
 		D85A88DD1FC4940E00E5F6A2 /* Data_Types */ = {
 			isa = PBXGroup;
 			children = (
+				0B0642251FD9188300EECC64 /* DeviceTexture.swift */,
+				0B0642241FD9188300EECC64 /* Environment.swift */,
 				D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */,
 				D8BD567E1FC5ED3700375BC2 /* Constants.h */,
 				D84F8F1F1FC4682E0001CF76 /* simd_la.swift */,
@@ -274,6 +301,11 @@
 		D884B96F1FC4AA98006A14CF /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0B06421A1FD9177D00EECC64 /* environment-scene-ios.json */,
+				0B06421B1FD9177D00EECC64 /* environment-scene.json */,
+				0B06421E1FD9177E00EECC64 /* environment.json */,
+				0B06421C1FD9177D00EECC64 /* environment1.png */,
+				0B06421D1FD9177D00EECC64 /* environment2.jpg */,
 				D8E60DCA1FD7A3AA00755A06 /* cornell-refract-ios.json */,
 				D8E60DC91FD7A3A900755A06 /* cornell-refract.json */,
 				D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */,
@@ -388,14 +420,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B0642201FD9177E00EECC64 /* environment-scene.json in Resources */,
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
 				D822E2311FD70F38009CF57D /* cornell-reflect-ios.json in Resources */,
 				D8E60DCC1FD7A3AA00755A06 /* cornell-refract-ios.json in Resources */,
 				D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */,
+				0B0642231FD9177E00EECC64 /* environment.json in Resources */,
+				0B0642211FD9177E00EECC64 /* environment1.png in Resources */,
 				D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */,
+				0B0642221FD9177E00EECC64 /* environment2.jpg in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
 				D8D1E70A1FD5D562005A6757 /* cornell-ios.json in Resources */,
+				0B06421F1FD9177E00EECC64 /* environment-scene-ios.json in Resources */,
 				D8E60DCB1FD7A3AA00755A06 /* cornell-refract.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,11 +442,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D1E70B1FD5D565005A6757 /* cornell-ios.json in Resources */,
+				0B0642311FD9248800EECC64 /* cornell-reflect-ios.json in Resources */,
 				D8D1E7071FD5D48D005A6757 /* cornell.json in Resources */,
 				D8D1E7081FD5D48D005A6757 /* sphere.json in Resources */,
+				0B06422E1FD9247E00EECC64 /* environment1.png in Resources */,
 				D8D1E7041FD5D3C3005A6757 /* Main.storyboard in Resources */,
 				D8D1E7051FD5D3C3005A6757 /* Assets.xcassets in Resources */,
+				0B0642321FD9248A00EECC64 /* cornell-reflect.json in Resources */,
+				0B06422C1FD9247700EECC64 /* environment.json in Resources */,
 				D8D1E7061FD5D3C3005A6757 /* LaunchScreen.storyboard in Resources */,
+				0B0642301FD9248600EECC64 /* cornell-refract.json in Resources */,
+				0B06422B1FD9247300EECC64 /* environment-scene.json in Resources */,
+				0B06422D1FD9247C00EECC64 /* environment2.jpg in Resources */,
+				0B06422A1FD9247000EECC64 /* environment-scene-ios.json in Resources */,
+				0B06422F1FD9248400EECC64 /* cornell-refract-ios.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,8 +481,10 @@
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
+				0B0642271FD9188400EECC64 /* DeviceTexture.swift in Sources */,
 				D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */,
 				D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */,
+				0B0642261FD9188400EECC64 /* Environment.swift in Sources */,
 				D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */,
 				D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */,
 				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
@@ -471,10 +519,12 @@
 				D8D1E6F71FD5D332005A6757 /* loki.metal in Sources */,
 				D8D1E6F81FD5D332005A6757 /* PolluxTypes.h in Sources */,
 				D81373B31FD86B51001A7EAC /* mis.metal in Sources */,
+				0B0642291FD9193A00EECC64 /* Environment.swift in Sources */,
 				D8D1E6F91FD5D332005A6757 /* Constants.h in Sources */,
 				D81373B11FD86B51001A7EAC /* mis_helper_header.metal in Sources */,
 				D8D1E6FA1FD5D332005A6757 /* simd_la.swift in Sources */,
 				D8D1E6FB1FD5D332005A6757 /* SharedBuffer.swift in Sources */,
+				0B0642281FD9193800EECC64 /* DeviceTexture.swift in Sources */,
 				D8D1E6FC1FD5D332005A6757 /* DeviceBuffer.swift in Sources */,
 				D8D1E6FD1FD5D332005A6757 /* PlatformTypes.swift in Sources */,
 				D8D1E6FE1FD5D332005A6757 /* AppDelegate.swift in Sources */,
@@ -633,7 +683,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
@@ -653,7 +703,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
@@ -670,11 +720,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS-willho";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
@@ -689,11 +739,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS-willho";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
