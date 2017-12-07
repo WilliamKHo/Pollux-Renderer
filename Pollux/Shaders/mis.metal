@@ -21,9 +21,12 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
                                    device     Ray* rays                   [[ buffer(2) ]],
                                    device     Intersection* intersections [[ buffer(3) ]],
                                    constant   Material*     materials     [[ buffer(4) ]],
-                                   constant   Geom*         geoms         [[ buffer(5) ]],
-                                   constant   uint&         geom_count    [[ buffer(6) ]],
-                                   constant   uint&         light_count   [[ buffer(7) ]],
+                                   texture2d<float, access::sample> environment [[ texture(5) ]],
+                                   constant    float3& envEmittance       [[ buffer(6) ]],
+                                   constant    bool& envMapFlag           [[ buffer(7) ]],
+                                   constant   Geom*         geoms         [[ buffer(8) ]],
+                                   constant   uint&         geom_count    [[ buffer(9) ]],
+                                   constant   uint&         light_count   [[ buffer(10) ]],
                                    const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count) {return;}
@@ -36,9 +39,8 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
 
 
     if (intersection.t < ZeroEpsilon) { // If there was no intersection, color the ray black.
-        // TODO: Environment Map Code goes here
-        //       something like: ray.color = getEnvMapColor(ray.direction);
-        ray.color = float3(0);
+        if (envMapFlag && ray.idx_bounces[2] >= 1) { ray.color += getEnvironmentColor(environment, ray) * envEmittance; }
+        else { ray.color = float3(0); }
         ray.idx_bounces[2] = 0;
         return;
     }
@@ -169,14 +171,17 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
 
 // Shade with Direct Lighting (Single Bounce)
 kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ buffer(0) ]],
-                                   constant   uint& iteration             [[ buffer(1) ]],
-                                   device     Ray* rays                   [[ buffer(2) ]],
-                                   device     Intersection* intersections [[ buffer(3) ]],
-                                   constant   Material*     materials     [[ buffer(4) ]],
-                                   constant   Geom*         geoms         [[ buffer(5) ]],
-                                   constant   uint&         geom_count    [[ buffer(6) ]],
-                                   constant   uint&         light_count   [[ buffer(7) ]],
-                                   const uint position [[thread_position_in_grid]]) {
+                                      constant   uint& iteration             [[ buffer(1) ]],
+                                      device     Ray* rays                   [[ buffer(2) ]],
+                                      device     Intersection* intersections [[ buffer(3) ]],
+                                      constant   Material*     materials     [[ buffer(4) ]],
+                                      texture2d<float, access::sample> environment [[ texture(5) ]],
+                                      constant   float3& envEmittance        [[ buffer(6) ]],
+                                      constant   bool& envMapFlag            [[ buffer(7) ]],
+                                      constant   Geom*         geoms         [[ buffer(8) ]],
+                                      constant   uint&         geom_count    [[ buffer(9) ]],
+                                      constant   uint&         light_count   [[ buffer(10) ]],
+                                      const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count) {return;}
     Intersection intersection = intersections[position];
@@ -188,9 +193,8 @@ kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ 
     
     
     if (intersection.t < ZeroEpsilon) { // If there was no intersection, color the ray black.
-        // TODO: Environment Map Code goes here
-        //       something like: ray.color = getEnvMapColor(ray.direction);
-        ray.color = float3(0);
+        if (envMapFlag && ray.idx_bounces[2] >= 1) { ray.color *= getEnvironmentColor(environment, ray) * envEmittance; }
+        else { ray.color = float3(0); }
         ray.idx_bounces[2] = 0;
         return;
     }

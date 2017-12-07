@@ -89,7 +89,8 @@
     {
       "bsdf"  : 2,
       "name": "Transmissive Silver",
-      "color": [0.87, 0.87, 0.87]
+      "color": [0.87, 0.87, 0.87],
+      "index_of_refraction" : 1.4
     }
   ]
 }

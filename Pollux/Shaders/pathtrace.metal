@@ -82,11 +82,14 @@ kernel void kern_ComputeIntersections(constant uint& ray_count             [[ bu
 
 /// Shade
 kernel void kern_ShadeMaterialsNaive(constant   uint& ray_count             [[ buffer(0) ]],
-                                     constant   uint& iteration             [[ buffer(1) ]],
-                                     device     Ray* rays                   [[ buffer(2) ]],
-                                     device     Intersection* intersections [[ buffer(3) ]],
-                                     constant   Material*     materials     [[ buffer(4) ]],
-                                     const uint position [[thread_position_in_grid]]) {
+                                constant   uint& iteration             [[ buffer(1) ]],
+                                device     Ray* rays                   [[ buffer(2) ]],
+                                device     Intersection* intersections [[ buffer(3) ]],
+                                constant     Material*     materials     [[ buffer(4) ]],
+                                texture2d<float, access::sample> environment [[ texture(5) ]],
+                                constant    float3& envEmittance        [[ buffer(6) ]],
+                                constant    bool& envMapFlag            [[ buffer(7) ]],
+                                const uint position [[thread_position_in_grid]]) {
     
     if (position >= ray_count) {return;}
     
@@ -112,7 +115,9 @@ kernel void kern_ShadeMaterialsNaive(constant   uint& ray_count             [[ b
     else { // If there was no intersection, color the ray black.
         // TODO: Environment Map Code goes here
         //       something like: ray.color = getEnvMapColor(ray.direction);
-        ray.color = float3(0);
+        
+        if (envMapFlag && ray.idx_bounces[2] > 1) { ray.color *= getEnvironmentColor(environment, ray) * envEmittance; }
+        else { ray.color = float3(0); }
         ray.idx_bounces[2] = 0;
     }
 }

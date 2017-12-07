@@ -1,0 +1,30 @@
+{
+    "camera": {
+        "fov":   45,
+        "depth":  8,
+        "pos":  [0, 5, 10.5],
+        "lookAt": [0, 5, 0],
+        "up":     [0, 1, 0]
+    },
+    "geometry": [
+                 {
+                 "name": "Sphere",
+                 "type": 0,
+                 "material": 0,
+                 "translate": [0,5,0],
+                 "rotate": [0,0,0],
+                 "scale": [3,3,3]
+                 }
+                 ],
+    "materials": [
+                  {
+                  "name": "White Light",
+                  "bsdf": 1,
+                  "color": [0.98, 0.98, 0.98],
+                  }
+                  ],
+    "environment": {
+        "filepath" : "environment2.jpg",
+        "emittance" : [2,2,2]
+    }
+}
