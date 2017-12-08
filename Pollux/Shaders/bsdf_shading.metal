@@ -85,6 +85,42 @@ void SnS_refract(device Ray& ray,
     pdf = 1.f;
 }
 
+void SnS_subsurface(device Ray& ray,
+                    thread Intersection& isect,
+                    thread Material &m,
+                    thread Loki& rng,
+                    thread float& pdf) {
+    const bool    entering = isect.outside;
+    float3 n = -isect.normal;
+    if (entering) {
+        SnS_diffuse(ray, isect, m, rng, pdf);
+        ray.direction += 2*n;
+        ray.origin = isect.point + n * 0.1;
+        // ray.direction = normalize(ray.direction + cosRandomDirection(ray.direction, rng));
+        return;
+    }
+    
+    float tFar = length(isect.point - ray.origin);
+    float lambda = 1.0f / m.scatteringDistance;
+    float t = -log(rng.rand()) / lambda;
+    ray.idx_bounces[2]--;
+    // Refraction event
+    if (t > tFar) {
+        SnS_diffuse(ray, isect, m, rng, pdf);
+        ray.direction += 2*n;
+        ray.origin = isect.point + n * 0.1;
+        ray.color *= exp((log(m.color) / m.absorptionAtDistance) * tFar);
+        return;
+    }
+    ray.origin += ray.direction * t;
+    // Scatter event
+    // Move ray some distance along it's path
+    // Remove energy and adjust direction
+    ray.color *= exp((log(m.color) / m.absorptionAtDistance) * t);
+    ray.direction = normalize((-ray.direction / 4) + float3(rng.rand() - 0.5f, rng.rand() - 0.5f, rng.rand() - 0.5f));
+    
+}
+
 /**************************
  **************************
  ***** HELPER METHODS *****

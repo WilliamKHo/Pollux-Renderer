@@ -25,6 +25,14 @@
 		0B0642301FD9248600EECC64 /* cornell-refract.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E60DC91FD7A3A900755A06 /* cornell-refract.json */; };
 		0B0642311FD9248800EECC64 /* cornell-reflect-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */; };
 		0B0642321FD9248A00EECC64 /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
+		0B06423A1FDAFB0C00EECC64 /* cornell-subsurface-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642391FDAFB0C00EECC64 /* cornell-subsurface-ios.json */; };
+		0B06423B1FDAFB0C00EECC64 /* cornell-subsurface-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642391FDAFB0C00EECC64 /* cornell-subsurface-ios.json */; };
+		0B06423D1FDB1BC800EECC64 /* environment-scene-sss-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06423C1FDB1BC800EECC64 /* environment-scene-sss-ios.json */; };
+		0B06423E1FDB1BC800EECC64 /* environment-scene-sss-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06423C1FDB1BC800EECC64 /* environment-scene-sss-ios.json */; };
+		0B0642401FDB22D600EECC64 /* cornell-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */; };
+		0B0642411FDB22D600EECC64 /* cornell-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */; };
+		0B0642431FDB230900EECC64 /* environment-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642421FDB230900EECC64 /* environment-subsurface.json */; };
+		0B0642441FDB230900EECC64 /* environment-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642421FDB230900EECC64 /* environment-subsurface.json */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */; };
@@ -107,6 +115,10 @@
 		0B06421E1FD9177E00EECC64 /* environment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = environment.json; sourceTree = "<group>"; };
 		0B0642241FD9188300EECC64 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		0B0642251FD9188300EECC64 /* DeviceTexture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTexture.swift; sourceTree = "<group>"; };
+		0B0642391FDAFB0C00EECC64 /* cornell-subsurface-ios.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cornell-subsurface-ios.json"; sourceTree = "<group>"; };
+		0B06423C1FDB1BC800EECC64 /* environment-scene-sss-ios.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "environment-scene-sss-ios.json"; sourceTree = "<group>"; };
+		0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cornell-subsurface.json"; sourceTree = "<group>"; };
+		0B0642421FDB230900EECC64 /* environment-subsurface.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "environment-subsurface.json"; sourceTree = "<group>"; };
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D81373AC1FD8682A001A7EAC /* SceneParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneParameters.h; sourceTree = "<group>"; };
@@ -313,6 +325,10 @@
 				D8D1E7091FD5D562005A6757 /* cornell-ios.json */,
 				D8BD56831FC5FDEA00375BC2 /* cornell.json */,
 				D884B9701FC4EEC5006A14CF /* sphere.json */,
+				0B0642391FDAFB0C00EECC64 /* cornell-subsurface-ios.json */,
+				0B06423C1FDB1BC800EECC64 /* environment-scene-sss-ios.json */,
+				0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */,
+				0B0642421FDB230900EECC64 /* environment-subsurface.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -420,10 +436,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B0642431FDB230900EECC64 /* environment-subsurface.json in Resources */,
 				0B0642201FD9177E00EECC64 /* environment-scene.json in Resources */,
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
 				D822E2311FD70F38009CF57D /* cornell-reflect-ios.json in Resources */,
 				D8E60DCC1FD7A3AA00755A06 /* cornell-refract-ios.json in Resources */,
+				0B06423D1FDB1BC800EECC64 /* environment-scene-sss-ios.json in Resources */,
 				D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */,
 				0B0642231FD9177E00EECC64 /* environment.json in Resources */,
 				0B0642211FD9177E00EECC64 /* environment1.png in Resources */,
@@ -431,8 +449,10 @@
 				0B0642221FD9177E00EECC64 /* environment2.jpg in Resources */,
 				D884B9711FC4EEC5006A14CF /* sphere.json in Resources */,
 				D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */,
+				0B0642401FDB22D600EECC64 /* cornell-subsurface.json in Resources */,
 				D8D1E70A1FD5D562005A6757 /* cornell-ios.json in Resources */,
 				0B06421F1FD9177E00EECC64 /* environment-scene-ios.json in Resources */,
+				0B06423A1FDAFB0C00EECC64 /* cornell-subsurface-ios.json in Resources */,
 				D8E60DCB1FD7A3AA00755A06 /* cornell-refract.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -447,11 +467,15 @@
 				D8D1E7081FD5D48D005A6757 /* sphere.json in Resources */,
 				0B06422E1FD9247E00EECC64 /* environment1.png in Resources */,
 				D8D1E7041FD5D3C3005A6757 /* Main.storyboard in Resources */,
+				0B0642411FDB22D600EECC64 /* cornell-subsurface.json in Resources */,
+				0B06423E1FDB1BC800EECC64 /* environment-scene-sss-ios.json in Resources */,
 				D8D1E7051FD5D3C3005A6757 /* Assets.xcassets in Resources */,
 				0B0642321FD9248A00EECC64 /* cornell-reflect.json in Resources */,
 				0B06422C1FD9247700EECC64 /* environment.json in Resources */,
 				D8D1E7061FD5D3C3005A6757 /* LaunchScreen.storyboard in Resources */,
+				0B06423B1FDAFB0C00EECC64 /* cornell-subsurface-ios.json in Resources */,
 				0B0642301FD9248600EECC64 /* cornell-refract.json in Resources */,
+				0B0642441FDB230900EECC64 /* environment-subsurface.json in Resources */,
 				0B06422B1FD9247300EECC64 /* environment-scene.json in Resources */,
 				0B06422D1FD9247C00EECC64 /* environment2.jpg in Resources */,
 				0B06422A1FD9247000EECC64 /* environment-scene-ios.json in Resources */,
@@ -724,7 +748,7 @@
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS-willho";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";
@@ -743,7 +767,7 @@
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "self.edu.Pollux-iOS-willho";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Pollux/Pollux-Bridging-Header.h";

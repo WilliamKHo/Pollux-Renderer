@@ -31,6 +31,9 @@ void shadeAndScatter(device Ray& ray,
         case 2:
             SnS_refract(ray, isect, m, rng, pdf);
             break;
+        case 3:
+            SnS_subsurface(ray, isect, m, rng, pdf);
+            break;
         default:
             break;
     }

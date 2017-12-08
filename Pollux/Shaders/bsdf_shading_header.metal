@@ -35,6 +35,12 @@ void SnS_refract(device Ray& ray,
                  thread Loki& rng,
                  thread float& pdf);
 
+void SnS_subsurface(device Ray& ray,
+                    thread Intersection& isect,
+                    thread Material &m,
+                    thread Loki& rng,
+                    thread float& pdf);
+
 /**
  * Computes a cosine-weighted random direction in a hemisphere.
  * Used for diffuse lighting.

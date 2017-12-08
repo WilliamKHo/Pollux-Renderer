@@ -60,6 +60,7 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
         ray.idx_bounces.y = y;
         ray.idx_bounces[2] = traceDepth;
         ray.specularBounce = 0;
+        ray.inMedium = 0;
     }
 }
 

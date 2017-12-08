@@ -18,9 +18,9 @@
 
 //#define scene_file "cornell"
 //#define scene_file "cornell-reflect"
-#define scene_file "cornell-refract"
-//#define scene_file "environment-scene"
-
+//#define scene_file "cornell-refract"
+#define scene_file "environment-scene-sss"
+//#define scene_file "cornell-subsurface"
 
 /*************************************
  *************************************

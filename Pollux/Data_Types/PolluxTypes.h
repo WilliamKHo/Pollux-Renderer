@@ -58,6 +58,10 @@ typedef struct {
     float hasRefractive;
     float index_of_refraction;
     short bsdf;
+    
+    float hasSubsurface;
+    float scatteringDistance;
+    float absorptionAtDistance;
 } Material;
 
 typedef struct {
@@ -66,6 +70,7 @@ typedef struct {
     vector_float3 direction;
     vector_float3 color;
     vector_float3 throughput;
+    int inMedium;
     
     // Ray's Pixel Index x, y, and Remaining Bounces
     vector_uint3 idx_bounces;

@@ -2,16 +2,24 @@
 {
     "camera": {
         "fov":   45,
-        "depth":  16,
+        "depth":  64,
         "pos":  [0, 5, 10.5],
         "lookAt": [0, 5, 0],
         "up":     [0, 1, 0]
     },
     "geometry": [
                  {
+                 "name": "Sphere Light",
+                 "type": 0,
+                 "material": 0,
+                 "translate": [0.5, 0.5, 0.5],
+                 "rotate": [0,0,0],
+                 "scale": [1, 1, 1]
+                 },
+                 {
                  "name": "Floor Plane",
                  "type": 1,
-                 "material": 0,
+                 "material": 1,
                  "translate": [0,0,0],
                  "rotate": [0,0,0],
                  "scale": [8,0.01,10]
@@ -19,7 +27,7 @@
                  {
                  "name": "Sphere",
                  "type": 0,
-                 "material": 1,
+                 "material": 2,
                  "translate": [-1,1.5, -1],
                  "rotate": [0, 0, 0],
                  "scale": [3, 3, 3]
@@ -27,7 +35,7 @@
                  {
                  "name": "Sphere Reflective",
                  "type": 0,
-                 "material": 2,
+                 "material": 3,
                  "translate": [-3 ,1.5 , 3],
                  "rotate": [0, 0, 0],
                  "scale": [3, 3, 3]
@@ -35,13 +43,27 @@
                  {
                  "name": "Sphere Refractive",
                  "type": 0,
-                 "material": 3,
+                 "material": 4,
                  "translate": [3,1.5, -3],
                  "rotate": [0, 0, 0],
                  "scale": [3, 3, 3]
+                 },
+                 {
+                 "name" : "Cube Subsurface",
+                 "type": 1,
+                 "material": 5,
+                 "translate": [2, 1, 2],
+                 "rotate": [0, 45, 0],
+                 "scale": [2, 2, 2]
                  }
                  ],
     "materials": [
+                  {
+                  "bsdf"  : -1,
+                  "name": "Light",
+                  "color": [0.98, 0.98, 0.98],
+                  "emittance": [4, 4, 4]
+                  },
                   {
                   "bsdf"  : 0,
                   "name": "Diffuse Gray",
@@ -49,8 +71,8 @@
                   },
                   {
                   "bsdf"  : 0,
-                  "name": "Diffuse Red",
-                  "color": [0.85, 0.35, 0.35]
+                  "name": "Diffuse Blue",
+                  "color": [0.35, 0.35, 0.85]
                   },
                   {
                   "bsdf"  : 1,
@@ -62,10 +84,18 @@
                   "name": "Refractive Glass",
                   "color": [0.98, 0.98, 0.98],
                   "index_of_refraction" : 1.5
+                  },
+                  {
+                  "bsdf"  : 3,
+                  "name": "Subsurface Red",
+                  "color": [0.98, 0.6, 0.6],
+                  "index_of_refraction" : 1.2,
+                  "scatteringDistance" : 1,
+                  "absorptionAtDistance" : 2
                   }
                   ],
     "environment": {
         "filepath" : "environment2.jpg",
-        "emittance" : [3,3,3]
+        "emittance" : [4,4,4]
     }
 }

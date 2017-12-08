@@ -71,6 +71,9 @@ class SceneParser {
             material.index_of_refraction = materialJSON["index_of_refraction"] as? Float ?? 0.0
             material.specular_color      = float3(materialJSON["specular_color"] as? Array<Float> ?? [0, 0, 0])
             material.specular_exponent   = materialJSON["specular_exponent"] as? Float ?? 0.0
+            material.hasSubsurface       = materialJSON["hasSubsurface"] as? Float ?? 0.0
+            material.scatteringDistance  = materialJSON["scatteringDistance"] as? Float ?? 0.0
+            material.absorptionAtDistance = materialJSON["absorptionAtDistance"] as? Float ?? 0.0
             
             self.light_types += (material.bsdf < 0) ? 1 : 0;
             
