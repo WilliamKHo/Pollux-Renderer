@@ -96,5 +96,6 @@ void shadeAndScatter(thread Ray& ray,
                      thread float& pdf);
 
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
+                           constant float3& emittance,
                            device Ray& ray);
 

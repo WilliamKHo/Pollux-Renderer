@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pollux/PolluxRenderer.swift"
-            timestampString = "534456903.598261"
+            timestampString = "534460566.267434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "10"
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pollux/PolluxRenderer.swift"
-            timestampString = "534456903.59837"
+            timestampString = "534460566.267516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "284"
-            endingLineNumber = "284"
-            landmarkName = "pathtrace(in:)"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "dispatchPipelineState(for:using:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

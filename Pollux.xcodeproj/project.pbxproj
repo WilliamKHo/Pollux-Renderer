@@ -35,8 +35,8 @@
 		D81373B51FD86B51001A7EAC /* mis_helper.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AF1FD86B51001A7EAC /* mis_helper.metal */; };
 		D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22E1FD70F38009CF57D /* cornell-reflect.json */; };
 		D822E2311FD70F38009CF57D /* cornell-reflect-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */; };
-		D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */; };
-		D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82563CD1FBD056E00385DA6 /* Scene.swift */; };
+		D823849B1FDB376800DB5AA4 /* Partition.metal in Sources */ = {isa = PBXBuildFile; fileRef = D82384991FDB376800DB5AA4 /* Partition.metal */; };
+		D823849C1FDB376800DB5AA4 /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D823849A1FDB376800DB5AA4 /* Partition.swift */; };
 		D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */; };
 		D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */; };
 		D826C0C31FC8930800BD8A3E /* Pollux-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */; };
@@ -48,7 +48,6 @@
 		D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
 		D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F1F1FC4682E0001CF76 /* simd_la.swift */; };
 		D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F211FC483320001CF76 /* intersections_header.metal */; };
-		D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */; };
 		D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */; };
 		D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD31FB2BE7B00260B81 /* Assets.xcassets */; };
 		D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD51FB2BE7B00260B81 /* Main.storyboard */; };
@@ -62,8 +61,6 @@
 		D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */; };
 		D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */; };
 		D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */ = {isa = PBXBuildFile; fileRef = D8BD56831FC5FDEA00375BC2 /* cornell.json */; };
-		D8C9F98E1FDAEF2100BEC8A8 /* Partition.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8C9F98C1FDAEF2100BEC8A8 /* Partition.metal */; };
-		D8C9F98F1FDAEF2100BEC8A8 /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C9F98D1FDAEF2100BEC8A8 /* Partition.swift */; };
 		D8D1E6EA1FD5D332005A6757 /* PolluxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */; };
 		D8D1E6EB1FD5D332005A6757 /* SceneParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884B96D1FC4A284006A14CF /* SceneParser.swift */; };
 		D8D1E6EC1FD5D332005A6757 /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
@@ -96,7 +93,6 @@
 		D8D1E7081FD5D48D005A6757 /* sphere.json in Resources */ = {isa = PBXBuildFile; fileRef = D884B9701FC4EEC5006A14CF /* sphere.json */; };
 		D8D1E70A1FD5D562005A6757 /* cornell-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D1E7091FD5D562005A6757 /* cornell-ios.json */; };
 		D8D1E70B1FD5D565005A6757 /* cornell-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D1E7091FD5D562005A6757 /* cornell-ios.json */; };
-		D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D20F8A1FBA1AD800345C2F /* Structs.swift */; };
 		D8E60DCB1FD7A3AA00755A06 /* cornell-refract.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E60DC91FD7A3A900755A06 /* cornell-refract.json */; };
 		D8E60DCC1FD7A3AA00755A06 /* cornell-refract-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = D8E60DCA1FD7A3AA00755A06 /* cornell-refract-ios.json */; };
 /* End PBXBuildFile section */
@@ -117,8 +113,8 @@
 		D81373AF1FD86B51001A7EAC /* mis_helper.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = mis_helper.metal; sourceTree = "<group>"; };
 		D822E22E1FD70F38009CF57D /* cornell-reflect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect.json"; sourceTree = "<group>"; };
 		D822E22F1FD70F38009CF57D /* cornell-reflect-ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-reflect-ios.json"; sourceTree = "<group>"; };
-		D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D82563CD1FBD056E00385DA6 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		D82384991FDB376800DB5AA4 /* Partition.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Partition.metal; sourceTree = "<group>"; };
+		D823849A1FDB376800DB5AA4 /* Partition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partition.swift; sourceTree = "<group>"; };
 		D825716E1FBF9F2C00352CDD /* SharedBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedBuffer.swift; sourceTree = "<group>"; };
 		D826C02E1FC867AE00BD8A3E /* PlatformTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformTypes.swift; sourceTree = "<group>"; };
 		D826C08A1FC88E0C00BD8A3E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -136,7 +132,6 @@
 		D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolluxRenderer.swift; sourceTree = "<group>"; };
 		D84F8F1F1FC4682E0001CF76 /* simd_la.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simd_la.swift; sourceTree = "<group>"; };
 		D84F8F211FC483320001CF76 /* intersections_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections_header.metal; sourceTree = "<group>"; };
-		D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = renderBuffer.metal; sourceTree = "<group>"; };
 		D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolluxTypes.h; sourceTree = "<group>"; };
 		D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pollux-Bridging-Header.h"; sourceTree = "<group>"; };
 		D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +140,6 @@
 		D8718BD61FB2BE7B00260B81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8718BD81FB2BE7B00260B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8718BD91FB2BE7B00260B81 /* Pollux.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pollux.entitlements; sourceTree = "<group>"; };
-		D8718BDF1FB2BED300260B81 /* draggo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = draggo.jpg; sourceTree = "<group>"; };
 		D8718BE11FB2BFFF00260B81 /* pathtrace.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = pathtrace.metal; sourceTree = "<group>"; };
 		D884B96D1FC4A284006A14CF /* SceneParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneParser.swift; sourceTree = "<group>"; };
 		D884B9701FC4EEC5006A14CF /* sphere.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sphere.json; sourceTree = "<group>"; };
@@ -157,11 +151,8 @@
 		D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_shading_header.metal; sourceTree = "<group>"; };
 		D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_shading.metal; sourceTree = "<group>"; };
 		D8BD56831FC5FDEA00375BC2 /* cornell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cornell.json; sourceTree = "<group>"; };
-		D8C9F98C1FDAEF2100BEC8A8 /* Partition.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Partition.metal; sourceTree = "<group>"; };
-		D8C9F98D1FDAEF2100BEC8A8 /* Partition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partition.swift; sourceTree = "<group>"; };
 		D8D1E6D81FD5D316005A6757 /* Pollux-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D1E7091FD5D562005A6757 /* cornell-ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-ios.json"; sourceTree = "<group>"; };
-		D8D20F8A1FBA1AD800345C2F /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 		D8E60DC91FD7A3A900755A06 /* cornell-refract.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-refract.json"; sourceTree = "<group>"; };
 		D8E60DCA1FD7A3AA00755A06 /* cornell-refract-ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-refract-ios.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,6 +179,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D82384951FDB30A000DB5AA4 /* Unused Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D826EDFD1FCA4E750078118A /* Stream Compaction */,
+				D82384981FDB376800DB5AA4 /* Partition */,
+			);
+			path = "Unused Frameworks";
+			sourceTree = "<group>";
+		};
+		D82384981FDB376800DB5AA4 /* Partition */ = {
+			isa = PBXGroup;
+			children = (
+				D82384991FDB376800DB5AA4 /* Partition.metal */,
+				D823849A1FDB376800DB5AA4 /* Partition.swift */,
+			);
+			path = Partition;
+			sourceTree = "<group>";
+		};
 		D826C0891FC88E0C00BD8A3E /* Pollux-iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,14 +298,12 @@
 				D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */,
 				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
 				D81373AC1FD8682A001A7EAC /* SceneParameters.h */,
-				D826EDFD1FCA4E750078118A /* Stream Compaction */,
-				D8C9F98B1FDAEF2100BEC8A8 /* Partition */,
 				D884B96F1FC4AA98006A14CF /* Scenes */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
 				D85A88DD1FC4940E00E5F6A2 /* Data_Types */,
-				D8B81AC91FBE56D500E2AE82 /* Dregs */,
 				D826C0891FC88E0C00BD8A3E /* Pollux-iOS */,
 				D8388BDC1FB3A51900653E5D /* macOS */,
+				D82384951FDB30A000DB5AA4 /* Unused Frameworks */,
 				D8718BD91FB2BE7B00260B81 /* Pollux.entitlements */,
 				D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */,
 			);
@@ -330,28 +337,6 @@
 			);
 			path = Loki;
 			sourceTree = "<group>";
-		};
-		D8B81AC91FBE56D500E2AE82 /* Dregs */ = {
-			isa = PBXGroup;
-			children = (
-				D8718BDF1FB2BED300260B81 /* draggo.jpg */,
-				D85B3EA41FB3E92D001036B0 /* renderBuffer.metal */,
-				D82563CB1FBCF73A00385DA6 /* SceneDelegate.swift */,
-				D82563CD1FBD056E00385DA6 /* Scene.swift */,
-				D8D20F8A1FBA1AD800345C2F /* Structs.swift */,
-			);
-			path = Dregs;
-			sourceTree = "<group>";
-		};
-		D8C9F98B1FDAEF2100BEC8A8 /* Partition */ = {
-			isa = PBXGroup;
-			children = (
-				D8C9F98C1FDAEF2100BEC8A8 /* Partition.metal */,
-				D8C9F98D1FDAEF2100BEC8A8 /* Partition.swift */,
-			);
-			name = Partition;
-			path = Pollux/Partition;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -486,26 +471,22 @@
 				D81373B41FD86B51001A7EAC /* mis_helper.metal in Sources */,
 				D81110601FC455E80059C01B /* intersections.metal in Sources */,
 				D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */,
-				D8D20F8B1FBA1AD800345C2F /* Structs.swift in Sources */,
-				D82563CC1FBCF73A00385DA6 /* SceneDelegate.swift in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,
 				D8BD567B1FC5E50B00375BC2 /* interactions.metal in Sources */,
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
-				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
-				D8C9F98E1FDAEF2100BEC8A8 /* Partition.metal in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
 				0B0642271FD9188400EECC64 /* DeviceTexture.swift in Sources */,
+				D823849B1FDB376800DB5AA4 /* Partition.metal in Sources */,
 				D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */,
 				D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */,
 				0B0642261FD9188400EECC64 /* Environment.swift in Sources */,
 				D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */,
 				D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */,
-				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
 				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
-				D8C9F98F1FDAEF2100BEC8A8 /* Partition.swift in Sources */,
+				D823849C1FDB376800DB5AA4 /* Partition.swift in Sources */,
 				D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */,
 				D826EE001FCA4E750078118A /* StreamCompactor.metal in Sources */,
 				D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */,
@@ -700,7 +681,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
+				DEVELOPMENT_TEAM = F866ZHAR49;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
@@ -720,7 +701,7 @@
 				CODE_SIGN_ENTITLEMENTS = Pollux/Pollux.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
+				DEVELOPMENT_TEAM = F866ZHAR49;
 				INFOPLIST_FILE = "$(SRCROOT)/Pollux/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.Pollux;
@@ -737,7 +718,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
+				DEVELOPMENT_TEAM = F866ZHAR49;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -756,7 +737,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 638RKZ56ZV;
+				DEVELOPMENT_TEAM = F866ZHAR49;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

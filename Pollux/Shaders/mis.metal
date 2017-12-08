@@ -39,8 +39,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
 
 
     if (intersection.t < ZeroEpsilon) { // If there was no intersection, color the ray black.
-        if (envMapFlag && ray.idx_bounces[2] >= 1) { ray.color += getEnvironmentColor(environment, ray) * envEmittance; }
-        else { ray.color = float3(0); }
+        ray.color *= getEnvironmentColor(environment, envEmittance, ray);
         ray.idx_bounces[2] = 0;
         return;
     }
@@ -177,7 +176,6 @@ kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ 
                                       constant   Material*     materials     [[ buffer(4) ]],
                                       texture2d<float, access::sample> environment [[ texture(5) ]],
                                       constant   float3& envEmittance        [[ buffer(6) ]],
-                                      constant   bool& envMapFlag            [[ buffer(7) ]],
                                       constant   Geom*         geoms         [[ buffer(8) ]],
                                       constant   uint&         geom_count    [[ buffer(9) ]],
                                       constant   uint&         light_count   [[ buffer(10) ]],
@@ -193,8 +191,7 @@ kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ 
     
     
     if (intersection.t < ZeroEpsilon) { // If there was no intersection, color the ray black.
-        if (envMapFlag && ray.idx_bounces[2] >= 1) { ray.color *= getEnvironmentColor(environment, ray) * envEmittance; }
-        else { ray.color = float3(0); }
+        ray.color *= getEnvironmentColor(environment, envEmittance, ray);
         ray.idx_bounces[2] = 0;
         return;
     }

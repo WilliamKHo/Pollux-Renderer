@@ -75,7 +75,12 @@ float3 sampleSphere(constant Geom&       light,
 }
 
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
+                           constant float3& emittance,
                            device Ray& ray) {
+    if (emittance.x < ZeroEpsilon && emittance.y < ZeroEpsilon && emittance.z < ZeroEpsilon) {
+        return float3(0);
+    }
+    
     constexpr sampler textureSampler(coord::normalized,
                                      address::repeat,
                                      min_filter::linear,
@@ -87,7 +92,7 @@ float3 getEnvironmentColor(texture2d<float, access::sample> environment,
     
     v = 1-v;
     float4 color = environment.sample(textureSampler, float2(u, v));
-    return color.xyz;
+    return color.xyz * emittance;
 }
 
 
@@ -105,7 +110,10 @@ float3 sample_li(constant Geom&         light,
             // Return the color
             return m.color * m.emittance;
         case SPHERE:
-//            return sampleSphere(light, m, ref, rng, wi, pdf_li);
+            sampleSphere(light, ref, rng, wi, pdf_li);
+            
+            // Return the color
+            return m.color * m.emittance;
         default:
             return float3(0,0,0);
     }
