@@ -44,6 +44,8 @@
 		D8BD56801FC5F8A000375BC2 /* bsdf_shading_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */; };
 		D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */; };
 		D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */ = {isa = PBXBuildFile; fileRef = D8BD56831FC5FDEA00375BC2 /* cornell.json */; };
+		D8C9F98E1FDAEF2100BEC8A8 /* Partition.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8C9F98C1FDAEF2100BEC8A8 /* Partition.metal */; };
+		D8C9F98F1FDAEF2100BEC8A8 /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C9F98D1FDAEF2100BEC8A8 /* Partition.swift */; };
 		D8D1E6EA1FD5D332005A6757 /* PolluxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BDA1FB3A2F000653E5D /* PolluxViewController.swift */; };
 		D8D1E6EB1FD5D332005A6757 /* SceneParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884B96D1FC4A284006A14CF /* SceneParser.swift */; };
 		D8D1E6EC1FD5D332005A6757 /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
@@ -130,6 +132,8 @@
 		D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_shading_header.metal; sourceTree = "<group>"; };
 		D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = bsdf_shading.metal; sourceTree = "<group>"; };
 		D8BD56831FC5FDEA00375BC2 /* cornell.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cornell.json; sourceTree = "<group>"; };
+		D8C9F98C1FDAEF2100BEC8A8 /* Partition.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Partition.metal; sourceTree = "<group>"; };
+		D8C9F98D1FDAEF2100BEC8A8 /* Partition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partition.swift; sourceTree = "<group>"; };
 		D8D1E6D81FD5D316005A6757 /* Pollux-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D1E7091FD5D562005A6757 /* cornell-ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "cornell-ios.json"; sourceTree = "<group>"; };
 		D8D20F8A1FBA1AD800345C2F /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
@@ -259,6 +263,7 @@
 				D884B96D1FC4A284006A14CF /* SceneParser.swift */,
 				D81373AC1FD8682A001A7EAC /* SceneParameters.h */,
 				D826EDFD1FCA4E750078118A /* Stream Compaction */,
+				D8C9F98B1FDAEF2100BEC8A8 /* Partition */,
 				D884B96F1FC4AA98006A14CF /* Scenes */,
 				D85A88DE1FC4942000E5F6A2 /* Shaders */,
 				D85A88DD1FC4940E00E5F6A2 /* Data_Types */,
@@ -305,6 +310,16 @@
 			);
 			path = Dregs;
 			sourceTree = "<group>";
+		};
+		D8C9F98B1FDAEF2100BEC8A8 /* Partition */ = {
+			isa = PBXGroup;
+			children = (
+				D8C9F98C1FDAEF2100BEC8A8 /* Partition.metal */,
+				D8C9F98D1FDAEF2100BEC8A8 /* Partition.swift */,
+			);
+			name = Partition;
+			path = Pollux/Partition;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -434,6 +449,7 @@
 				D884B9731FC51624006A14CF /* loki.metal in Sources */,
 				D884B96E1FC4A284006A14CF /* SceneParser.swift in Sources */,
 				D82563CE1FBD056E00385DA6 /* Scene.swift in Sources */,
+				D8C9F98E1FDAEF2100BEC8A8 /* Partition.metal in Sources */,
 				D884B9751FC51A27006A14CF /* loki_header.metal in Sources */,
 				D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */,
 				D826C02F1FC867AE00BD8A3E /* PlatformTypes.swift in Sources */,
@@ -441,6 +457,7 @@
 				D8BD56821FC5F9F600375BC2 /* bsdf_shading.metal in Sources */,
 				D85B3EA51FB3E92D001036B0 /* renderBuffer.metal in Sources */,
 				D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */,
+				D8C9F98F1FDAEF2100BEC8A8 /* Partition.swift in Sources */,
 				D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */,
 				D826EE001FCA4E750078118A /* StreamCompactor.metal in Sources */,
 				D825716F1FBF9F2C00352CDD /* SharedBuffer.swift in Sources */,

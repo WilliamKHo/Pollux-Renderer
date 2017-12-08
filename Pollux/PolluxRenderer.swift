@@ -5,7 +5,8 @@
 //  Created by Youssef Kamal Victor on 11/8/17.
 //  Copyright © 2017 Youssef Victor. All rights reserved.
 //
-//  TODO: FixedBuffer
+//  TODO: FixedBuffer<T>
+//   for structs with fixed array length
 
 import Metal
 import MetalKit
@@ -47,7 +48,7 @@ class PolluxRenderer: NSObject {
     private var ps_ComputeIntersections: MTLComputePipelineState!;
     private var kern_ComputeIntersections: MTLFunction!
     
-//    private var rayCompactor : StreamCompactor2D<Ray>!
+//    private var rayCompactor : Partition<Ray>!
     
     private var ps_ShadeMaterials: MTLComputePipelineState!;
     private var kern_ShadeMaterials: MTLFunction!
@@ -185,7 +186,7 @@ class PolluxRenderer: NSObject {
         catch { fatalError("ShadeMaterials computePipelineState failed") }
         
         // Create Pipeline State for Ray Stream Compaction
-//        self.rayCompactor = StreamCompactor2D<Ray>(on: device,
+//        self.rayCompactor = Partition<Ray>(on: device,
 //                                                 with: defaultLibrary,
 //                                                 applying: "kern_EvaluateRays")
         
@@ -329,12 +330,9 @@ extension PolluxRenderer {
             self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
 
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
-
-            // Stream Compaction for Terminated Rays
-//            let size = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
-//            self.frame_ray_count = self.rayCompactor.compact(self.rays.data!, of: size, using: commandEncoder!, buffersSet: true, commandQueue: commandQueue)
+            
         }
-    
+        
         self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         self.iteration += 1
         

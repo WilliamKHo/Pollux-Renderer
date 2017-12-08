@@ -121,7 +121,6 @@ kernel void kern_ShadeMaterialsNaive(constant   uint& ray_count             [[ b
 //kernel void kern_EvaluateRays(constant      uint& ray_count         [[  buffer(0)  ]],
 //                              device        uint* validation_buffer [[  buffer(1)  ]],
 //                              const device  Ray *rays               [[  buffer(2)  ]],
-//                              const device  bool *reversed          [[  buffer(9)  ]],
 //                              const uint id [[thread_position_in_grid]]) {
 //    // Quicker and clean.
 //    validation_buffer[id] = (id < ray_count && rays[id].idx_bounces[2] > 0) ? 1 : 0;
@@ -135,14 +134,11 @@ kernel void kern_FinalGather(constant   uint& ray_count                   [[  bu
                              device     float4* accumulated               [[  buffer(3) ]],
                              texture2d<float, access::write> drawable     [[ texture(4) ]],
                              const uint position [[thread_position_in_grid]]) {
-    // DEBUG: UNCOMMENT THIS TO FIX STUFF:
+    
     if (position >= ray_count) {return;}
     device Ray& ray = rays[position];
 
-    // DEBUG: UNCOMMENT THIS TO FIX STUFF
-    float4 ray_col     = float4(ray.color, 1.f);
-//    //float4 accumulated = inFrame.read(ray.idx_bounces.xy).rgba;
-    accumulated[position] += ray_col;
+    accumulated[position] += float4(ray.color,1.0);
     
     float4 normalized = accumulated[position] / (iteration + 1.0);
     
