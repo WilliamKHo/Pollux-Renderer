@@ -110,6 +110,15 @@ class PolluxRenderer: NSObject {
     
     /*****
      **
+     ** Environment
+     **
+     *****/
+    var environment : DeviceTexture?
+    var envEmittance : float3
+    var environmentFlag : Bool
+    
+    /*****
+     **
      **  CPU/GPU Synchronization Stuff
      **
      ******/
@@ -120,7 +129,7 @@ class PolluxRenderer: NSObject {
     /// Initialize with the MetalKit view from which we'll obtain our Metal device.  We'll also use this
     /// mtkView object to set the pixelformat and other properties of our drawable
     // TODO: Parse Scene
-    init(in mtkView: MTKView, with scene: (Camera, [Geom], UInt32, [Material])) {
+    init(in mtkView: MTKView, with scene: (Camera, [Geom], UInt32, [Material], Environment?)) {
         self.device = mtkView.device!;
         self.commandQueue = device.makeCommandQueue();
         self.defaultLibrary = device.makeDefaultLibrary()!
@@ -161,6 +170,14 @@ class PolluxRenderer: NSObject {
         self.materials     = DeviceBuffer<Material>(count: scene.3.count, with: device, containing: scene.3, blitOn: self.commandQueue)
         self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
+        if let val = scene.4 {
+            self.environment   = DeviceTexture(from: val.filename, with: device)
+            self.envEmittance  = val.emittance
+            self.environmentFlag = true;
+        } else {
+            self.envEmittance  = float3(0, 0, 0)
+            self.environmentFlag = false;
+        }
         self.light_count   = scene.2
         
         super.init()
@@ -242,10 +259,17 @@ extension PolluxRenderer {
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
+            if (self.environmentFlag) {
+                commandEncoder.setTexture(self.environment?.data, index: 5)
+            } else {
+                commandEncoder.setTexture(myview!.currentDrawable?.texture, index: 5)
+            }
+            commandEncoder.setBytes(&self.envEmittance, length: MemoryLayout<float3>.size, index: 6)
+            commandEncoder.setBytes(&self.environmentFlag, length: MemoryLayout<Bool>.size, index: 7)
             if (integrator == "MIS" || integrator == "Direct") {
-                commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 5)
-                commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 6)
-                commandEncoder.setBytes(&self.light_count,  length: MemoryLayout<UInt32>.size, index: 7)
+                commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 8)
+                commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 9)
+                commandEncoder.setBytes(&self.light_count,  length: MemoryLayout<UInt32>.size, index: 10)
             }
             break;
             

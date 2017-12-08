@@ -63,6 +63,11 @@ A `materials` array of dictionaries with each material having entries for:
  - `rotate`: an array containing 3 floats EXACTLY, indicating the rotation of the geometry around the x, y, and z axes respectively.
  - `scale`: an array containing 3 floats EXACTLY, indicating the scale of the geometry in the x, y, and z axes respectively.
  
+ An optional `environment` dictionary with entries for:
+ 
+ - `filepath` : the name of the image file to be used
+ - `emittance` : an array containing 3 floats EXACTLY, indicating the illumination of the environment map
+ 
 
 Example scenes can be found in the `Scenes/` folder.
 

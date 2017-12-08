@@ -1,0 +1,72 @@
+
+{
+    "camera": {
+        "fov":   45,
+        "depth":  8,
+        "pos":  [0, 5, 10.5],
+        "lookAt": [0, 5, 0],
+        "up":     [0, 1, 0]
+    },
+    "geometry": [
+                 {
+                 "name": "Floor Plane",
+                 "type": 1,
+                 "material": 0,
+                 "translate": [0,0,0],
+                 "rotate": [0,0,0],
+                 "scale": [16,0.01,10]
+                 },
+                 {
+                 "name": "Sphere",
+                 "type": 0,
+                 "material": 1,
+                 "translate": [-1,1.5, -1],
+                 "rotate": [0, 0, 0],
+                 "scale": [3, 3, 3]
+                 },
+                 {
+                 "name": "Sphere Reflective",
+                 "type": 0,
+                 "material": 2,
+                 "translate": [-3 ,1.5 , 3],
+                 "rotate": [0, 0, 0],
+                 "scale": [3, 3, 3]
+                 },
+                 {
+                 "name": "Sphere Refractive",
+                 "type": 0,
+                 "material": 3,
+                 "translate": [3,1.5, -3],
+                 "rotate": [0, 0, 0],
+                 "scale": [3, 3, 3]
+                 }
+                 ],
+    "materials": [
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse Gray",
+                  "color": [0.5, 0.5, 0.5]
+                  },
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse Red",
+                  "color": [0.85, 0.35, 0.35]
+                  },
+                  {
+                  "bsdf"  : 1,
+                  "name": "Reflective Green",
+                  "color": [0.35, 0.85, 0.35]
+                  },
+                  {
+                  "bsdf"  : 2,
+                  "name": "Refractive Glass",
+                  "color": [0.98, 0.98, 0.98],
+                  "index_of_refraction" : 1.5
+                  }
+                  ],
+    "environment": {
+        "filepath" : "environment2.jpg",
+        "emittance" : [3,3,3]
+    }
+    
+}

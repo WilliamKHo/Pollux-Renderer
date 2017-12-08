@@ -14,6 +14,13 @@ class SceneParser {
     // Counts the types of lights (i.e. bsdfs < 0)
     private static var light_types = 0
     
+    private static func parseEnvironment(_ environmentJSON : [String: Any]) -> Environment  {
+        let filepath = String(environmentJSON["filepath"] as! String)
+        let emittance = float3(environmentJSON["emittance"] as! Array<Float>)
+        let env = Environment(from : filepath, with : emittance)
+        return env
+    }
+    
     private static func parseCamera(_ cameraJSON : [String : Any]) -> Camera {
         var camera = Camera();
         camera.pos    = float3(cameraJSON["pos"] as! Array<Float>)
@@ -73,7 +80,7 @@ class SceneParser {
         return materials
     }
     
-    static func parseScene(from file: String) -> (Camera, [Geom], UInt32, [Material]){
+    static func parseScene(from file: String) -> (Camera, [Geom], UInt32, [Material], Environment?){
         #if os(iOS) || os(watchOS) || os(tvOS)
             let platform_file = "\(file)-ios"
         #else
@@ -86,9 +93,12 @@ class SceneParser {
                 let jsonFile  = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 let camera    = parseCamera(jsonFile["camera"] as! [String : Any])
                 let materials = parseMaterials(jsonFile["materials"] as! [[String : Any]])
+                var environment : Environment?
+                if let val = jsonFile["environment"] {
+                    environment = parseEnvironment(val as! [String : Any])
+                }
                 let (geometry, light_count)  = parseGeometry(jsonFile["geometry"] as! [[String : Any]])
-        
-                return (camera, geometry, light_count, materials)
+                return (camera, geometry, light_count, materials, environment)
             } catch let error {
                 fatalError(error.localizedDescription)
             }
