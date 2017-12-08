@@ -79,7 +79,7 @@ void SnS_refract(device Ray& ray,
         ray.color *= m.color;
     }
 
-    ray.origin = isect.point - isect.normal * 0.1;
+    ray.origin = isect.point - isect.normal * EPSILON * 50;
     ray.direction = refracted;
     ray.idx_bounces[2]--;
     pdf = 1.f;
@@ -90,13 +90,15 @@ void SnS_subsurface(device Ray& ray,
                     thread Material &m,
                     thread Loki& rng,
                     thread float& pdf) {
+    // TODO : Strange visual artifacts with refractive subsurface, for now uses diffusive for
+    // entering and exiting the medium
     const bool    entering = isect.outside;
     float3 n = -isect.normal;
     if (entering) {
+        //SnS_refract(ray, isect, m, rng, pdf);
         SnS_diffuse(ray, isect, m, rng, pdf);
         ray.direction += 2*n;
         ray.origin = isect.point + n * 0.1;
-        // ray.direction = normalize(ray.direction + cosRandomDirection(ray.direction, rng));
         return;
     }
     
@@ -104,8 +106,11 @@ void SnS_subsurface(device Ray& ray,
     float lambda = 1.0f / m.scatteringDistance;
     float t = -log(rng.rand()) / lambda;
     ray.idx_bounces[2]--;
+    //Set pdf
+    pdf = -lambda * t;
     // Refraction event
     if (t > tFar) {
+        //SnS_refract(ray, isect, m, rng, pdf);
         SnS_diffuse(ray, isect, m, rng, pdf);
         ray.direction += 2*n;
         ray.origin = isect.point + n * 0.1;

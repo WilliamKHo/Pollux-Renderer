@@ -90,8 +90,8 @@
                   "name": "Subsurface Red",
                   "color": [0.98, 0.6, 0.6],
                   "index_of_refraction" : 1.2,
-                  "scatteringDistance" : 1,
-                  "absorptionAtDistance" : 2
+                  "scatteringDistance" : 2.5,
+                  "absorptionAtDistance" : 10.0
                   }
                   ],
     "environment": {
