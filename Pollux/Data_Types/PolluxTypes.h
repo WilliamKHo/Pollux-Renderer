@@ -11,6 +11,8 @@
 
 #import "simd/simd.h"
 
+#define MAX_FILENAME_LENGTH 50
+
 #define DEPTH 8.f
 #define FOV   45.f
 #define MAX_GEOMS 10
@@ -19,6 +21,7 @@
 enum GeomType {
     SPHERE,
     CUBE,
+    PLANE
     // TODO: - MESH?
 };
 

@@ -14,10 +14,11 @@ class SceneParser {
     // Counts the types of lights (i.e. bsdfs < 0)
     private static var light_types = 0
     
-    private static func parseEnvironment(_ environmentJSON : [String: Any]) -> Environment  {
-        let filepath = String(environmentJSON["filepath"] as! String)
-        let emittance = float3(environmentJSON["emittance"] as! Array<Float>)
-        let env = Environment(from : filepath, with : emittance)
+    private static func parseEnvironment(_ environmentJSON : [String: Any]?) -> Environment?  {
+        if (environmentJSON) == nil {return nil}
+        let filepath = environmentJSON!["filepath"] as! String
+        let emittance = float3(environmentJSON!["emittance"] as! Array<Float>)
+        let env = Environment(from: filepath, with: emittance)
         return env
     }
     
@@ -92,14 +93,11 @@ class SceneParser {
 
         if let file = Bundle.main.url(forResource: platform_file, withExtension: "json") {
             do {
-                let data      = try Data(contentsOf: file, options: [])
-                let jsonFile  = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-                let camera    = parseCamera(jsonFile["camera"] as! [String : Any])
-                let materials = parseMaterials(jsonFile["materials"] as! [[String : Any]])
-                var environment : Environment?
-                if let val = jsonFile["environment"] {
-                    environment = parseEnvironment(val as! [String : Any])
-                }
+                let data        = try Data(contentsOf: file, options: [])
+                let jsonFile    = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+                let camera      = parseCamera(jsonFile["camera"] as! [String : Any])
+                let materials   = parseMaterials(jsonFile["materials"] as! [[String : Any]])
+                let environment = parseEnvironment(jsonFile["environment"] as? [String : Any] ?? nil) ?? nil
                 let (geometry, light_count)  = parseGeometry(jsonFile["geometry"] as! [[String : Any]])
                 return (camera, geometry, light_count, materials, environment)
             } catch let error {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Environment {
+struct Environment {
     var filename : String
     var emittance : float3
     
@@ -17,3 +17,4 @@ class Environment {
         self.emittance = emittance
     }
 }
+

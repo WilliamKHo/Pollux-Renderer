@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pollux/PolluxRenderer.swift"
-            timestampString = "534308677.362871"
+            timestampString = "534485257.41778"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "9"
-            endingLineNumber = "9"
+            startingLineNumber = "10"
+            endingLineNumber = "10"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -58,12 +58,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pollux/PolluxRenderer.swift"
-            timestampString = "534308677.370997"
+            timestampString = "534485257.4179"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
-            landmarkName = "dispatchPipelineState(for:using:)"
+            startingLineNumber = "280"
+            endingLineNumber = "280"
+            landmarkName = "setBuffers(for:using:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pollux/SceneParser.swift"
+            timestampString = "534485257.417992"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "parseEnvironment(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

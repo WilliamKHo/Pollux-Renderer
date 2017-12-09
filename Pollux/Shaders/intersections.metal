@@ -47,6 +47,8 @@ Intersection getIntersection(const thread       Ray          &ray,
         else if (geom.type == SPHERE)
         {
             t = computeSphereIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
+        } else if (geom.type == PLANE) {
+            t = computePlaneIntersection(&geom, ray, tmp_intersect, tmp_normal, outside);
         }
         // TODO: add more intersection tests here... triangle? metaball? CSG?
         
@@ -69,11 +71,11 @@ Intersection getIntersection(const thread       Ray          &ray,
     else
     {
         //The ray hits something
-        intersection.t = t_min;
+        intersection.t          = t_min;
         intersection.materialId = geoms[hit_geom_index].materialid;
-        intersection.normal = normal;
-        intersection.point = intersect_point;
-        intersection.outside = outside;
+        intersection.normal     = normal;
+        intersection.point      = intersect_point;
+        intersection.outside    = outside;
     }
     
     return intersection;
@@ -84,7 +86,7 @@ float computeSphereIntersection(constant    Geom    *sphere,
                                 thread   float3 &intersectionPoint,
                                 thread   float3 &normal,
                                 thread   bool   &outside) {
-    float radius = .5f;
+    const float radius = .5f;
     
     thread Ray rt;
     rt.origin = float3(sphere->inverseTransform * float4(r.origin, 1.0f));
@@ -121,6 +123,27 @@ float computeSphereIntersection(constant    Geom    *sphere,
     }
     
     return length(r.origin - intersectionPoint);
+}
+
+float computePlaneIntersection(constant Geom   *plane,
+                              const thread Ray    &r,
+                              thread   float3 &intersectionPoint,
+                              thread   float3 &normal,
+                              thread   bool   &outside) {
+    Ray r_loc;
+    r_loc.origin = float3(plane->inverseTransform * float4(r.origin, 1.0f));
+    r_loc.direction = float3(plane->inverseTransform * float4(r.direction, 0.0f));
+    
+    float t = dot(float3(0, 0, 1), (float3(0.5f, 0.5f, 0) - r_loc.origin)) / dot(float3(0, 0, 1), r_loc.direction);
+    float3 p = float3(t * r_loc.direction + r_loc.origin);
+    
+    if (t > 0 && p.x >= -0.5f && p.x <= 0.5f && p.y >= -0.5f && p.y <= 0.5f) {
+        intersectionPoint = float3(plane->transform * float4(p,1));
+        normal = normalize(float3(plane->invTranspose * float4(0, 0, 1, 0)));
+        return t;
+    }
+    
+    return -1;
 }
 
 float computeCubeIntersection(constant Geom   *box,

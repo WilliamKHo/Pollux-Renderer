@@ -39,46 +39,13 @@ void shadeAndScatter(device Ray& ray,
     }
 }
 
-
-float3 sampleCube(constant Geom&       light,
-                  const thread float3&   ref,
-                  thread Loki&           rng,
-                  thread float3&          wi,
-                  thread float&          pdf){
-    
-    //Get a sample point
-    float3 sample_li = float3(rng.rand() - 0.5f, 0, rng.rand() - 0.5f);
-    sample_li = float3(light.transform * float4(sample_li, 1));
-    
-    const float3 normal_li = float3(0, 0, -1);
-    
-    wi = normalize(sample_li - ref);
-    
-    //Get shape area and convert it to Solid angle
-    const float cosT = fabs(dot(-wi, normal_li));
-    const float solid_angle = (length_squared(sample_li - ref) / cosT);
-    const float cubeArea = 2 * light.scale.x * light.scale.y *
-    2 * light.scale.z * light.scale.y *
-    2 * light.scale.x * light.scale.z;
-    
-    pdf = solid_angle / cubeArea;
-    
-    //Check if dividing by 0.f
-    pdf = isnan(pdf) ? 0.f : pdf;
-    
-    return sample_li;
-}
-
-float3 sampleSphere(constant Geom&       light,
-                    const thread float3&   ref,
-                    thread Loki&           rng,
-                    thread float3&          wi,
-                    thread float&       pdf_li) {
-    return float3(0);
-}
-
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
+                           constant float3& emittance,
                            device Ray& ray) {
+    if (emittance.x < ZeroEpsilon && emittance.y < ZeroEpsilon && emittance.z < ZeroEpsilon) {
+        return float3(0);
+    }
+    
     constexpr sampler textureSampler(coord::normalized,
                                      address::repeat,
                                      min_filter::linear,
@@ -90,9 +57,8 @@ float3 getEnvironmentColor(texture2d<float, access::sample> environment,
     
     v = 1-v;
     float4 color = environment.sample(textureSampler, float2(u, v));
-    return color.xyz;
+    return color.xyz * emittance;
 }
-
 
 float3 sample_li(constant Geom&         light,
                  const constant Material&   m,
@@ -108,7 +74,15 @@ float3 sample_li(constant Geom&         light,
             // Return the color
             return m.color * m.emittance;
         case SPHERE:
-//            return sampleSphere(light, m, ref, rng, wi, pdf_li);
+            sampleSphere(light, ref, rng, wi, pdf_li);
+            
+            // Return the color
+            return m.color * m.emittance;
+        case PLANE:
+            samplePlane(light, ref, rng, wi, pdf_li);
+            
+            // Return the color
+            return m.color * m.emittance;
         default:
             return float3(0,0,0);
     }

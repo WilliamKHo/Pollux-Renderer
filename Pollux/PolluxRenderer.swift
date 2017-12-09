@@ -5,7 +5,8 @@
 //  Created by Youssef Kamal Victor on 11/8/17.
 //  Copyright © 2017 Youssef Victor. All rights reserved.
 //
-//  TODO: FixedBuffer
+//  TODO: FixedBuffer<T>
+//   for structs with fixed array length
 
 import Metal
 import MetalKit
@@ -47,7 +48,7 @@ class PolluxRenderer: NSObject {
     private var ps_ComputeIntersections: MTLComputePipelineState!;
     private var kern_ComputeIntersections: MTLFunction!
     
-//    private var rayCompactor : StreamCompactor2D<Ray>!
+//    private var rayCompactor : Partition<Ray>!
     
     private var ps_ShadeMaterials: MTLComputePipelineState!;
     private var kern_ShadeMaterials: MTLFunction!
@@ -114,7 +115,6 @@ class PolluxRenderer: NSObject {
      *****/
     var environment : DeviceTexture?
     var envEmittance : float3
-    var environmentFlag : Bool
     
     /*****
      **
@@ -169,13 +169,11 @@ class PolluxRenderer: NSObject {
         self.materials     = DeviceBuffer<Material>(count: scene.3.count, with: device, containing: scene.3, blitOn: self.commandQueue)
         self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
-        if let val = scene.4 {
-            self.environment   = DeviceTexture(from: val.filename, with: device)
-            self.envEmittance  = val.emittance
-            self.environmentFlag = true;
+        if let environment = scene.4 {
+            self.environment   = DeviceTexture(from: environment.filename as String, with: device)
+            self.envEmittance  = environment.emittance
         } else {
             self.envEmittance  = float3(0, 0, 0)
-            self.environmentFlag = false;
         }
         self.light_count   = scene.2
         
@@ -202,7 +200,7 @@ class PolluxRenderer: NSObject {
         catch { fatalError("ShadeMaterials computePipelineState failed") }
         
         // Create Pipeline State for Ray Stream Compaction
-//        self.rayCompactor = StreamCompactor2D<Ray>(on: device,
+//        self.rayCompactor = Partition<Ray>(on: device,
 //                                                 with: defaultLibrary,
 //                                                 applying: "kern_EvaluateRays")
         
@@ -258,14 +256,13 @@ extension PolluxRenderer {
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
-            if (self.environmentFlag) {
-                commandEncoder.setTexture(self.environment?.data, index: 5)
-            } else {
-                commandEncoder.setTexture(myview!.currentDrawable?.texture, index: 5)
-            }
+            commandEncoder.setTexture(self.environment?.data ?? myview!.currentDrawable?.texture, index: 5)
             commandEncoder.setBytes(&self.envEmittance, length: MemoryLayout<float3>.size, index: 6)
-            commandEncoder.setBytes(&self.environmentFlag, length: MemoryLayout<Bool>.size, index: 7)
+            
             if (integrator == "MIS" || integrator == "Direct") {
+                if (integrator == "MIS") {
+                    commandEncoder.setBytes(&self.max_depth,  length: MemoryLayout<UInt>.size, index: 7)
+                }
                 commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 8)
                 commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 9)
                 commandEncoder.setBytes(&self.light_count,  length: MemoryLayout<UInt32>.size, index: 10)
@@ -353,12 +350,9 @@ extension PolluxRenderer {
             self.dispatchPipelineState(for: COMPUTE_INTERSECTIONS, using: commandEncoder!)
 
             self.dispatchPipelineState(for: SHADE, using: commandEncoder!)
-
-            // Stream Compaction for Terminated Rays
-//            let size = uint2(UInt32(self.camera.data.x), UInt32(self.camera.data.y))
-//            self.frame_ray_count = self.rayCompactor.compact(self.rays.data!, of: size, using: commandEncoder!, buffersSet: true, commandQueue: commandQueue)
+            
         }
-    
+        
         self.dispatchPipelineState(for: FINAL_GATHER, using: commandEncoder!)
         self.iteration += 1
         

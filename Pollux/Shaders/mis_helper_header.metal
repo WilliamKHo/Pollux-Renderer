@@ -9,6 +9,8 @@
 #include <metal_stdlib>
 #include "../Data_Types/PolluxTypes.h"
 #include "../Data_Types/Constants.h"
+#include "intersections_header.metal"
+#include "shapes_header.metal"
 #include "Loki/loki_header.metal"
 
 // TODO: Add comments describing what this file does
@@ -30,6 +32,10 @@ float          pdf(const thread int& bsdf,
                    const thread float3& n,
                    const thread float3& wi,
                    const thread float3& wo);
+
+float pdfLi(constant Geom& randlight,
+            const thread float3& pisect,
+            const thread float3& wi);
 
 
 float3 f(const thread Material& m,
