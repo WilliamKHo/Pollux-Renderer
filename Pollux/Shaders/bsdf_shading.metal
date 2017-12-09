@@ -96,9 +96,16 @@ void SnS_subsurface(device Ray& ray,
     float3 n = -isect.normal;
     if (entering) {
         //SnS_refract(ray, isect, m, rng, pdf);
+        float cosTheta = dot(normalize(-ray.direction), -n);
+        float ior = m.index_of_refraction;
+        float fresnelCoeff = ((1.0f - ior) / (1.0f + ior)) * ((1.0f - ior) / (1.0f + ior));
+        fresnelCoeff = fresnelCoeff + (1.0f - fresnelCoeff) * pow(1.0f - cosTheta, 5.0f);
         SnS_diffuse(ray, isect, m, rng, pdf);
-        ray.direction += 2*n;
-        ray.origin = isect.point + n * 0.1;
+        if (rng.rand() > fresnelCoeff) {
+            //diffuse into the medium
+            ray.direction += 2*n;
+            ray.origin = isect.point + n * 0.1;
+        }
         return;
     }
     
@@ -122,7 +129,7 @@ void SnS_subsurface(device Ray& ray,
     // Move ray some distance along it's path
     // Remove energy and adjust direction
     ray.color *= exp((log(m.color) / m.absorptionAtDistance) * t);
-    ray.direction = normalize((-ray.direction / 4) + float3(rng.rand() - 0.5f, rng.rand() - 0.5f, rng.rand() - 0.5f));
+    ray.direction = normalize(float3(rng.rand() - 0.5f, rng.rand() - 0.5f, rng.rand() - 0.5f));
     
 }
 

@@ -8,12 +8,12 @@
     },
     "geometry": [
                  {
-                 "name": "Back Light",
-                 "type": 1,
+                 "name": "Sphere Light",
+                 "type": 0,
                  "material": 0,
-                 "translate": [0,-2,-5],
+                 "translate": [-1, -1.5, -5],
                  "rotate": [0,0,0],
-                 "scale": [5,1,0.5]
+                 "scale": [1, 1, 1]
                  },
                  {
                  "name": "Floor Plane",
@@ -76,8 +76,8 @@
                   {
                   "bsdf"  : -1,
                   "name": "White Light",
-                  "color": [1,1,1],
-                  "emittance":[5,5,5]
+                  "color": [0.98,0.98,0.98],
+                  "emittance":[10,10,10]
                   },
                   {
                   "bsdf"  : 0,
@@ -99,16 +99,16 @@
                   "name": "Subsurface Red",
                   "color": [0.8, 0.6, 0.6],
                   "index_of_refraction" : 1.2,
-                  "scatteringDistance" : 1.5,
-                  "absorptionAtDistance" : 2.0
+                  "scatteringDistance" : 6,
+                  "absorptionAtDistance" : 10
                   },
                   {
                   "bsdf"  : 3,
                   "name": "Subsurface Blue",
                   "color": [0.7, 0.7, 0.9],
                   "index_of_refraction" : 1.2,
-                  "scatteringDistance" : 6.5,
-                  "absorptionAtDistance" : 10.0
+                  "scatteringDistance" : 3.0,
+                  "absorptionAtDistance" : 1.0
                   }
                   ]
 }
