@@ -34,6 +34,16 @@ float3 sampleSphere(constant Geom&       light,
                     thread float&       pdf_li);
 
 /**
+ * Sample a point on a plane.
+ * - Used in MIS for picking a random point on a Spherical Lights
+ */
+float3  samplePlane(constant Geom&       light,
+                    const thread float3&   ref,
+                    thread Loki&           rng,
+                    thread float3&          wi,
+                    thread float&       pdf_li);
+
+/**
  * Computes the area of a given shape.
  * - Determines type and then computes
  */

@@ -37,6 +37,16 @@ float computeSphereIntersection(constant Geom      *sphere,
                                 thread   bool   &outside);
 
 /**
+ * Compute the intersection of a ray `r` with a plane geometry
+ * Falls slightly short so that it doesn't intersect the object it's hitting.
+ */
+float computePlaneIntersection(constant Geom        *plane,
+                               const    thread Ray     &r,
+                               thread   float3 &intersectionPoint,
+                               thread   float3 &normal,
+                               thread   bool   &outside);
+
+/**
  * Compute the intersection of a ray `r` with a cube geometry
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */

@@ -9,10 +9,10 @@
   "geometry": [
    {
      "name": "Ceiling Light",
-     "type": 0,
+     "type": 2,
      "material": 0,
-     "translate": [0,9,0],
-     "rotate": [0,0,0],
+     "translate": [0,9.9,0],
+     "rotate": [90,0,0],
      "scale": [3,3,3]
    },
    {
@@ -69,7 +69,7 @@
       "bsdf"  : -1,
       "name": "White Light",
       "color": [1,1,1],
-      "emittance":[5,5,5]
+      "emittance":[15,15,15]
     },
     {
       "bsdf"  : 0,

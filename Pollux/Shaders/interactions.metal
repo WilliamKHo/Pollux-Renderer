@@ -36,15 +36,6 @@ void shadeAndScatter(device Ray& ray,
     }
 }
 
-
-float3  samplePlane(constant Geom&       light,
-                    const thread float3&   ref,
-                    thread Loki&           rng,
-                    thread float3&          wi,
-                    thread float&       pdf_li) {
-    return float3(0);
-}
-
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
                            constant float3& emittance,
                            device Ray& ray) {

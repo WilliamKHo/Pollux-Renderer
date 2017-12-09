@@ -113,19 +113,39 @@ float3 sampleSphere(constant Geom&      sphere,
     return sample;
 }
 
+
+float3  samplePlane(constant Geom&       light,
+                    const thread float3&   ref,
+                    thread Loki&           rng,
+                    thread float3&          wi,
+                    thread float&       pdf_li) {
+    //Get a sample point
+    const float3 sample_li_local = float3(rng.rand() - 0.5f, rng.rand() - 0.5f, 0);
+    const float3 sample_li = float3(light.transform * float4(sample_li_local, 1));
+    
+    wi = normalize(sample_li - ref);
+    
+    const float3 normal_li = float3(light.invTranspose * float4(0, 0, 1, 0));
+    pdf_li = 1 / shapeSurfaceArea(light);
+    
+    //Get shape area and convert it to Solid angle
+    const float cosT = abs(dot(-wi, normal_li));
+    const float solid_angle = (length_squared(sample_li - ref) / cosT);
+    
+    pdf_li *= solid_angle;
+    
+    return sample_li;
+}
+
 float  shapeSurfaceArea(constant Geom&  shape) {
     switch (shape.type) {
         case CUBE:
             return 2 * shape.scale.x * shape.scale.y *
-            2 * shape.scale.z * shape.scale.y *
-            2 * shape.scale.x * shape.scale.z;
-            break;
+                   2 * shape.scale.z * shape.scale.y *
+                   2 * shape.scale.x * shape.scale.z;
         case SPHERE:
             return 4.f * PI * shape.scale.x * shape.scale.x; // We're assuming uniform scale
-            break;
         case PLANE:
-            // TODO: Plane Area
-            return 0.f;
-            break;
+            return shape.scale.x * shape.scale.y;
     }
 }
