@@ -48,6 +48,8 @@
 		D8388BF81FB3A7E800653E5D /* PolluxRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */; };
 		D84F8F201FC4682E0001CF76 /* simd_la.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F1F1FC4682E0001CF76 /* simd_la.swift */; };
 		D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D84F8F211FC483320001CF76 /* intersections_header.metal */; };
+		D85481E61FDB71DB006EDBB0 /* shapes_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85481E51FDB71DB006EDBB0 /* shapes_header.metal */; };
+		D85481E81FDB722C006EDBB0 /* shapes.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85481E71FDB722C006EDBB0 /* shapes.metal */; };
 		D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8718BCF1FB2BE7B00260B81 /* AppDelegate.swift */; };
 		D8718BD41FB2BE7B00260B81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD31FB2BE7B00260B81 /* Assets.xcassets */; };
 		D8718BD71FB2BE7B00260B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8718BD51FB2BE7B00260B81 /* Main.storyboard */; };
@@ -132,6 +134,8 @@
 		D8388BF71FB3A7E800653E5D /* PolluxRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolluxRenderer.swift; sourceTree = "<group>"; };
 		D84F8F1F1FC4682E0001CF76 /* simd_la.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simd_la.swift; sourceTree = "<group>"; };
 		D84F8F211FC483320001CF76 /* intersections_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections_header.metal; sourceTree = "<group>"; };
+		D85481E51FDB71DB006EDBB0 /* shapes_header.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shapes_header.metal; sourceTree = "<group>"; };
+		D85481E71FDB722C006EDBB0 /* shapes.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shapes.metal; sourceTree = "<group>"; };
 		D85B3EA61FB3F58D001036B0 /* PolluxTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolluxTypes.h; sourceTree = "<group>"; };
 		D85B3EA71FB3F5D0001036B0 /* Pollux-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pollux-Bridging-Header.h"; sourceTree = "<group>"; };
 		D8718BCC1FB2BE7B00260B81 /* Pollux-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pollux-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -266,6 +270,8 @@
 				D811105F1FC455E80059C01B /* intersections.metal */,
 				D8BD56781FC5DF9900375BC2 /* interactions_header.metal */,
 				D8BD567A1FC5E50B00375BC2 /* interactions.metal */,
+				D85481E51FDB71DB006EDBB0 /* shapes_header.metal */,
+				D85481E71FDB722C006EDBB0 /* shapes.metal */,
 				D8BD567F1FC5F8A000375BC2 /* bsdf_shading_header.metal */,
 				D8BD56811FC5F9F600375BC2 /* bsdf_shading.metal */,
 				D884B9761FC51B3B006A14CF /* Loki */,
@@ -466,11 +472,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D85481E61FDB71DB006EDBB0 /* shapes_header.metal in Sources */,
 				D826EE011FCA4E750078118A /* StreamCompactor.swift in Sources */,
 				D826C0C31FC8930800BD8A3E /* Pollux-Bridging-Header.h in Sources */,
 				D81373B41FD86B51001A7EAC /* mis_helper.metal in Sources */,
 				D81110601FC455E80059C01B /* intersections.metal in Sources */,
 				D84F8F221FC483320001CF76 /* intersections_header.metal in Sources */,
+				D85481E81FDB722C006EDBB0 /* shapes.metal in Sources */,
 				D8718BE21FB2BFFF00260B81 /* pathtrace.metal in Sources */,
 				D8BD56791FC5DF9900375BC2 /* interactions_header.metal in Sources */,
 				D8718BD01FB2BE7B00260B81 /* AppDelegate.swift in Sources */,

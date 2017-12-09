@@ -10,6 +10,7 @@
 #include "../Data_Types/PolluxTypes.h"
 #include "../Data_Types/Constants.h"
 #include "bsdf_shading_header.metal"
+#include "shapes_header.metal"
 
 // TODO: Add more Documentation here
 
@@ -38,26 +39,6 @@ void shadeAndScatter(device Ray& ray,
                      thread Material &m,
                      thread Loki& rng,
                      thread float& pdf);
-
-/**
- * Sample a point on a cube.
- * - Used in MIS for picking a random point on a Cube Lights
- */
-float3 sampleCube(constant Geom&         light,
-                  const thread float3&     ref,
-                  thread Loki&             rng,
-                  thread float3&            wi,
-                  thread float&         pdf_li);
-
-/**
- * Sample a point on a sphere.
- * - Used in MIS for picking a random point on a Spherical Lights
- */
-float3 sampleSphere(constant Geom&       light,
-                    const thread float3&   ref,
-                    thread Loki&           rng,
-                    thread float3&          wi,
-                    thread float&       pdf_li);
 
 
 /**

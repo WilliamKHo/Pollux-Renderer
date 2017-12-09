@@ -69,11 +69,11 @@ Intersection getIntersection(const thread       Ray          &ray,
     else
     {
         //The ray hits something
-        intersection.t = t_min;
+        intersection.t          = t_min;
         intersection.materialId = geoms[hit_geom_index].materialid;
-        intersection.normal = normal;
-        intersection.point = intersect_point;
-        intersection.outside = outside;
+        intersection.normal     = normal;
+        intersection.point      = intersect_point;
+        intersection.outside    = outside;
     }
     
     return intersection;
@@ -84,7 +84,7 @@ float computeSphereIntersection(constant    Geom    *sphere,
                                 thread   float3 &intersectionPoint,
                                 thread   float3 &normal,
                                 thread   bool   &outside) {
-    float radius = .5f;
+    const float radius = .5f;
     
     thread Ray rt;
     rt.origin = float3(sphere->inverseTransform * float4(r.origin, 1.0f));

@@ -170,7 +170,7 @@ class PolluxRenderer: NSObject {
         self.frame         = DeviceBuffer<float4>(count: self.rays.count, with: self.device)
         self.intersections = DeviceBuffer<Intersection>(count: self.rays.count, with: self.device)
         if let environment = scene.4 {
-            self.environment   = DeviceTexture(from: environment.filename, with: device)
+            self.environment   = DeviceTexture(from: environment.filename as String, with: device)
             self.envEmittance  = environment.emittance
         } else {
             self.envEmittance  = float3(0, 0, 0)
@@ -256,10 +256,13 @@ extension PolluxRenderer {
             // Buffer (2) is already set
             // Buffer (3) is already set
             commandEncoder.setBuffer(self.materials.data, offset: 0, index: 4)
-            commandEncoder.setTexture(self.environment?.data, index: 5)
+            commandEncoder.setTexture(self.environment?.data ?? myview!.currentDrawable?.texture, index: 5)
             commandEncoder.setBytes(&self.envEmittance, length: MemoryLayout<float3>.size, index: 6)
             
             if (integrator == "MIS" || integrator == "Direct") {
+                if (integrator == "MIS") {
+                    commandEncoder.setBytes(&self.max_depth,  length: MemoryLayout<UInt>.size, index: 7)
+                }
                 commandEncoder.setBuffer(self.geoms.data, offset: 0, index: 8)
                 commandEncoder.setBytes(&self.geoms.count,  length: MemoryLayout<Int>.size, index: 9)
                 commandEncoder.setBytes(&self.light_count,  length: MemoryLayout<UInt32>.size, index: 10)

@@ -16,10 +16,10 @@
  *************************************/
 
 
-//#define scene_file "cornell"
+#define scene_file "cornell"
 //#define scene_file "cornell-reflect"
 //#define scene_file "cornell-refract"
-#define scene_file "environment-scene"
+//#define scene_file "environment-scene"
 
 
 /*************************************
@@ -28,8 +28,8 @@
  *************************************
  *************************************/
 
-#define integrator "Naive"
-//#define integrator "MIS"
+//#define integrator "Naive"
+#define integrator "MIS"
 //#define integrator "Direct"
 
 // TODO: MIS and Direct do not sample any data from environment maps, so "environment-scene" will have no lighting on objects

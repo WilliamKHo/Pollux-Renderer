@@ -26,13 +26,51 @@ float  pdf(const thread int& bsdf,
     if (bsdf == 0) {
         // PDF is the lambert term / Pi
         return fabs(dot(n, wo)) * InvPi;
-        
     } else if (bsdf == 1 || bsdf == 2){
         // Speculars hava a pdf of zero
         return 0;
         
     } else {
         return 0;
+    }
+}
+
+float pdfLi(constant Geom& randlight,
+              const thread float3& pisect,
+              const thread float3& wi) {
+    
+    float3 tmp_intersect; float3 tmp_normal;
+    Ray tmp_wi; tmp_wi.origin = pisect; tmp_wi.direction = wi;
+    
+    
+    bool outside;
+    float t;
+    // TODO: Shape Intersection
+    switch (randlight.type) {
+        case CUBE:
+            t = computeCubeIntersection(&randlight, tmp_wi, tmp_intersect, tmp_normal, outside);
+            break;
+        case SPHERE:
+            t = computeSphereIntersection(&randlight, tmp_wi, tmp_intersect, tmp_normal, outside);
+            break;
+        case PLANE:
+            // TODO: Plane Intersection
+            t = -1;
+            break;
+    }
+    
+    if(t < 0.f) {
+        return 0.f;
+    }
+    
+    
+    const float denominator = abs(dot(tmp_normal, -wi)) * shapeSurfaceArea(randlight);
+
+    if(denominator > 0.f) {
+        return      distance_squared(pisect, tmp_intersect)
+                           / denominator;
+    } else {
+        return 0.f;
     }
 }
 

@@ -16,9 +16,9 @@ class SceneParser {
     
     private static func parseEnvironment(_ environmentJSON : [String: Any]?) -> Environment?  {
         if (environmentJSON) == nil {return nil}
-        let filepath = String(environmentJSON!["filepath"] as! String)
+        let filepath = environmentJSON!["filepath"] as! String
         let emittance = float3(environmentJSON!["emittance"] as! Array<Float>)
-        let env = Environment(from : filepath, with : emittance)
+        let env = Environment(from: filepath, with: emittance)
         return env
     }
     
