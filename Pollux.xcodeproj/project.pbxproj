@@ -33,6 +33,8 @@
 		0B0642411FDB22D600EECC64 /* cornell-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */; };
 		0B0642431FDB230900EECC64 /* environment-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642421FDB230900EECC64 /* environment-subsurface.json */; };
 		0B0642441FDB230900EECC64 /* environment-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642421FDB230900EECC64 /* environment-subsurface.json */; };
+		0B2335721FDC829E00A5A332 /* shapes.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85481E71FDB722C006EDBB0 /* shapes.metal */; };
+		0B2335731FDC82A000A5A332 /* shapes_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85481E51FDB71DB006EDBB0 /* shapes_header.metal */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
 		D81110601FC455E80059C01B /* intersections.metal in Sources */ = {isa = PBXBuildFile; fileRef = D811105F1FC455E80059C01B /* intersections.metal */; };
 		D81373B01FD86B51001A7EAC /* mis_helper_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D81373AD1FD86B51001A7EAC /* mis_helper_header.metal */; };
@@ -538,6 +540,8 @@
 				D81373B51FD86B51001A7EAC /* mis_helper.metal in Sources */,
 				D8D1E6ED1FD5D332005A6757 /* StreamCompactor.swift in Sources */,
 				D8D1E6EE1FD5D332005A6757 /* StreamCompactor.metal in Sources */,
+				0B2335731FDC82A000A5A332 /* shapes_header.metal in Sources */,
+				0B2335721FDC829E00A5A332 /* shapes.metal in Sources */,
 				D8D1E6EF1FD5D332005A6757 /* pathtrace.metal in Sources */,
 				D8D1E6F01FD5D332005A6757 /* intersections_header.metal in Sources */,
 				D8D1E6F11FD5D332005A6757 /* intersections.metal in Sources */,
@@ -750,7 +754,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -769,7 +773,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F866ZHAR49;
+				DEVELOPMENT_TEAM = 638RKZ56ZV;
 				INFOPLIST_FILE = "Pollux-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

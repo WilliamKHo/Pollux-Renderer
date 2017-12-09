@@ -253,4 +253,52 @@ void SnS_refract(thread Ray& ray,
     pdf = 1.f;
 }
 
+void SnS_subsurface(thread Ray& ray,
+                    thread Intersection& isect,
+                    thread Material &m,
+                    thread Loki& rng,
+                    thread float& pdf) {
+    // TODO : Strange visual artifacts with refractive subsurface, for now uses diffusive for
+    // entering and exiting the medium
+    const bool    entering = isect.outside;
+    float3 n = -isect.normal;
+    if (entering) {
+        //SnS_refract(ray, isect, m, rng, pdf);
+        float cosTheta = dot(normalize(-ray.direction), -n);
+        float ior = m.index_of_refraction;
+        float fresnelCoeff = ((1.0f - ior) / (1.0f + ior)) * ((1.0f - ior) / (1.0f + ior));
+        fresnelCoeff = fresnelCoeff + (1.0f - fresnelCoeff) * pow(1.0f - cosTheta, 5.0f);
+        SnS_diffuse(ray, isect, m, rng, pdf);
+        if (rng.rand() > fresnelCoeff) {
+            //diffuse into the medium
+            ray.direction += 2*n;
+            ray.origin = isect.point + n * 0.1;
+        }
+        return;
+    }
+    
+    float tFar = length(isect.point - ray.origin);
+    float lambda = 1.0f / m.scatteringDistance;
+    float t = -log(rng.rand()) / lambda;
+    ray.idx_bounces[2]--;
+    //Set pdf
+    pdf = -lambda * t;
+    // Refraction event
+    if (t > tFar) {
+        //SnS_refract(ray, isect, m, rng, pdf);
+        SnS_diffuse(ray, isect, m, rng, pdf);
+        ray.direction += 2*n;
+        ray.origin = isect.point + n * 0.1;
+        ray.color *= exp((log(m.color) / m.absorptionAtDistance) * tFar);
+        return;
+    }
+    ray.origin += ray.direction * t;
+    // Scatter event
+    // Move ray some distance along it's path
+    // Remove energy and adjust direction
+    ray.color *= exp((log(m.color) / m.absorptionAtDistance) * t);
+    ray.direction = normalize(float3(rng.rand() - 0.5f, rng.rand() - 0.5f, rng.rand() - 0.5f));
+    
+}
+
 

@@ -82,3 +82,9 @@ void SnS_refract(thread Ray& ray,
                  thread Loki& rng,
                  thread float& pdf);
 
+void SnS_subsurface(thread Ray& ray,
+                    thread Intersection& isect,
+                    thread Material &m,
+                    thread Loki& rng,
+                    thread float& pdf);
+
