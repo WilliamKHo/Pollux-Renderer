@@ -1,0 +1,122 @@
+{
+    "camera": {
+        "fov":   45,
+        "depth":  3,
+        "pos":  [0, 5, 10.5],
+        "lookAt": [0, 5, 0],
+        "up":     [0, 1, 0],
+        "lensRadius" : 0,
+        "focalDistance" : 11.5
+    },
+    "geometry": [
+                 {
+                 "name": "Ceiling Light",
+                 "type": 1,
+                 "material": 0,
+                 "translate": [0,13,0],
+                 "rotate": [0,0,0],
+                 "scale": [5,0.5,5]
+                 },
+                 {
+                 "name": "Floor Plane",
+                 "type": 1,
+                 "material": 1,
+                 "translate": [0,-3,0],
+                 "rotate": [0,0,0],
+                 "scale": [8,0.01,10]
+                 },
+                 {
+                 "name": "Ceiling Plane",
+                 "type": 1,
+                 "material": 1,
+                 "translate": [0,13, 0],
+                 "rotate": [0,0,90],
+                 "scale": [0.01,8,10]
+                 },
+                 {
+                 "name": "Back Wall",
+                 "type": 1,
+                 "material": 1,
+                 "translate": [0,5,-5],
+                 "rotate": [0, 90, 0],
+                 "scale": [0.01,16,10]
+                 },
+                 {
+                 "name": "Left Wall",
+                 "type": 1,
+                 "material": 2,
+                 "translate": [-4,5, 0],
+                 "rotate": [0, 0, 0],
+                 "scale": [0.01,16,10]
+                 },
+                 {
+                 "name": "Right Wall",
+                 "type": 1,
+                 "material": 3,
+                 "translate": [4,5, 0],
+                 "rotate": [0, 0, 0],
+                 "scale": [0.01,16,10]
+                 },
+                 {
+                 "name": "Sphere",
+                 "type": 0,
+                 "material": 4,
+                 "translate": [-1,4, -1],
+                 "rotate": [0, 0, 0],
+                 "scale": [2, 2, 2]
+                 },
+                 {
+                 "name": "Sphere",
+                 "type": 0,
+                 "material": 4,
+                 "translate": [1,4, 1],
+                 "rotate": [0, 0, 0],
+                 "scale": [2, 2, 2]
+                 },
+                 {
+                 "name": "Sphere",
+                 "type": 0,
+                 "material": 4,
+                 "translate": [-3,4, -3],
+                 "rotate": [0, 0, 0],
+                 "scale": [2, 2, 2]
+                 },
+                 {
+                 "name": "Sphere",
+                 "type": 0,
+                 "material": 4,
+                 "translate": [3,4,3],
+                 "rotate": [0, 0, 0],
+                 "scale": [2, 2, 2]
+                 }
+                 ],
+    "materials": [
+                  {
+                  "bsdf"  : -1,
+                  "name": "White Light",
+                  "color": [1,1,1],
+                  "emittance":[5,5,5]
+                  },
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse White",
+                  "color": [0.98, 0.98, 0.98]
+                  },
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse Red",
+                  "color": [0.85, 0.35, 0.35]
+                  },
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse Green",
+                  "color": [0.35, 0.85, 0.35]
+                  },
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse Yellow",
+                  "color": [0.85, 0.85, 0.35]
+                  }
+                  ]
+}
+

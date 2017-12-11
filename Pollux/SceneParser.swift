@@ -28,6 +28,7 @@ class SceneParser {
         camera.lookAt = float3(cameraJSON["lookAt"] as! Array<Float>)
         camera.up     = float3(cameraJSON["up"] as! Array<Float>)
         camera.data   = float4(0,0, cameraJSON["fov"] as! Float, cameraJSON["depth"] as! Float)
+        camera.lensData = float2(cameraJSON["lensRadius"] as? Float ?? 0.0, cameraJSON["focalDistance"] as? Float ?? 1.0)
         
         // Actually Computing the view and right vectors here
         camera.view   = simd_normalize(camera.lookAt - camera.pos);

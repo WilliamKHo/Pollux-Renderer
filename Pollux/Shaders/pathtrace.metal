@@ -56,9 +56,9 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
         ray.specularBounce = 0;
         ray.inMedium = 0;
         
-#if ANTIALIAS
         Loki rng = Loki(position.x + position.y, iteration + 1, ray.idx_bounces[2] + 1);
         
+#if ANTIALIAS
         float radius = .5f * rng.rand();
         float theta = PI * (2.0f + EPSILON) * rng.rand();
         
@@ -74,6 +74,23 @@ kernel void kern_GenerateRaysFromCamera(constant Camera& cam [[ buffer(0) ]],
                                                - cam.right * pixelLength.x * ((float)x -  width  * 0.5f)
                                                - cam.up    * pixelLength.y * ((float)y -  height * 0.5f)
                                                );
+#endif
+        
+#if DEPTHOFFIELD
+        //use u and v along with the lensradius to determine a new segment origin
+        float focalDistance = cam.lensData[1];
+        float dofRadius = cam.lensData[0] * rng.rand();
+        float dofTheta = PI * 2.0f * rng.rand();
+        
+        float dof_x = sqrt(dofRadius) * cos(dofTheta);
+        float dof_y = sqrt(dofRadius) * sin(dofTheta);
+        
+        //determine where the ray would intersect the focal plane normally
+        float3 focalPoint = ray.origin + (focalDistance * (1.0f / dot(ray.direction, normalize(cam.view)))) * ray.direction;
+        
+        //make the ray originate from the new origin and pass through the point on the focal plane
+        ray.origin += dof_x * cam.right + dof_y * cam.up;
+        ray.direction = normalize(focalPoint - ray.origin);
 #endif
     }
 }

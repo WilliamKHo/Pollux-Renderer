@@ -94,6 +94,8 @@ typedef struct {
     vector_float3 right;
     // The camera's up vector
     vector_float3 up;
+    // Lens Information (lensRadius, focalDistance) for DOF
+    vector_float2 lensData;
 } Camera;
 
 // Use with a corresponding PathSegment to do:
