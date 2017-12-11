@@ -35,6 +35,8 @@
 		0B0642441FDB230900EECC64 /* environment-subsurface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0642421FDB230900EECC64 /* environment-subsurface.json */; };
 		0B0BD6511FDE1EB400DDA387 /* cornell-dof-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BD6501FDE1EB400DDA387 /* cornell-dof-ios.json */; };
 		0B0BD6521FDE1EB400DDA387 /* cornell-dof-ios.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BD6501FDE1EB400DDA387 /* cornell-dof-ios.json */; };
+		0B0BD6541FDE23EE00DDA387 /* cornell-dof.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BD6531FDE23EE00DDA387 /* cornell-dof.json */; };
+		0B0BD6551FDE23EE00DDA387 /* cornell-dof.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BD6531FDE23EE00DDA387 /* cornell-dof.json */; };
 		0B2335721FDC829E00A5A332 /* shapes.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85481E71FDB722C006EDBB0 /* shapes.metal */; };
 		0B2335731FDC82A000A5A332 /* shapes_header.metal in Sources */ = {isa = PBXBuildFile; fileRef = D85481E51FDB71DB006EDBB0 /* shapes_header.metal */; };
 		D80BE56A1FCE5D7C0023713F /* DeviceBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */; };
@@ -124,6 +126,7 @@
 		0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cornell-subsurface.json"; sourceTree = "<group>"; };
 		0B0642421FDB230900EECC64 /* environment-subsurface.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "environment-subsurface.json"; sourceTree = "<group>"; };
 		0B0BD6501FDE1EB400DDA387 /* cornell-dof-ios.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cornell-dof-ios.json"; sourceTree = "<group>"; };
+		0B0BD6531FDE23EE00DDA387 /* cornell-dof.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cornell-dof.json"; sourceTree = "<group>"; };
 		D80BE5691FCE5D7C0023713F /* DeviceBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBuffer.swift; sourceTree = "<group>"; };
 		D811105F1FC455E80059C01B /* intersections.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = intersections.metal; sourceTree = "<group>"; };
 		D81373AC1FD8682A001A7EAC /* SceneParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneParameters.h; sourceTree = "<group>"; };
@@ -353,6 +356,7 @@
 				0B06423F1FDB22D600EECC64 /* cornell-subsurface.json */,
 				0B0642421FDB230900EECC64 /* environment-subsurface.json */,
 				0B0BD6501FDE1EB400DDA387 /* cornell-dof-ios.json */,
+				0B0BD6531FDE23EE00DDA387 /* cornell-dof.json */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -453,6 +457,7 @@
 				D8BD56841FC5FDEA00375BC2 /* cornell.json in Resources */,
 				D822E2311FD70F38009CF57D /* cornell-reflect-ios.json in Resources */,
 				D8E60DCC1FD7A3AA00755A06 /* cornell-refract-ios.json in Resources */,
+				0B0BD6541FDE23EE00DDA387 /* cornell-dof.json in Resources */,
 				0B06423D1FDB1BC800EECC64 /* environment-scene-sss-ios.json in Resources */,
 				D822E2301FD70F38009CF57D /* cornell-reflect.json in Resources */,
 				0B0642231FD9177E00EECC64 /* environment.json in Resources */,
@@ -475,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D1E70B1FD5D565005A6757 /* cornell-ios.json in Resources */,
+				0B0BD6551FDE23EE00DDA387 /* cornell-dof.json in Resources */,
 				0B0BD6521FDE1EB400DDA387 /* cornell-dof-ios.json in Resources */,
 				0B0642311FD9248800EECC64 /* cornell-reflect-ios.json in Resources */,
 				D8D1E7071FD5D48D005A6757 /* cornell.json in Resources */,
