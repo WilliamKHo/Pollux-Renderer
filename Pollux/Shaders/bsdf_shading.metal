@@ -112,22 +112,21 @@ void SnS_subsurface(device Ray& ray,
     float lambda = 1.0f / m.scatteringDistance;
     float t = -log(rng.rand()) / lambda;
     
-    //TODO: Add Schlick approximation for biasing backwards scattering
+    //TODO: Add Schlick approximation for biased backwards scattering
     //Set pdf
     pdf = -lambda * t;
     // Refraction event
     if (t > tFar) {
         SnS_refract(ray, isect, m, rng, pdf);
-
         //ray.color *= exp(-(-log(m.color) / m.absorptionAtDistance) * tFar);
         return;
     }
-    ray.origin += ray.direction * t;
     // Scatter event
     // Move ray some distance along it's path
+    ray.origin += ray.direction * t;
     // Remove energy and adjust direction
     //ray.color *= exp(-(-log(m.color) / m.absorptionAtDistance) * t);
-    ray.color *= 0.999f; // TODO : energy removal isn't working correctly
+    ray.color *= 0.99f; // TODO : energy removal isn't working correctly
     ray.direction = normalize(float3(rng.rand() - 0.5f, rng.rand() - 0.5f, rng.rand() - 0.5f));
     ray.idx_bounces[2]--;
 }
@@ -257,21 +256,19 @@ void SnS_subsurface(thread Ray& ray,
                     thread Material &m,
                     thread Loki& rng,
                     thread float& pdf) {
-    // TODO : Strange visual artifacts with refractive subsurface, for now uses diffusive for
-    // entering and exiting the medium
     const bool    entering = isect.outside;
     float3 n = -isect.normal;
     if (entering) {
-        //SnS_refract(ray, isect, m, rng, pdf);
         float cosTheta = dot(normalize(-ray.direction), -n);
         float ior = m.index_of_refraction;
         float fresnelCoeff = ((1.0f - ior) / (1.0f + ior)) * ((1.0f - ior) / (1.0f + ior));
         fresnelCoeff = fresnelCoeff + (1.0f - fresnelCoeff) * pow(1.0f - cosTheta, 5.0f);
-        SnS_diffuse(ray, isect, m, rng, pdf);
         if (rng.rand() > fresnelCoeff) {
-            //diffuse into the medium
-            ray.direction += 2*n;
-            ray.origin = isect.point + n * 0.1;
+            // refract into the medium
+            SnS_refract(ray, isect, m, rng, pdf);
+        } else {
+            // diffuse off the medium
+            SnS_diffuse(ray, isect, m, rng, pdf);
         }
         return;
     }
@@ -279,25 +276,24 @@ void SnS_subsurface(thread Ray& ray,
     float tFar = length(isect.point - ray.origin);
     float lambda = 1.0f / m.scatteringDistance;
     float t = -log(rng.rand()) / lambda;
-    ray.idx_bounces[2]--;
+    
+    //TODO: Add Schlick approximation for biased backwards scattering
     //Set pdf
     pdf = -lambda * t;
     // Refraction event
     if (t > tFar) {
-        //SnS_refract(ray, isect, m, rng, pdf);
-        SnS_diffuse(ray, isect, m, rng, pdf);
-        ray.direction += 2*n;
-        ray.origin = isect.point + n * 0.1;
-        ray.color *= exp((log(m.color) / m.absorptionAtDistance) * tFar);
+        SnS_refract(ray, isect, m, rng, pdf);
+        //ray.color *= exp(-(-log(m.color) / m.absorptionAtDistance) * tFar);
         return;
     }
-    ray.origin += ray.direction * t;
     // Scatter event
     // Move ray some distance along it's path
+    ray.origin += ray.direction * t;
     // Remove energy and adjust direction
-    ray.color *= exp((log(m.color) / m.absorptionAtDistance) * t);
+    //ray.color *= exp(-(-log(m.color) / m.absorptionAtDistance) * t);
+    ray.color *= 0.99f; // TODO : energy removal isn't working correctly
     ray.direction = normalize(float3(rng.rand() - 0.5f, rng.rand() - 0.5f, rng.rand() - 0.5f));
-    
+    ray.idx_bounces[2]--;
 }
 
 
