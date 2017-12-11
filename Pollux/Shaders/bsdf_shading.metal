@@ -40,7 +40,7 @@ void SnS_diffuse(device Ray& ray,
     float3 integral = (f * lambert_factor)
                             / pdf;
     ray.color *= integral;
-    
+
     //Scatter the Ray
     ray.origin = isect.point + n*EPSILON;
     ray.direction = cosRandomDirection(n, rng);

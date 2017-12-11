@@ -16,12 +16,14 @@
  *************************************/
 
 
-#define scene_file "cornell"
+//#define scene_file "cornell"
 //#define scene_file "cornell-reflect"
 //#define scene_file "cornell-refract"
+#define scene_file "cornell-dof"
 //#define scene_file "environment-scene"
 //#define scene_file "environment-scene-sss"
 //#define scene_file "cornell-subsurface"
+
 
 /*************************************
  *************************************
@@ -35,5 +37,13 @@
 
 // TODO: MIS and Direct do not sample any data from environment maps, so "environment-scene" will have no lighting on objects
 
+/*************************************
+ *************************************
+ ******* Additional Features: ********
+ *************************************
+ *************************************/
+
+#define ANTIALIAS 0
+#define DEPTHOFFIELD 0 
 
 #endif /* SceneParameters_h */
