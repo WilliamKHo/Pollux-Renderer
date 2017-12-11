@@ -43,7 +43,7 @@
  *************************************
  *************************************/
 
-#define ANTIALIAS 1
-#define DEPTHOFFIELD 1
+#define ANTIALIAS 0
+#define DEPTHOFFIELD 0 
 
 #endif /* SceneParameters_h */
