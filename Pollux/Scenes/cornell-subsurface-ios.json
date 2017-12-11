@@ -1,7 +1,7 @@
 {
     "camera": {
         "fov":   45,
-        "depth":  16,
+        "depth":  64,
         "pos":  [0, 3, 10.5],
         "lookAt": [0, 3, 0],
         "up":     [0, 1, 0]
@@ -11,7 +11,23 @@
                  "name": "Sphere Light",
                  "type": 0,
                  "material": 0,
-                 "translate": [-1, -1.5, -5],
+                 "translate": [0, -3, -5],
+                 "rotate": [0,0,0],
+                 "scale": [1, 1, 1]
+                 },
+                 {
+                 "name": "Sphere Light",
+                 "type": 0,
+                 "material": 0,
+                 "translate": [-4, -3, -5],
+                 "rotate": [0,0,0],
+                 "scale": [1, 1, 1]
+                 },
+                 {
+                 "name": "Sphere Light",
+                 "type": 0,
+                 "material": 0,
+                 "translate": [4, -3, -5],
                  "rotate": [0,0,0],
                  "scale": [1, 1, 1]
                  },
@@ -21,7 +37,7 @@
                  "material": 1,
                  "translate": [0,-3,0],
                  "rotate": [0,0,0],
-                 "scale": [8,0.01,10]
+                 "scale": [8,0.01,30]
                  },
                  {
                  "name": "Ceiling Plane",
@@ -29,7 +45,7 @@
                  "material": 1,
                  "translate": [0,13, 0],
                  "rotate": [0,0,90],
-                 "scale": [0.01,8,10]
+                 "scale": [0.01,8,30]
                  },
                  {
                  "name": "Back Wall",
@@ -45,7 +61,7 @@
                  "material": 2,
                  "translate": [-4,5, 0],
                  "rotate": [0, 0, 0],
-                 "scale": [0.01,16,10]
+                 "scale": [0.01,16,30]
                  },
                  {
                  "name": "Right Wall",
@@ -53,15 +69,23 @@
                  "material": 3,
                  "translate": [4,5, 0],
                  "rotate": [0, 0, 0],
-                 "scale": [0.01,16,10]
+                 "scale": [0.01,16,30]
+                 },
+                 {
+                 "name": "Front Wall",
+                 "type": 1,
+                 "material": 6,
+                 "translate": [4,5, 15],
+                 "rotate": [0, 90, 0],
+                 "scale": [0.01,16,30]
                  },
                  {
                  "name": "Subsurface Cube",
                  "type": 1,
                  "material": 4,
-                 "translate": [1,-1.5, -2],
+                 "translate": [1,-1.5, 0],
                  "rotate": [0, 30, 0],
-                 "scale": [3, 3, 3]
+                 "scale": [3, 2.9, 3]
                  },
                  {
                  "name": "Subsurface Sphere",
@@ -69,7 +93,7 @@
                  "material": 5,
                  "translate": [-2.5,-1.75, 0],
                  "rotate": [0, 0, 0],
-                 "scale": [2.5, 2.5, 2.5]
+                 "scale": [2.5, 2.45, 2.5]
                  }
                  ],
     "materials": [
@@ -77,11 +101,11 @@
                   "bsdf"  : -1,
                   "name": "White Light",
                   "color": [0.98,0.98,0.98],
-                  "emittance":[10,10,10]
+                  "emittance":[25,25,25]
                   },
                   {
-                  "bsdf"  : 0,
-                  "name": "Diffuse White",
+                  "bsdf"  : 1,
+                  "name": "Reflective White",
                   "color": [0.98, 0.98, 0.98]
                   },
                   {
@@ -97,18 +121,24 @@
                   {
                   "bsdf"  : 3,
                   "name": "Subsurface Red",
-                  "color": [0.8, 0.6, 0.6],
-                  "index_of_refraction" : 1.2,
-                  "scatteringDistance" : 6,
-                  "absorptionAtDistance" : 10
+                  "color": [0.9, 0.7, 0.7],
+                  "index_of_refraction" : 1.05,
+                  "scatteringDistance" : 0.05,
+                  "absorptionAtDistance" : 1
                   },
                   {
                   "bsdf"  : 3,
                   "name": "Subsurface Blue",
                   "color": [0.7, 0.7, 0.9],
-                  "index_of_refraction" : 1.2,
-                  "scatteringDistance" : 3.0,
-                  "absorptionAtDistance" : 1.0
+                  "index_of_refraction" : 1.05,
+                  "scatteringDistance" : 0.05,
+                  "absorptionAtDistance" : 1
+                  
+                  },
+                  {
+                  "bsdf"  : 0,
+                  "name": "Diffuse White",
+                  "color": [0.98, 0.98, 0.98]
                   }
                   ]
 }

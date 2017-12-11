@@ -19,10 +19,10 @@
 //#define scene_file "cornell"
 //#define scene_file "cornell-reflect"
 //#define scene_file "cornell-refract"
-#define scene_file "cornell-dof"
+//#define scene_file "cornell-dof"
 //#define scene_file "environment-scene"
 //#define scene_file "environment-scene-sss"
-//#define scene_file "cornell-subsurface"
+#define scene_file "cornell-subsurface"
 
 
 /*************************************
@@ -44,6 +44,6 @@
  *************************************/
 
 #define ANTIALIAS 0
-#define DEPTHOFFIELD 0 
+#define DEPTHOFFIELD 1
 
 #endif /* SceneParameters_h */
