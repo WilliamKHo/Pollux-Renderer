@@ -35,5 +35,12 @@
 
 // TODO: MIS and Direct do not sample any data from environment maps, so "environment-scene" will have no lighting on objects
 
+/*************************************
+ *************************************
+ ******* Additional Features: ********
+ *************************************
+ *************************************/
+
+#define ANTIALIAS 1
 
 #endif /* SceneParameters_h */

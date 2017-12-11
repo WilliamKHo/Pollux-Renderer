@@ -242,6 +242,7 @@ extension PolluxRenderer {
             commandEncoder.setBytes(&self.camera, length: MemoryLayout<Camera>.size, index: 0)
             commandEncoder.setBytes(&self.max_depth, length: MemoryLayout<UInt>.size, index: 1)
             commandEncoder.setBuffer(self.rays.data, offset: 0, index: 2)
+            commandEncoder.setBytes(&self.iteration,  length: MemoryLayout<Int>.size, index: 3)
         case COMPUTE_INTERSECTIONS:
             // TODO: Setup buffer for intersections shader
             commandEncoder.setBytes(&self.rays.count, length: MemoryLayout<Int>.size, index: 0)
