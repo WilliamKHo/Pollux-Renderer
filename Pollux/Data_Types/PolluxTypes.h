@@ -10,6 +10,7 @@
 #define PolluxTypes_h
 
 #import "simd/simd.h"
+#include "MicrofacetDistributions.h"
 
 #define MAX_FILENAME_LENGTH 50
 
@@ -21,8 +22,8 @@
 enum GeomType {
     SPHERE,
     CUBE,
-    PLANE
-    // TODO: - MESH?
+    PLANE,
+    MESH
 };
 
 enum PipelineStage {
@@ -34,6 +35,41 @@ enum PipelineStage {
 };
 
 typedef struct {
+    int meshIndex;
+    vector_float3 minAABB;
+    vector_float3 maxAABB;
+} MeshDescriptor;
+
+typedef struct
+{
+    // Data
+    float e1x;
+    float e1y;
+    float e1z;
+    
+    float e2x;
+    float e2y;
+    float e2z;
+    
+    float p1x;
+    float p1y;
+    float p1z;
+    
+    // Normals
+    float n1x;
+    float n1y;
+    float n1z;
+    
+    float n2x;
+    float n2y;
+    float n2z;
+    
+    float n3x;
+    float n3y;
+    float n3z;
+} CompactTriangle;
+
+typedef struct {
     enum GeomType type;
     int materialid;
     vector_float3 translation;
@@ -42,23 +78,35 @@ typedef struct {
     matrix_float4x4 transform;
     matrix_float4x4 inverseTransform;
     matrix_float4x4 invTranspose;
+    
+    MeshDescriptor meshData;
 } Geom;
 
+typedef struct
+{
+    int nodeOffset;
+    float minDistance;
+    float maxDistance;
+} StackData;
+
 typedef struct {
-    unsigned int count;
-    Geom data[MAX_GEOMS];
-} GeomData;
+    
+    vector_float3 bounds_min;
+    vector_float3 bounds_max;
+    vector_float3 bounds_center;
+} AABB;
 
 typedef struct {
     vector_float3 color;
-
     float         specular_exponent;
+    
     vector_float3 specular_color;
-
     float hasReflective;
     
     vector_float3 emittance;
     float hasRefractive;
+    
+    enum MicrofacetDistribution distribution;
     float index_of_refraction;
     short bsdf;
 } Material;
@@ -89,12 +137,15 @@ typedef struct {
     vector_float3 right;
     // The camera's up vector
     vector_float3 up;
+    // Lens Information (lensRadius, focalDistance) for DOF
+    vector_float2 lensData;
 } Camera;
 
 // Use with a corresponding PathSegment to do:
 // 1) color contribution computation
 // 2) BSDF evaluation: generate a new ray
 typedef struct {
+    // Surface Normal At the Point of interseciton. No Transformations are applied to it.
     vector_float3 normal;
     float t;
     
@@ -102,6 +153,10 @@ typedef struct {
     int materialId;
     
     int outside;
+    float2 uv;               // The UV coordinates computed at the intersection
+    float3 tangent, bitangent;
+    
+    Geometry const * objectHit;     // The object that the ray intersected, or nullptr if the ray hit nothing.
 } Intersection;
 
 #endif /* PolluxTypes_h */

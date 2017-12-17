@@ -11,7 +11,7 @@
 using namespace metal;
 
 
-void shadeAndScatter(device Ray& ray,
+void shadeAndScatter(thread Ray& ray,
                      thread Intersection& isect,
                      thread Material &m,
                      thread Loki& rng,
@@ -38,7 +38,7 @@ void shadeAndScatter(device Ray& ray,
 
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
                            constant float3& emittance,
-                           device Ray& ray) {
+                           const device float3& direction) {
     if (emittance.x < ZeroEpsilon && emittance.y < ZeroEpsilon && emittance.z < ZeroEpsilon) {
         return float3(0);
     }
@@ -48,11 +48,10 @@ float3 getEnvironmentColor(texture2d<float, access::sample> environment,
                                      min_filter::linear,
                                      mag_filter::linear,
                                      mip_filter::linear);
-    float x = ray.direction.x, y = ray.direction.y, z = ray.direction.z;
+    float x = direction.x, y = direction.y, z = direction.z;
     float u = atan2(x, z) / (2 * PI) + 0.5f;
-    float v = y * 0.5f + 0.5f;
+    float v = 0.5 - asin(y) / PI;
     
-    v = 1-v;
     float4 color = environment.sample(textureSampler, float2(u, v));
     return color.xyz * emittance;
 }
@@ -84,38 +83,4 @@ float3 sample_li(constant Geom&         light,
             return float3(0,0,0);
     }
     
-}
-
-
-/********************************************************
- ********************************************************
- **************** FUNCTION OVERLOADS ********************
- *** Overloaded in order to not compromise efficiency ***
- ********************************************************
- ********************************************************/
-// TODO: Avoid doing this
-
-void shadeAndScatter(thread Ray& ray,
-                     thread Intersection& isect,
-                     thread Material &m,
-                     thread Loki& rng,
-                     thread float& pdf) {
-    switch (m.bsdf) {
-        case -1:
-            // Light Shade and 'absorb' ray by terminating
-            ray.color *= (m.color * m.emittance);
-            ray.idx_bounces[2] = 0;
-            break;
-        case 0:
-            SnS_diffuse(ray, isect, m, rng, pdf);
-            break;
-        case 1:
-            SnS_reflect(ray, isect, m, rng, pdf);
-            break;
-        case 2:
-            SnS_refract(ray, isect, m, rng, pdf);
-            break;
-        default:
-            break;
-    }
 }

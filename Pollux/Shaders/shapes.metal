@@ -146,6 +146,9 @@ float  shapeSurfaceArea(constant Geom&  shape) {
         case SPHERE:
             return 4.f * PI * shape.scale.x * shape.scale.x; // We're assuming uniform scale
         case PLANE:
-            return shape.scale.x * shape.scale.y;
+            return 4 * (shape.scale.x * shape.scale.y);
+        case MESH:
+            // Mesh lights not supported
+            return 0.f;
     }
 }

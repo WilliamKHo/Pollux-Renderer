@@ -1,2 +1,0 @@
-![](./PolluxMilestones.png)
-![](./RayDirections.png)

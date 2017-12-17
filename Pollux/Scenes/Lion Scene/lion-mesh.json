@@ -1,0 +1,60 @@
+{
+  "camera": {
+    "fov":   45,
+    "depth":  3,
+    "pos":  [3.01227, 3.12001, 5.65333],
+    "lookAt": [-1.4596, 1.70469, -4.84667],
+    "up":     [0, 1, 0],
+    "lensRadius" : 0.05,
+    "focalDistance" : 2.5
+  },
+  "geometry": [
+   {
+     "name": "Ceiling Light",
+     "type": 1,
+     "material": 0,
+     "translate": [0,13,0],
+     "rotate": [0,0,0],
+     "scale": [5,0.5,5]
+   },
+   {
+     "name": "Floor Plane",
+     "type": 1,
+     "material": 1,
+     "translate": [0,0,0],
+     "rotate": [0,0,0],
+     "scale": [25,0.01,15]
+   },
+   {
+     "name": "Mesh",
+     "type": 3,
+     "material": 2,
+     "translate": [1,0, 1],
+     "rotate": [0, 0, 0],
+     "scale": [0.2, 0.2, 0.2],
+     "mesh_path": "lion"
+   }
+  ],  
+  "materials": [
+    {
+      "bsdf"  : -1,
+      "name": "White Light",
+      "color": [1,1,1],
+      "emittance":[5,5,5]
+    },
+    {
+      "bsdf"  : 0,
+      "name": "Diffuse White",
+      "color": [0.98, 0.98, 0.98]
+    },
+    {
+      "bsdf"  : 1,
+      "name": "Diffuse Yellow",
+      "color": [0.85, 0.85, 0.85]
+    }
+  ],
+  "environment": {
+      "filepath" : "lion-environment.jpg",
+      "emittance" : [1,1,1]
+  }
+}

@@ -15,11 +15,29 @@
  *************************************
  *************************************/
 
+// TODO:
+//
+// 1 - In the intersection function, add:
+//    a - GetUV()
+//    b - Compute TBN
+//    c - add TangentToWorld/WorldToTangent
+// 2 - In the shadeAndScatter function, add:
+//    a - Texture Map Adjustment
+//    b - Normal Map Adjustment
+//    c - Roughness (Oren-Nayer) Adjustment
+//
+//
+
 
 #define scene_file "cornell"
 //#define scene_file "cornell-reflect"
 //#define scene_file "cornell-refract"
 //#define scene_file "environment-scene"
+//#define scene_file "cornell-mesh"
+//#define scene_file "mars"
+//#define scene_file "marsMIS"
+//#define scene_file "lion-mesh"
+//#define scene_file "dragon-mesh"  -- WORK IN PROGRESS
 
 
 /*************************************
@@ -28,11 +46,17 @@
  *************************************
  *************************************/
 
-//#define integrator "Naive"
-#define integrator "MIS"
+#define integrator "Naive"
+//#define integrator "MIS"
 //#define integrator "Direct"
 
-// TODO: MIS and Direct do not sample any data from environment maps, so "environment-scene" will have no lighting on objects
+
+/****************************************
+ ****************************************
+ ******* Select Antialiasing Amount: ****
+ ****************************************
+ ****************************************/
+#define AA_SIZE 2.f
 
 
 #endif /* SceneParameters_h */

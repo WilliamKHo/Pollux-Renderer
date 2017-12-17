@@ -21,8 +21,8 @@ float3 getPointOnRay(const thread Ray*   r,
 /**
  * Check for intersections in the scene
  */
-// TODO: KD-Tree
 Intersection getIntersection(const thread      Ray&           ray,
+                             const constant  float*       kdtrees,
                              const constant   Geom*         geoms,
                                    constant   uint&   geoms_count);
 
@@ -51,6 +51,18 @@ float computePlaneIntersection(constant Geom        *plane,
  * Falls slightly short so that it doesn't intersect the object it's hitting.
  */
 float computeCubeIntersection(constant Geom        *cube,
+                              const    thread Ray     &r,
+                              thread   float3 &intersectionPoint,
+                              thread   float3 &normal,
+                              thread   bool   &outside);
+
+
+/**
+ * Compute the intersection of a ray `r` with a mesh geometry
+ * Falls slightly short so that it doesn't intersect the object it's hitting.
+ */
+float computeMeshIntersection(constant Geom        *mesh,
+                              constant float*    kdtrees,
                               const    thread Ray     &r,
                               thread   float3 &intersectionPoint,
                               thread   float3 &normal,

@@ -9,15 +9,23 @@
 import Foundation
 import Metal
 
-// TODO: Documentation for Device Buffer
-class DeviceBuffer <T>  {
+/*
+ *  This is a class that provides a nice wrapper for creating
+ *  buffers purely on the GPU. This class requires the SharedBuffer<T>
+ *  class as well if you want to use the `contents` argument.
+ *
+ *  The way things work is by first creating a SharedBuffer<T> with the
+ *  contents and then blitting the contents of that buffer to a buffer
+ *  with a "private" storageMode (i.e. GPU access only)
+ *
+ */
+
+class DeviceBuffer<T>  {
     // Buffer Size
     var count  : Int
     
     // The actual Buffer that stores the data
     var data : MTLBuffer?
-    
-//    let memory  : UnsafeMutableRawPointer?
     
     
     init (count: Int, with device: MTLDevice, containing contents : [T] = [], blitOn commandQueue: MTLCommandQueue? = nil) {
@@ -38,13 +46,6 @@ class DeviceBuffer <T>  {
             commandBuffer?.waitUntilCompleted()
         }
     }
-    
-      // TODO: Implement Subscript operator
-//    public subscript(i: Int) -> T {
-      // Create single sharedBuffer Element
-      // --- copy from buffer to element ---
-      // return element
-//    }
     
     public func resize(count: Int, with device: MTLDevice) {
         self.count = count

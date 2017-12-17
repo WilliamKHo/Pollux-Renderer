@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sgd-LY-Fp6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Launch View Controller-->
+        <scene sceneID="cJo-S5-aku">
+            <objects>
+                <viewController id="sgd-LY-Fp6" customClass="LaunchViewController" customModule="Pollux_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VsM-kh-DIp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="UkD-m9-PZu">
+                                <rect key="frame" x="-2" y="0.0" width="377" height="667"/>
+                            </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="EJN-BQ-fgP">
+                                <rect key="frame" x="169" y="499" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UkD-m9-PZu" firstAttribute="leading" secondItem="Bu9-c7-UB1" secondAttribute="leading" constant="-2" id="M3i-Rk-XRh"/>
+                            <constraint firstItem="UkD-m9-PZu" firstAttribute="trailing" secondItem="Bu9-c7-UB1" secondAttribute="trailing" id="RaY-7Q-hOj"/>
+                            <constraint firstItem="UkD-m9-PZu" firstAttribute="top" secondItem="VsM-kh-DIp" secondAttribute="top" id="YMf-Hv-0aE"/>
+                            <constraint firstItem="UkD-m9-PZu" firstAttribute="bottom" secondItem="Bu9-c7-UB1" secondAttribute="bottom" id="vsx-vs-del"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Bu9-c7-UB1"/>
+                    </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="segueToRenderer" animates="NO" action="showDetailViewController:sender:" id="bOn-Nw-gve"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IXz-4z-dMh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-642" y="114"/>
+        </scene>
         <!--Pollux View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -25,4 +58,7 @@
             </objects>
         </scene>
     </scenes>
+    <resources>
+        <image name="LaunchScreen" width="494" height="879"/>
+    </resources>
 </document>

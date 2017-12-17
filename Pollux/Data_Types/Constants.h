@@ -15,6 +15,7 @@
 #define SQRT_OF_ONE_THIRD 0.5773502691896257645091487805019574556476f
 #define EPSILON           0.00001f
 #define ZeroEpsilon       0.0001f
+#define SplitEpsilon      0.001f
 #define InvPi             0.31830988618379067154f
 #define Inv2Pi            0.15915494309189533577f
 #define Inv4Pi            0.07957747154594766788f

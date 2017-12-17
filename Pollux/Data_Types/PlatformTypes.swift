@@ -20,6 +20,8 @@ import Foundation
     typealias PlatformViewController        = UIViewController
     typealias PlatformPanGestureRecognizer  = UIPanGestureRecognizer
     typealias PlatformZoomGestureRecognizer = UIPinchGestureRecognizer
+    typealias PlatformStoryboardSegue       = UIStoryboardSegue
+    typealias PlatformColor                 = UIColor
 #else
     import Cocoa
     import AppKit
@@ -28,4 +30,6 @@ import Foundation
     typealias PlatformViewController        = NSViewController
     typealias PlatformPanGestureRecognizer  = NSPanGestureRecognizer
     typealias PlatformZoomGestureRecognizer = NSMagnificationGestureRecognizer
+    typealias PlatformStoryboardSegue       = NSStoryboardSegue
+    typealias PlatformColor                 = NSColor
 #endif

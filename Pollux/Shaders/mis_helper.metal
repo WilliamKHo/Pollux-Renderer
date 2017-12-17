@@ -45,7 +45,6 @@ float pdfLi(constant Geom& randlight,
     
     bool outside;
     float t;
-    // TODO: Shape Intersection
     switch (randlight.type) {
         case CUBE:
             t = computeCubeIntersection(&randlight, tmp_wi, tmp_intersect, tmp_normal, outside);
@@ -54,7 +53,9 @@ float pdfLi(constant Geom& randlight,
             t = computeSphereIntersection(&randlight, tmp_wi, tmp_intersect, tmp_normal, outside);
             break;
         case PLANE:
-            // TODO: Plane Intersection
+            t = computePlaneIntersection(&randlight, tmp_wi, tmp_intersect, tmp_normal, outside);
+            break;
+        case MESH:
             t = -1;
             break;
     }
@@ -68,7 +69,7 @@ float pdfLi(constant Geom& randlight,
 
     if(denominator > 0.f) {
         return      distance_squared(pisect, tmp_intersect)
-                           / denominator;
+                                / denominator;
     } else {
         return 0.f;
     }

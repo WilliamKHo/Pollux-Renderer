@@ -13,7 +13,7 @@
      "material": 0,
      "translate": [0,9.9,0],
      "rotate": [90,0,0],
-     "scale": [3,3,3]
+     "scale": [5, 5, 5]
    },
    {
      "name": "Floor Plane",

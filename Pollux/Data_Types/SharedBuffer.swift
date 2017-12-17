@@ -9,7 +9,19 @@
 import Foundation
 import Metal
 
-
+/*
+ *  This is a class that provides a nice wrapper for creating
+ *  buffers that can be shared across the GPU and CPU
+ *
+ *  The way things work is by first using posix_memalign to reserve
+ *  memory on the CPU and GPU. Then, if there are `contents` passed
+ *  in, it fills in the buffer with the required items.
+ *
+ *  There is also a neat subscript operator that can quickly access
+ *  elements from the buffer without having to deal with the
+ *  underlying data structures.
+ *
+ */
 class SharedBuffer <T>  {
     // Data Alignment
     private let alignment  : Int = 0x4000

@@ -12,8 +12,6 @@
 #include "bsdf_shading_header.metal"
 #include "shapes_header.metal"
 
-// TODO: Add more Documentation here
-
 using namespace metal;
 
 /**
@@ -34,7 +32,7 @@ using namespace metal;
  * pdf:         The probability that the ray would be scattered in this newly
  *              sampled direction
  */
-void shadeAndScatter(device Ray& ray,
+void shadeAndScatter(thread Ray& ray,
                      thread Intersection& isect,
                      thread Material &m,
                      thread Loki& rng,
@@ -62,21 +60,17 @@ float3 sample_li(constant Geom&         light,
                  thread float3&            wi,
                  thread float&         pdf_li);
 
-
-
-/********************************************************
- ********************************************************
- **************** FUNCTION OVERLOADS ********************
- *** Overloaded in order to not compromise efficiency ***
- ********************************************************
- ********************************************************/
-void shadeAndScatter(thread Ray& ray,
-                     thread Intersection& isect,
-                     thread Material &m,
-                     thread Loki& rng,
-                     thread float& pdf);
-
+/**
+ * Sample an environment map, `environment`, and return the color
+ * at a particular point in the texture. The point is determined using
+ * simple UV mapping from ray direction to u,v coordinates on the
+ * texture.
+ *
+ * environment:         The environment map texture to be sampled
+ * emittance:           The emittance of the environment map
+ * direction:           The direction vector used to sample the texture
+ */
 float3 getEnvironmentColor(texture2d<float, access::sample> environment,
                            constant float3& emittance,
-                           device Ray& ray);
+                           const device float3& direction);
 

@@ -21,6 +21,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
                                    device     Ray* rays                   [[ buffer(2) ]],
                                    device     Intersection* intersections [[ buffer(3) ]],
                                    constant   Material*     materials     [[ buffer(4) ]],
+                                   constant   float*         kdtrees      [[ buffer(5) ]],
                                    texture2d<float, access::sample> environment [[ texture(5) ]],
                                    constant   float3& envEmittance        [[ buffer(6) ]],
                                    constant   uint&         max_depth     [[ buffer(7) ]],
@@ -39,7 +40,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
     if (ray.idx_bounces[2] <= 0) {return;}
     
     if (intersection.t < ZeroEpsilon) { // If there was no intersection, color the ray black.
-        ray.color *= getEnvironmentColor(environment, envEmittance, ray);
+        ray.color = getEnvironmentColor(environment, envEmittance, ray.direction);
         ray.idx_bounces[2] = 0;
         return;
     }
@@ -121,10 +122,9 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
             direct_light.direction = wi;
 
             // An intersection point that determines if the point is shadowed
-            Intersection shadow_isect = getIntersection(direct_light, geoms, geom_count);
+            Intersection shadow_isect = getIntersection(direct_light, kdtrees, geoms, geom_count);
 
             // zero out contribution if it doesn't hit anything
-            // TODO: Modify this to work using shadow_isect.objectHit and not materialId
             // this makes the code more robust
             const bool shadowed = shadow_isect.t > ZeroEpsilon && (shadow_isect.materialId != light.materialid);
             li_x = shadowed ? float3(0) : li_x;
@@ -137,7 +137,7 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
             const float weight_li = powerHeuristic(1, pdf_li, 1, pdf_bsdf);
 
             Ld = (f_x * li_x * weight_li * ray.throughput)
-                                         / (pdf_li);
+                        / (pdf_li);
         }
     
         /*************************************************************
@@ -161,17 +161,16 @@ kernel void kern_ShadeMaterialsMIS(constant   uint& ray_count             [[ buf
             Intersection bsdf_direct_isx;
             indirect_path.origin = intersection.point + intersection.normal * EPSILON;
 
-            bsdf_direct_isx = getIntersection(indirect_path, geoms, geom_count);
+            bsdf_direct_isx = getIntersection(indirect_path, kdtrees, geoms, geom_count);
 
 
-            float pdf_li = pdfLi(light, intersection.point, indirect_wi);
+            const float pdf_li = pdfLi(light, intersection.point, indirect_wi);
 
             //Only add cotribution if object hit is the light
-
             if ((bsdf_direct_isx.t > ZeroEpsilon) && (bsdf_direct_isx.materialId == light.materialid)) {
-                float weight_bsdf = powerHeuristic(1, bsdf_pdf, 1, pdf_li);
+                const float weight_bsdf = powerHeuristic(1, bsdf_pdf, 1, pdf_li);
 
-                float3 li_y = light_m.emittance * light_m.color;
+                const float3 li_y = light_m.emittance * light_m.color;
 
                 Ld += li_y * f_y * weight_bsdf * ray.throughput;
             }
@@ -218,6 +217,7 @@ kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ 
                                       device     Ray* rays                   [[ buffer(2) ]],
                                       device     Intersection* intersections [[ buffer(3) ]],
                                       constant   Material*     materials     [[ buffer(4) ]],
+                                      constant   float*        kdtrees       [[ buffer(5) ]],
                                       texture2d<float, access::sample> environment [[ texture(5) ]],
                                       constant   float3& envEmittance        [[ buffer(6) ]],
                                       constant   Geom*         geoms         [[ buffer(8) ]],
@@ -229,13 +229,11 @@ kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ 
     Intersection intersection = intersections[position];
     device Ray& ray = rays[position];
 
-    //Naive Early Ray Termination
-    // TODO: Stream Compact and remove this line
+    // Naive Early Ray Termination: Stream Compaction should render this useless
     if (ray.idx_bounces[2] <= 0) {return;}
 
-
     if (intersection.t < ZeroEpsilon) { // If there was no intersection, color the ray black.
-        ray.color *= getEnvironmentColor(environment, envEmittance, ray);
+        ray.color *= getEnvironmentColor(environment, envEmittance, ray.direction);
         ray.idx_bounces[2] = 0;
         return;
     }
@@ -291,12 +289,10 @@ kernel void kern_ShadeMaterialsDirect(constant   uint& ray_count             [[ 
             direct_light.direction = wi;
 
             // An intersection point that determines if the point is shadowed
-            Intersection shadow_isect = getIntersection(direct_light, geoms, geom_count);
+            Intersection shadow_isect = getIntersection(direct_light, kdtrees, geoms, geom_count);
 
 
-            // zero out contribution if it doesn't hit anything
-            // TODO: Modify this to work using shadow_isect.objectHit and not materialId
-            // this makes the code more robust
+            // zero out contribution if it doesn't hit anything or if we hit something other than the light
             const bool shadowed = shadow_isect.t > ZeroEpsilon && (shadow_isect.materialId != light.materialid);
             li_x = shadowed ? float3(0) : li_x;
 
