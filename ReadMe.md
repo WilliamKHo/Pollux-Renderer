@@ -22,14 +22,17 @@ Tested on:
 
 - [Potential Improvements](#potential-improvements)
 
+- [Sample Renders](#sample-renders)
+
 - [Bloopers](#bloopers)
 
 - [References](#references)
  
 
 ____________________________________________________
-
-** Add Overview Image**
+| macOS | iOS |
+|-------|--------|
+|![](Sample%20Renders/Lion.png)|![](Sample%20Renders/Mars%20At%20The%20Acropolis%20(iOS).png)|
 
 Pollux is a Monte Carlo Path Tracer built completely in Metal. It can run on both macOS and iOS.
 
@@ -122,6 +125,13 @@ There's a way to do this, just can't figure it out.
 - **Look into faster linear algebra computations in Metal (maybe using MPS?)**
 
 - **Different memory address spaces in my shaders for local variables**
+
+### Sample Renders
+
+Initial basic cornell box scene:
+
+Illustrative scenes for reflection, refraction, subsurface scatter, and environment maps:
+
 
 ### Debug Views
 
