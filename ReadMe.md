@@ -128,20 +128,36 @@ There's a way to do this, just can't figure it out.
 
 ### Sample Renders
 
-Initial basic cornell box scene:
-
 Illustrative scenes for reflection, refraction, subsurface scatter, and environment maps:
+
+|![](Sample%20Renders/subsurface.png)|![](Sample%20Renders/environment.png)|
+|-----|-----|
+
+|![](Sample%20Renders/reflect.png)|![](Sample%20Renders/refract.png)|![](Sample%20Renders/depthOfField.png)|
+|-----|-----|-----|
 
 
 ### Debug Views
 
-`TODO: Add Debug Views`
+Ray Direction Debug View: 
+
+![](Debug%20Views/RayDirections.png)
 
 
 ### Analysis
 
 
 ### Bloopers
+
+Broken Stream Compaction
+
+<img width="585" alt="streamcompactiondegub02" src="https://user-images.githubusercontent.com/10569257/33228266-f0a91494-d184-11e7-957a-9991e8849ddb.png">
+
+Broken Partition
+
+![](Debug%20Views/PartitioningFail.png)
+
+
 
 ### References
 
