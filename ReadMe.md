@@ -1,10 +1,10 @@
-![title_pic](Media/Header.png)
+![title_pic](Media/Miscellanious/Header.png)
 
 
 
 Tested on: 
 - **macOS Version:** MacBook Pro (Retina, 13-inch, Early 2015) running macOS Sierra 10.12.6
-- **iOS Version:** iPhone 6 running iOS 10.2
+- **iOS Version:** iPhone 6 running iOS 10.2 & iPhone 7 running iOS 11.2
 
 ![Built](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg)  ![Platform](https://img.shields.io/badge/platform-macOS-bcbcbc.svg) ![Platform2](https://img.shields.io/badge/platform-iOS-bcbcbc.svg) ![Languages](https://img.shields.io/badge/Metal-2-02ffa2.svg?style=flat) ![Languages](https://img.shields.io/badge/Swift-4-ff7f02.svg?style=flat) ![Developer](https://img.shields.io/badge/Developer-Youssef%20Victor-0f97ff.svg?style=flat) ![Developer](https://img.shields.io/badge/Developer-Will%20Ho-ff6161.svg?style=flat)
 
@@ -23,6 +23,8 @@ Tested on:
 - [Potential Improvements](#potential-improvements)
 
 - [Bloopers](#bloopers)
+
+- [References](#references)
  
 
 ____________________________________________________
@@ -130,6 +132,23 @@ There's a way to do this, just can't figure it out.
 
 
 ### Bloopers
+
+### References
+
+- Code based on [CUDA Path tracer](https://github.com/CIS565-Fall-2017/Project3-CUDA-Path-Tracer)
+
+- Mariano Merchante’s KD-Tree (with permission)
+
+- [Volumes Subsurface Scattering](http://www.davepagurek.com/blog/volumes-subsurface-scattering/) and [StackExchange Post](https://computergraphics.stackexchange.com/questions/5214/a-recent-approach-for-subsurface-scattering) for Subsurface Scattering
+
+- Swift OBJ Loader
+
+- NVidia’s [Stream Compaction](https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch39.html) for Reference
+
+- FlexMonkey and Metal By Example
+
+- Metalkit.org
+
 
 
 
